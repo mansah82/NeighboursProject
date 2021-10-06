@@ -6,6 +6,20 @@ data class Neighbour(
     val lastName: String,
     val gender: Gender,
     val age: Int,
-    val interests: List<Interest>,
-    val image : String = ""
-)
+    private val interests: MutableList<Interest> = mutableListOf(),
+    var image : String = ""
+){
+
+    fun addInterest(interest: Interest){
+        interests.add(interest)
+    }
+
+    fun removeInterest(interest: Interest){
+        interests.remove(interest)
+    }
+
+    fun getInterests(): List<Interest>{
+        return interests
+    }
+}
+

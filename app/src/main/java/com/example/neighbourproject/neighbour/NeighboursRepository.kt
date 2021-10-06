@@ -20,7 +20,7 @@ class NeighboursRepository : NeighboursService {
                 "Adamsson",
                 Gender.MALE,
                 34,
-                listOf<Interest>(
+                mutableListOf<Interest>(
                     Interest("Food", "Flen"),
                     Interest("Cars", "Flen") )
             )
@@ -31,7 +31,7 @@ class NeighboursRepository : NeighboursService {
                 "Beatasson",
                 Gender.FEMALE,
                 35,
-                listOf<Interest>(
+                mutableListOf<Interest>(
                     Interest("Food", "Stockholm"),
                     Interest("Movies", "Stockholm") )
             )
@@ -42,9 +42,31 @@ class NeighboursRepository : NeighboursService {
                 "Ceasson",
                 Gender.ENBY,
                 36,
-                listOf<Interest>(
+                mutableListOf<Interest>(
                     Interest("Dance", "Täby"),
                     Interest("Movies", "Stockholm") )
+            )
+        )
+        neighbours.add(
+            Neighbour(
+                "Daniel",
+                "Danielsson",
+                Gender.NONE,
+                37,
+                mutableListOf<Interest>(
+                    Interest("Dance", "Ludvika"),
+                    Interest("Movies", "Ludvika") )
+            )
+        )
+        neighbours.add(
+            Neighbour(
+                "Eva",
+                "Evasson",
+                Gender.FEMALE,
+                38,
+                mutableListOf<Interest>(
+                    Interest("Dance", "Ludvika"),
+                    Interest("Food", "Ludvika") )
             )
         )
     }

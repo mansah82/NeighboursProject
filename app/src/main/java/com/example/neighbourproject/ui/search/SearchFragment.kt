@@ -14,6 +14,8 @@ import com.example.neighbourproject.databinding.SearchFragmentBinding
 class SearchFragment : Fragment() {
     companion object{
         private const val TAG = "SearchFragment"
+        private const val DEFAULT_MIN_AGE = 0
+        private const val DEFAULT_MAX_AGE = 140
     }
     private lateinit var binding: SearchFragmentBinding
 
@@ -31,20 +33,30 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private var minAge = 0
-    private var maxAge = 140
+    private var minAge = DEFAULT_MIN_AGE
+    private var maxAge = DEFAULT_MAX_AGE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
 
         binding.minAge.doAfterTextChanged {
-            minAge = binding.minAge.text.toString().toInt()
+            minAge = try {
+                binding.minAge.text.toString().toInt()
+            }catch (e : NumberFormatException){
+                DEFAULT_MIN_AGE
+            }
+
             Log.d(TAG, "doAfterTextChanged min: $minAge")
             model.searchAge(minAge, maxAge)
         }
 
         binding.maxAge.doAfterTextChanged {
-            maxAge = binding.maxAge.text.toString().toInt()
+            maxAge = try {
+                binding.maxAge.text.toString().toInt()
+            }catch (e : NumberFormatException){
+                DEFAULT_MIN_AGE
+            }
+
             Log.d(TAG, "doAfterTextChanged max: $maxAge")
             model.searchAge(minAge, maxAge)
         }
