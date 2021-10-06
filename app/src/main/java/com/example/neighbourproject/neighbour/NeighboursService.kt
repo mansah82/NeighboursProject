@@ -1,6 +1,5 @@
 package com.example.neighbourproject.neighbour
 
-import androidx.lifecycle.LiveData
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.Neighbour
 

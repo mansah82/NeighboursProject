@@ -34,10 +34,22 @@ class SearchRecyclerAdapter(private val neighboursSearch: LiveData<List<Neighbou
         return ViewHolder(view)
     }
 
+    private fun infoString(neighbour: Neighbour): String {
+        var info = "Age: ".plus(neighbour.age.toString()).plus("\n")
+            .plus("Gender: ").plus(neighbour.gender.text).plus("\n")
+
+        var doing = ""
+        for(interest in neighbour.getInterests()){
+            //TODO OMG, please don't laugh
+            doing += interest.name.plus(" in ")
+                .plus(interest.location).plus("\n")
+        }
+        return info + doing
+    }
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         neighboursSearch.value?.let {
             viewHolder.neighbourNameTextView.text = it[position].firstName.plus(" ").plus(it[position].lastName)
-            viewHolder.neighbourInfoTextView.text = "AGE: ".plus(it[position].age.toString())
+            viewHolder.neighbourInfoTextView.text = infoString(it[position])
         }
     }
 

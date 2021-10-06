@@ -54,14 +54,11 @@ class SearchFragment : Fragment() {
             maxAge = try {
                 binding.maxAge.text.toString().toInt()
             }catch (e : NumberFormatException){
-                DEFAULT_MIN_AGE
+                DEFAULT_MAX_AGE
             }
 
             Log.d(TAG, "doAfterTextChanged max: $maxAge")
             model.searchAge(minAge, maxAge)
         }
-
     }
-
-
 }
