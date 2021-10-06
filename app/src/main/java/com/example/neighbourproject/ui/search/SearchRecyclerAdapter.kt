@@ -15,7 +15,7 @@ import com.example.neighbourproject.neighbour.data.Neighbour
 class SearchRecyclerAdapter(
     private val neighboursSearch: LiveData<List<Neighbour>>,
     lifecycleOwner: LifecycleOwner,
-    private val clickListner: ClickListener) :
+    private val clickListener: ClickListener) :
     RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder>() {
 
     companion object{
@@ -24,6 +24,7 @@ class SearchRecyclerAdapter(
 
     private val searchResultObserver = Observer<List<Neighbour>> {
         it?.let {
+            //TODO A hard and not efficient way to tell recyclerview something have changed
             notifyDataSetChanged()
         }
     }
@@ -31,7 +32,7 @@ class SearchRecyclerAdapter(
     init {
         neighboursSearch.observe(lifecycleOwner, searchResultObserver)
     }
-    class ViewHolder(view: View, private val clickListner: ClickListener) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val listener: ClickListener) : RecyclerView.ViewHolder(view) {
         val neighbourNameTextView: TextView = view.findViewById(R.id.neighbour_name)
         val neighbourInfoTextView: TextView = view.findViewById(R.id.neighbour_info)
         private lateinit var neighbour: Neighbour
@@ -41,10 +42,7 @@ class SearchRecyclerAdapter(
             neighbour = newNeighbour
 
             itemView.setOnClickListener {
-                Log.d(TAG, "OnClickListener fired!")
-                neighbour?.let {
-                    clickListner.onClick(neighbour.id)
-                }
+                listener.onClick(neighbour.id)
             }
         }
     }
@@ -52,11 +50,11 @@ class SearchRecyclerAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_search_list, viewGroup, false)
-        return ViewHolder(view, clickListner)
+        return ViewHolder(view, clickListener)
     }
 
     private fun infoString(neighbour: Neighbour): String {
-        var info = "Age: ".plus(neighbour.age.toString()).plus("\n")
+        val info = "Age: ".plus(neighbour.age.toString()).plus("\n")
             .plus("Gender: ").plus(neighbour.gender.text).plus("\n")
 
         var doing = ""

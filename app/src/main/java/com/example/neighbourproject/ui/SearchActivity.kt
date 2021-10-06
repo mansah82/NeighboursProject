@@ -3,7 +3,6 @@ package com.example.neighbourproject.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {

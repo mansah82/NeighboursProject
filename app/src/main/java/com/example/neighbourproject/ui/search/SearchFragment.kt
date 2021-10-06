@@ -1,6 +1,5 @@
 package com.example.neighbourproject.ui.search
 
-
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,7 +24,7 @@ class SearchFragment : Fragment(), ClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
         val searchAdapter = SearchRecyclerAdapter(model.searchResult,
@@ -69,6 +68,7 @@ class SearchFragment : Fragment(), ClickListener {
     override fun onClick(id: String) {
         val neighbour = model.searchId(id)
         neighbour?.let{
+            //TODO intent for send friend request or detailed view go's here
             Toast
                 .makeText(context,  "You Like: ".plus(neighbour.toString()), Toast.LENGTH_LONG)
                 .show()
