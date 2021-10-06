@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">NeighbourProject</string>
+    <string name="app_name">Neighbours</string>
+    <string name="min_age_hint">Min Age</string>
+    <string name="max_age_hint">Max Age</string>
 </resources>
