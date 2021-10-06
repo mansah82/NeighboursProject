@@ -15,15 +15,26 @@ class SearchViewModel : ViewModel() {
     private val search : MutableLiveData<List<Neighbour>> = MutableLiveData()
     val searchResult : LiveData<List<Neighbour>> = search
 
-    fun search(minAge: Int, maxAge: Int, genders : List<Gender>){
+    fun search(minAge: Int, maxAge: Int, genders : List<Gender>, free_text : String){
         val ageResult = repository.getNeighboursByAge(minAge, maxAge)
-        val result = mutableListOf<Neighbour>()
+        val genderResult = mutableListOf<Neighbour>()
         for(neighbour in ageResult){
             if(neighbour.gender in genders){
-                result.add(neighbour)
+                genderResult.add(neighbour)
             }
         }
-        search.value = result
+        val freeTextResult = mutableListOf<Neighbour>()
+        if(free_text != ""){
+            for(neighbour in genderResult){
+                if(neighbour.toString().contains(free_text, true)){
+                    freeTextResult.add(neighbour)
+                }
+            }
+        }else{
+            freeTextResult.addAll(genderResult)
+        }
+
+        search.value = freeTextResult
     }
 
     fun searchId(id: String): Neighbour?{

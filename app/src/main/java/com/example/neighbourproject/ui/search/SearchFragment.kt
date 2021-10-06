@@ -1,7 +1,6 @@
 package com.example.neighbourproject.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +40,47 @@ class SearchFragment : Fragment(), ClickListener {
 
         return binding.root
     }
+
+    private var minAge = DEFAULT_MIN_AGE
+    private var maxAge = DEFAULT_MAX_AGE
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.chipFemale.setOnClickListener {
+            doSearch()
+        }
+        binding.chipMale.setOnClickListener {
+            doSearch()
+        }
+        binding.chipEnby.setOnClickListener {
+            doSearch()
+        }
+        binding.chipNone.setOnClickListener {
+            doSearch()
+        }
+
+        binding.minAge.doAfterTextChanged {
+            minAge = try {
+                binding.minAge.text.toString().toInt()
+            }catch (e : NumberFormatException){
+                DEFAULT_MIN_AGE
+            }
+            doSearch()
+        }
+
+        binding.maxAge.doAfterTextChanged {
+            maxAge = try {
+                binding.maxAge.text.toString().toInt()
+            }catch (e : NumberFormatException){
+                DEFAULT_MAX_AGE
+            }
+            doSearch()
+        }
+
+        binding.freeSearchText.doAfterTextChanged {
+            doSearch()
+        }
+    }
+
     private fun selectedGenders(): List<Gender>{
         val result = mutableListOf<Gender>()
         if(binding.chipFemale.isChecked)
@@ -55,48 +95,8 @@ class SearchFragment : Fragment(), ClickListener {
         return result
     }
 
-    private var minAge = DEFAULT_MIN_AGE
-    private var maxAge = DEFAULT_MAX_AGE
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
-
-        binding.chipFemale.setOnClickListener {
-            model.search(minAge, maxAge, selectedGenders())
-        }
-        binding.chipMale.setOnClickListener {
-            model.search(minAge, maxAge, selectedGenders())
-        }
-        binding.chipEnby.setOnClickListener {
-            model.search(minAge, maxAge, selectedGenders())
-        }
-        binding.chipNone.setOnClickListener {
-            model.search(minAge, maxAge, selectedGenders())
-        }
-
-        binding.minAge.doAfterTextChanged {
-            minAge = try {
-                binding.minAge.text.toString().toInt()
-            }catch (e : NumberFormatException){
-                DEFAULT_MIN_AGE
-            }
-
-            Log.d(TAG, "doAfterTextChanged min: $minAge")
-            model.search(minAge, maxAge, selectedGenders() )
-        }
-
-        binding.maxAge.doAfterTextChanged {
-            maxAge = try {
-                binding.maxAge.text.toString().toInt()
-            }catch (e : NumberFormatException){
-                DEFAULT_MAX_AGE
-            }
-
-            Log.d(TAG, "doAfterTextChanged max: $maxAge")
-            model.search(minAge, maxAge, selectedGenders())
-        }
-
-        model.search(minAge, maxAge, selectedGenders())
+    private fun doSearch(){
+        model.search(minAge, maxAge, selectedGenders(), binding.freeSearchText.text.toString())
     }
 
     override fun onClick(id: String) {

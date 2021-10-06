@@ -2,4 +2,5 @@
     <string name="app_name">Neighbours</string>
     <string name="min_age_hint">Min Age</string>
     <string name="max_age_hint">Max Age</string>
+    <string name="free_search_hint">Free search:</string>
 </resources>
