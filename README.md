@@ -3,26 +3,42 @@
 Initial userflow
 https://www.figma.com/file/TJMYFQ9Azjam8yJqvPNCuc/Untitled?node-id=0%3A1
 
-Lathund git
+## Lathund git
 
-Skapa branch
-Git status
-Git branch
-Git checkout -b branchname
+#### Skapa branch
+```
+git status
+git branch
+git checkout -b branchname
+```
 
-Delete branch
-Git checkout main
-Git pull
-Git branch -d branchname
+#### Delete branch
+```
+git checkout main
+git pull
+git branch -d branchname
+```
 
-Commit
-Git diff main (för att kolla vad som ändras)
-Git add .
-Git commit -m ”commit”
+#### Get new changes from main to branch 
+```
+git checkout branchname
+git merge origin main
+```
 
-Push
-Git push 
-Git push —set.upstream osv
+#### Commit
+```
+git diff main (för att kolla vad som ändras)
+git add .
+git commit -m ”commit”
+```
 
-Pull
-Git pull
+#### Push
+```
+git push 
+git push —set.upstream osv
+```
+
+#### Pull
+```
+git pull
+```
