@@ -69,6 +69,34 @@ class NeighboursRepository : NeighboursService {
                     Interest("Food", "Ludvika") )
             )
         )
+        neighbours.add(
+            Neighbour(
+                "Frans",
+                "Fransson",
+                Gender.MALE,
+                39,
+                mutableListOf<Interest>(
+                    Interest("Dance", "Ludvika"),
+                    Interest("Food", "Ludvika"),
+                    Interest("Go-cart", "Ludvika"),
+                    Interest("Ninjas", "Ludvika")
+                )
+            )
+        )
+        neighbours.add(
+            Neighbour(
+                "Gunhild",
+                "Gunhildsson",
+                Gender.FEMALE,
+                40,
+                mutableListOf<Interest>(
+                    Interest("Dance", "Avesta"),
+                    Interest("Food", "Avesta"),
+                    Interest("Go-cart", "Avesta"),
+                    Interest("Ninjas", "Avesta")
+                )
+            )
+        )
     }
 
     override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<Neighbour>{

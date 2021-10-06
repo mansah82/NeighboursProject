@@ -26,6 +26,7 @@ class SearchRecyclerAdapter(private val neighboursSearch: LiveData<List<Neighbou
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val neighbourNameTextView: TextView = view.findViewById(R.id.neighbour_name)
         val neighbourInfoTextView: TextView = view.findViewById(R.id.neighbour_info)
+
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
