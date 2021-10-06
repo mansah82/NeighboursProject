@@ -118,4 +118,14 @@ class NeighboursRepository : NeighboursService {
         }
         return searchResult
     }
+
+    override fun getNeighbourById(id: String): Neighbour? {
+        for(neighbour in neighbours){
+            if(neighbour.id == id){
+                return neighbour
+            }
+        }
+        return null
+    }
+
 }

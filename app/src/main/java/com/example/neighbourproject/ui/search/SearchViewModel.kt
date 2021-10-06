@@ -17,4 +17,8 @@ class SearchViewModel : ViewModel() {
     fun searchAge(minAge: Int, maxAge: Int){
         search.value = repository.getNeighboursByAge(minAge, maxAge)
     }
+
+    fun searchId(id: String): Neighbour?{
+        return repository.getNeighbourById(id)
+    }
 }

@@ -6,4 +6,5 @@ import com.example.neighbourproject.neighbour.data.Neighbour
 interface NeighboursService {
     fun getNeighboursByAge(minAge: Int, maxAge: Int): List<Neighbour>
     fun getNeighboursByGender(gender: Gender): List<Neighbour>
+    fun getNeighbourById(id: String): Neighbour?
 }

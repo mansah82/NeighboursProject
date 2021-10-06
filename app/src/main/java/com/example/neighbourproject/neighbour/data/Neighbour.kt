@@ -1,5 +1,6 @@
 package com.example.neighbourproject.neighbour.data
 
+import java.util.*
 
 data class Neighbour(
     val firstName: String,
@@ -9,6 +10,7 @@ data class Neighbour(
     private val interests: MutableList<Interest> = mutableListOf(),
     var image : String = ""
 ){
+    val id : String = UUID.randomUUID().toString()
 
     fun addInterest(interest: Interest){
         interests.add(interest)

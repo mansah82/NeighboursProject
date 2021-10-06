@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), ClickListener {
     companion object{
         private const val TAG = "SearchFragment"
         private const val DEFAULT_MIN_AGE = 0
@@ -27,7 +28,10 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
-        val searchAdapter = SearchRecyclerAdapter(model.searchResult, viewLifecycleOwner)
+        val searchAdapter = SearchRecyclerAdapter(model.searchResult,
+            viewLifecycleOwner,
+            this as ClickListener)
+
         binding.searchResultList.adapter = searchAdapter
 
         return binding.root
@@ -59,6 +63,15 @@ class SearchFragment : Fragment() {
 
             Log.d(TAG, "doAfterTextChanged max: $maxAge")
             model.searchAge(minAge, maxAge)
+        }
+    }
+
+    override fun onClick(id: String) {
+        val neighbour = model.searchId(id)
+        neighbour?.let{
+            Toast
+                .makeText(context,  "You Like: ".plus(neighbour.toString()), Toast.LENGTH_LONG)
+                .show()
         }
     }
 }
