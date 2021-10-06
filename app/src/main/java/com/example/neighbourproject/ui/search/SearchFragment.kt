@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
+import com.example.neighbourproject.neighbour.data.Gender
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{
@@ -33,7 +34,25 @@ class SearchFragment : Fragment(), ClickListener {
 
         binding.searchResultList.adapter = searchAdapter
 
+        binding.chipFemale.text = Gender.FEMALE.text
+        binding.chipMale.text = Gender.MALE.text
+        binding.chipEnby.text = Gender.ENBY.text
+        binding.chipNone.text = Gender.NONE.text
+
         return binding.root
+    }
+    private fun selectedGenders(): List<Gender>{
+        val result = mutableListOf<Gender>()
+        if(binding.chipFemale.isChecked)
+            result.add(Gender.FEMALE)
+        if(binding.chipMale.isChecked)
+            result.add(Gender.MALE)
+        if(binding.chipEnby.isChecked)
+            result.add(Gender.ENBY)
+        if(binding.chipNone.isChecked)
+            result.add(Gender.NONE)
+
+        return result
     }
 
     private var minAge = DEFAULT_MIN_AGE
@@ -41,6 +60,19 @@ class SearchFragment : Fragment(), ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+
+        binding.chipFemale.setOnClickListener {
+            model.search(minAge, maxAge, selectedGenders())
+        }
+        binding.chipMale.setOnClickListener {
+            model.search(minAge, maxAge, selectedGenders())
+        }
+        binding.chipEnby.setOnClickListener {
+            model.search(minAge, maxAge, selectedGenders())
+        }
+        binding.chipNone.setOnClickListener {
+            model.search(minAge, maxAge, selectedGenders())
+        }
 
         binding.minAge.doAfterTextChanged {
             minAge = try {
@@ -50,7 +82,7 @@ class SearchFragment : Fragment(), ClickListener {
             }
 
             Log.d(TAG, "doAfterTextChanged min: $minAge")
-            model.searchAge(minAge, maxAge)
+            model.search(minAge, maxAge, selectedGenders() )
         }
 
         binding.maxAge.doAfterTextChanged {
@@ -61,8 +93,10 @@ class SearchFragment : Fragment(), ClickListener {
             }
 
             Log.d(TAG, "doAfterTextChanged max: $maxAge")
-            model.searchAge(minAge, maxAge)
+            model.search(minAge, maxAge, selectedGenders())
         }
+
+        model.search(minAge, maxAge, selectedGenders())
     }
 
     override fun onClick(id: String) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.neighbourproject.neighbour.NeighboursRepository
 import com.example.neighbourproject.neighbour.NeighboursService
+import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.Neighbour
 
 class SearchViewModel : ViewModel() {
@@ -14,8 +15,15 @@ class SearchViewModel : ViewModel() {
     private val search : MutableLiveData<List<Neighbour>> = MutableLiveData()
     val searchResult : LiveData<List<Neighbour>> = search
 
-    fun searchAge(minAge: Int, maxAge: Int){
-        search.value = repository.getNeighboursByAge(minAge, maxAge)
+    fun search(minAge: Int, maxAge: Int, genders : List<Gender>){
+        val ageResult = repository.getNeighboursByAge(minAge, maxAge)
+        val result = mutableListOf<Neighbour>()
+        for(neighbour in ageResult){
+            if(neighbour.gender in genders){
+                result.add(neighbour)
+            }
+        }
+        search.value = result
     }
 
     fun searchId(id: String): Neighbour?{
