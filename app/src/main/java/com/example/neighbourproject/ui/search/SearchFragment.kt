@@ -11,7 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.data.Gender
-import com.example.neighbourproject.ui.location.LocationActivity
+import com.example.neighbourproject.ui.location.NeighbourActivity
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{
@@ -109,7 +109,7 @@ class SearchFragment : Fragment(), ClickListener {
                 .makeText(context,  "You Like: ".plus(neighbour.toString()), Toast.LENGTH_LONG)
                 .show()
 
-            startActivity(Intent(requireContext(), LocationActivity::class.java))
+            startActivity(Intent(requireContext(), NeighbourActivity::class.java))
         }
     }
 }

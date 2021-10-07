@@ -8,8 +8,8 @@
 
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_map_view"
-        android:name="com.example.neighbourproject.ui.location.LocationFragment"
+        android:id="@+id/fragment_neighbour"
+        android:name="com.example.neighbourproject.ui.location.NeighbourFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </FrameLayout>

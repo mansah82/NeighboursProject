@@ -3,14 +3,14 @@ package com.example.neighbourproject.ui.location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.neighbourproject.databinding.LocationActivityBinding
+import com.example.neighbourproject.databinding.NeighbourActivityBinding
 
-class LocationActivity : AppCompatActivity() {
+class NeighbourActivity : AppCompatActivity() {
 
-    private lateinit var binding: LocationActivityBinding
+    private lateinit var binding: NeighbourActivityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LocationActivityBinding.inflate(layoutInflater)
+        binding = NeighbourActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }

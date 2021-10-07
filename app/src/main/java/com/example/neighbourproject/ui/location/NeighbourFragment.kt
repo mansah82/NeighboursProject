@@ -1,8 +1,10 @@
 package com.example.neighbourproject.ui.location
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -15,31 +17,36 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import com.example.neighbourproject.databinding.LocationFragmentBinding
+import com.example.neighbourproject.databinding.NeighbourFragmentBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
-class LocationFragment : Fragment() {
-    companion object{
-        private const val TAG = "LocationFragment"
+class NeighbourFragment : Fragment() {
+    companion object {
+        private const val TAG = "NeighbourFragment"
     }
 
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var binding: NeighbourFragmentBinding
 
-    private lateinit var binding: LocationFragmentBinding
-    private val model: LocationViewModel by activityViewModels()
+    private val model: NeighbourViewModel by activityViewModels()
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = LocationFragmentBinding.inflate(inflater)
+        binding = NeighbourFragmentBinding.inflate(inflater)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                 if (granted) {
                     binding.locationText.text = "Position Permission Granted"
-                    val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE)
-                            as LocationManager
-
-
+                    getLocation()
                 } else {
                     binding.locationText.text = "Position Permission NOT Granted"
                 }
@@ -50,9 +57,8 @@ class LocationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonReqLocation.setOnClickListener {
-            requestStoragePermission()
-        }
+
+        requestLocationPermission()
     }
 
     private fun showPermissionRequestExplanation(
@@ -63,34 +69,48 @@ class LocationFragment : Fragment() {
         AlertDialog.Builder(requireContext()).apply {
             setTitle("$permission Required")
             setMessage(message)
-            setPositiveButton("Ok") { _, _ -> retry?.invoke()}
+            setPositiveButton("Ok") { _, _ -> retry?.invoke() }
             setNegativeButton("No") { dialog, _ ->
                 dialog.cancel()
             }
         }.show()
     }
 
-    private fun requestStoragePermission() {
-        if(ContextCompat.checkSelfPermission(
-            requireContext(),
-            android.Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED){
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            binding.locationText.text = "Position Permission Already Granted"
             Log.d(TAG, "Permission granted")
-        }else{
-            if(shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)){
+            getLocation()
+        } else {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 //Ask for permission
-                Log.d(TAG, "Ask for it")
+                Log.d(TAG, "Ask for it and explain why")
                 showPermissionRequestExplanation(
                     "ACCESS_COARSE_LOCATION",
                     "Do you want the permission so we can pin-point your activity",
                 ) { requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION) }
-            }else{
-                Log.d(TAG, "Just grab it")
+            } else {
+                Log.d(TAG, "Just request it")
                 // Everything is fine you can simply request the permission
                 requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
             }
-
-
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener {
+                Log.d(TAG, "Fetched my last location lat: ${it.latitude} lon: ${it.longitude}")
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "Fetched my last location - Failed")
+            }
+
+
     }
 }
