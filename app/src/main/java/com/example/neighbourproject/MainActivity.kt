@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.neighbourproject.databinding.ActivityMainBinding
-import com.example.neighbourproject.ui.SearchActivity
 
 
 class MainActivity : AppCompatActivity() {

@@ -35,13 +35,13 @@ class LocationFragment : Fragment() {
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                 if (granted) {
-                    binding.locationText.text = "Storage Permission Granted"
+                    binding.locationText.text = "Position Permission Granted"
                     val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE)
                             as LocationManager
 
 
                 } else {
-                    binding.locationText.text = "Storage Permission NOT Granted"
+                    binding.locationText.text = "Position Permission NOT Granted"
                 }
             }
 
