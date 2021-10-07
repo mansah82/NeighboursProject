@@ -1,5 +1,6 @@
 package com.example.neighbourproject.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.ui.location.LocationActivity
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{
@@ -106,6 +108,8 @@ class SearchFragment : Fragment(), ClickListener {
             Toast
                 .makeText(context,  "You Like: ".plus(neighbour.toString()), Toast.LENGTH_LONG)
                 .show()
+
+            startActivity(Intent(requireContext(), LocationActivity::class.java))
         }
     }
 }
