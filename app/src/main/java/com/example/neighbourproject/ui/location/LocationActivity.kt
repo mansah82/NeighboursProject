@@ -12,7 +12,5 @@ class LocationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = LocationActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        LocationServices
     }
 }

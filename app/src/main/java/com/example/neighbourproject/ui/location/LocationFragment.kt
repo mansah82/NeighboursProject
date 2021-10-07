@@ -38,7 +38,7 @@ class LocationFragment : Fragment() {
                     binding.locationText.text = "Storage Permission Granted"
                     val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE)
                             as LocationManager
-                    
+
 
                 } else {
                     binding.locationText.text = "Storage Permission NOT Granted"
