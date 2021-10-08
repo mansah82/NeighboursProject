@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.EditProfileActivity
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.ui.search.SearchActivity
@@ -30,6 +31,7 @@ class HomePageActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.loginButton)
 
+
         loginButton.setOnClickListener {
             auth.signInWithEmailAndPassword(binding.usernameEditText.toString(), binding.passwordEditText.toString())
                 .addOnCompleteListener(this) { task ->
@@ -37,6 +39,8 @@ class HomePageActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
+                        val intent = Intent(this, EditProfileActivity::class.java)
+                        startActivity(intent)
 
                     } else {
                         // If sign in fails, display a message to the user.
