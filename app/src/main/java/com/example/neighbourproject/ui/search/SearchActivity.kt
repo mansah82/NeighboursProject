@@ -1,4 +1,4 @@
-package com.example.neighbourproject.ui
+package com.example.neighbourproject.ui.search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

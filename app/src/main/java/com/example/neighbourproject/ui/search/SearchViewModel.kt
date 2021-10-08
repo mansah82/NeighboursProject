@@ -7,10 +7,12 @@ import com.example.neighbourproject.neighbour.NeighboursRepository
 import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.Neighbour
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel : ViewModel(), KoinComponent {
 
-    private val repository : NeighboursService = NeighboursRepository()
+    private val repository: NeighboursService by inject()
 
     private val search : MutableLiveData<List<Neighbour>> = MutableLiveData()
     val searchResult : LiveData<List<Neighbour>> = search

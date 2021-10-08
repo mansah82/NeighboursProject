@@ -1,5 +1,6 @@
 package com.example.neighbourproject.neighbour
 
+import com.example.neighbourproject.neighbour.data.AreaOfInterest
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.Interest
 import com.example.neighbourproject.neighbour.data.Neighbour
@@ -21,8 +22,9 @@ class NeighboursRepository : NeighboursService {
                 Gender.MALE,
                 34,
                 mutableListOf<Interest>(
-                    Interest("Food", "Flen"),
-                    Interest("Cars", "Flen") )
+                    Interest("Food", AreaOfInterest("Flen")),
+                    Interest("Cars", AreaOfInterest("Flen"))
+                )
             )
         )
         neighbours.add(
@@ -32,8 +34,9 @@ class NeighboursRepository : NeighboursService {
                 Gender.FEMALE,
                 35,
                 mutableListOf<Interest>(
-                    Interest("Food", "Stockholm"),
-                    Interest("Movies", "Stockholm") )
+                    Interest("Food", AreaOfInterest("Stockholm")),
+                    Interest("Movies", AreaOfInterest("Stockholm"))
+                )
             )
         )
         neighbours.add(
@@ -43,8 +46,9 @@ class NeighboursRepository : NeighboursService {
                 Gender.ENBY,
                 36,
                 mutableListOf<Interest>(
-                    Interest("Dance", "Täby"),
-                    Interest("Movies", "Stockholm") )
+                    Interest("Dance", AreaOfInterest("Täby")),
+                    Interest("Movies", AreaOfInterest("Stockholm"))
+                )
             )
         )
         neighbours.add(
@@ -54,8 +58,10 @@ class NeighboursRepository : NeighboursService {
                 Gender.NONE,
                 37,
                 mutableListOf<Interest>(
-                    Interest("Dance", "Ludvika"),
-                    Interest("Movies", "Ludvika") )
+                    Interest("Dance", AreaOfInterest("Ludvika")),
+                    Interest("Movies", AreaOfInterest("Ludvika"))
+                ),
+                area = AreaOfInterest("Ludvika", null)
             )
         )
         neighbours.add(
@@ -65,8 +71,9 @@ class NeighboursRepository : NeighboursService {
                 Gender.FEMALE,
                 38,
                 mutableListOf<Interest>(
-                    Interest("Dance", "Ludvika"),
-                    Interest("Food", "Ludvika") )
+                    Interest("Dance", AreaOfInterest("Ludvika")),
+                    Interest("Food", AreaOfInterest("Ludvika"))
+                )
             )
         )
         neighbours.add(
@@ -76,10 +83,10 @@ class NeighboursRepository : NeighboursService {
                 Gender.MALE,
                 39,
                 mutableListOf<Interest>(
-                    Interest("Dance", "Ludvika"),
-                    Interest("Food", "Ludvika"),
-                    Interest("Go-cart", "Ludvika"),
-                    Interest("Ninjas", "Ludvika")
+                    Interest("Dance", AreaOfInterest("Ludvika")),
+                    Interest("Food", AreaOfInterest("Ludvika")),
+                    Interest("Go-cart", AreaOfInterest("Ludvika")),
+                    Interest("Ninjas", AreaOfInterest("Ludvika"))
                 )
             )
         )
@@ -90,19 +97,19 @@ class NeighboursRepository : NeighboursService {
                 Gender.FEMALE,
                 40,
                 mutableListOf<Interest>(
-                    Interest("Dance", "Avesta"),
-                    Interest("Food", "Avesta"),
-                    Interest("Go-cart", "Avesta"),
-                    Interest("Ninjas", "Avesta")
+                    Interest("Dance", AreaOfInterest("Avesta")),
+                    Interest("Food", AreaOfInterest("Avesta")),
+                    Interest("Go-cart", AreaOfInterest("Avesta")),
+                    Interest("Ninjas", AreaOfInterest("Avesta"))
                 )
             )
         )
     }
 
-    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<Neighbour>{
+    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<Neighbour> {
         val searchResult = mutableListOf<Neighbour>()
-        for(neighbour in neighbours){
-            if(neighbour.age in minAge..maxAge){
+        for (neighbour in neighbours) {
+            if (neighbour.age in minAge..maxAge) {
                 searchResult.add(neighbour)
             }
         }
@@ -120,8 +127,8 @@ class NeighboursRepository : NeighboursService {
     }
 
     override fun getNeighbourById(id: String): Neighbour? {
-        for(neighbour in neighbours){
-            if(neighbour.id == id){
+        for (neighbour in neighbours) {
+            if (neighbour.id == id) {
                 return neighbour
             }
         }
