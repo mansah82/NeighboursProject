@@ -10,8 +10,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.data.Gender
-import com.example.neighbourproject.ui.location.ExtrasKey
-import com.example.neighbourproject.ui.location.NeighbourActivity
+import com.example.neighbourproject.ui.neigbour.ExtrasKey
+import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{

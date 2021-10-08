@@ -8,5 +8,4 @@
     <string name="location_dialog_negative">No Way!</string>
     <string name="location_dialog_permission">ACCESS_COARSE_LOCATION</string>
     <string name="location_motivation">Do you want the permission so we can pin-point your activity</string>
-
 </resources>

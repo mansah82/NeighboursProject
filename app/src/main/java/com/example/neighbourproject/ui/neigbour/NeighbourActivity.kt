@@ -1,4 +1,4 @@
-package com.example.neighbourproject.ui.location
+package com.example.neighbourproject.ui.neigbour
 
 import android.Manifest
 import android.annotation.SuppressLint

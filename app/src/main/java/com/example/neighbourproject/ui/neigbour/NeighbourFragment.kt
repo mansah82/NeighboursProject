@@ -1,4 +1,4 @@
-package com.example.neighbourproject.ui.location
+package com.example.neighbourproject.ui.neigbour
 
 import android.os.Bundle
 import android.util.Log
@@ -43,7 +43,13 @@ class NeighbourFragment : Fragment() {
             }
             binding.neighbourInterests.setText(doing)
 
-            binding.location.text =
+            if(it.area.location == null) {
+                binding.neighbourDistance.text = it.area.area
+            }else{
+                model.getLocation()?.let { location ->
+                    binding.neighbourDistance.text = location.distanceTo(it.area.location).toString()
+                }
+            }
         }
 
 

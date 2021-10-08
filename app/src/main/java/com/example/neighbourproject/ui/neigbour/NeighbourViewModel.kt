@@ -1,4 +1,4 @@
-package com.example.neighbourproject.ui.location
+package com.example.neighbourproject.ui.neigbour
 
 import android.location.Location
 import android.util.Log
@@ -18,6 +18,10 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     fun setLocation(location : Location){
         myLocation = location
+    }
+
+    fun getLocation(): Location?{
+        return myLocation
     }
 
     fun selectedNeighbour(id : String): Boolean{

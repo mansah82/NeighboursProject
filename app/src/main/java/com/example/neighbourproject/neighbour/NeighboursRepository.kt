@@ -60,7 +60,8 @@ class NeighboursRepository : NeighboursService {
                 mutableListOf<Interest>(
                     Interest("Dance", AreaOfInterest("Ludvika")),
                     Interest("Movies", AreaOfInterest("Ludvika"))
-                )
+                ),
+                area = AreaOfInterest("Ludvika", null)
             )
         )
         neighbours.add(

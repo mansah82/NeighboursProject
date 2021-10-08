@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_neighbour"
-        android:name="com.example.neighbourproject.ui.location.NeighbourFragment"
+        android:name="com.example.neighbourproject.ui.neigbour.NeighbourFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </FrameLayout>
