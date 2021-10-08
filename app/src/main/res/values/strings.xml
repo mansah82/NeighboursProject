@@ -3,4 +3,10 @@
     <string name="min_age_hint">Min Age</string>
     <string name="max_age_hint">Max Age</string>
     <string name="free_search_hint">Free search:</string>
+
+    <string name="location_dialog_ok">Ok</string>
+    <string name="location_dialog_negative">No Way!</string>
+    <string name="location_dialog_permission">ACCESS_COARSE_LOCATION</string>
+    <string name="location_motivation">Do you want the permission so we can pin-point your activity</string>
+
 </resources>

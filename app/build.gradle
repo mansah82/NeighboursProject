@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.neighbourproject"
-        minSdk 22
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -53,4 +53,7 @@ dependencies {
 
     //Location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // Koin DI main features for Android (Scope,ViewModel ...)
+    implementation 'io.insert-koin:koin-android:3.1.2'
 }
