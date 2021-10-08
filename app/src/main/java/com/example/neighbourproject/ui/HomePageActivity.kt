@@ -38,6 +38,8 @@ class HomePageActivity : AppCompatActivity() {
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
 
+
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -50,7 +52,7 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         binding.registerTextview.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
+
         }
         binding.usernameEditText.doAfterTextChanged {
 
