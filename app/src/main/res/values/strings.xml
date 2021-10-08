@@ -3,4 +3,8 @@
     <string name="min_age_hint">Min Age</string>
     <string name="max_age_hint">Max Age</string>
     <string name="free_search_hint">Free search:</string>
+    <string name="login_password">Password</string>
+    <string name="login_username">Username</string>
+    <string name="login_button">Login</string>
+    <string name="login_register_button">not a user? Register here</string>
 </resources>
