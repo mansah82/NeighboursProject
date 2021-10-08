@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.R
 import com.example.neighbourproject.ui.search.SearchActivity
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class HomePageActivity : AppCompatActivity() {
@@ -16,6 +18,7 @@ class HomePageActivity : AppCompatActivity() {
     private lateinit var registerButton: TextView
     private lateinit var usernameEdit: EditText
     private lateinit var passwordEdit: EditText
+    val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
