@@ -1,15 +1,17 @@
 package com.example.neighbourproject.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.ui.neigbour.ExtrasKey
+import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{
@@ -102,10 +104,11 @@ class SearchFragment : Fragment(), ClickListener {
     override fun onClick(id: String) {
         val neighbour = model.searchId(id)
         neighbour?.let{
-            //TODO intent for send friend request or detailed view go's here
-            Toast
-                .makeText(context,  "You Like: ".plus(neighbour.toString()), Toast.LENGTH_LONG)
-                .show()
+
+            val intent = Intent(requireContext(), NeighbourActivity::class.java).also {
+                it.putExtra(ExtrasKey.KEY_USER_ID, neighbour.id)
+            }
+            startActivity(intent)
         }
     }
 }

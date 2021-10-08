@@ -3,23 +3,24 @@ package com.example.neighbourproject.neighbour.data
 import junit.framework.TestCase
 import org.junit.Test
 
-class NeighbourTest : TestCase(){
+class NeighbourTest : TestCase() {
     @Test
-    fun testAddInterest(){
+    fun testAddInterest() {
         val neighbour = Neighbour("Kalle", "Kallesson", Gender.MALE, 58)
         assertEquals(0, neighbour.getInterests().size)
-        neighbour.addInterest(Interest("Name", "Location"))
+        neighbour.addInterest(Interest("Name", AreaOfInterest("Location")))
         assertEquals(1, neighbour.getInterests().size)
     }
 
     @Test
-    fun testRemoveInterest(){
+    fun testRemoveInterest() {
         val neighbour = Neighbour(
             "Kalle",
             "Kallesson",
             Gender.MALE,
             58,
-            mutableListOf(Interest("Name", "Location")))
+            mutableListOf(Interest("Name", AreaOfInterest("Location")))
+        )
 
         assertEquals(1, neighbour.getInterests().size)
         neighbour.removeInterest(neighbour.getInterests()[0])
@@ -27,15 +28,17 @@ class NeighbourTest : TestCase(){
     }
 
     @Test
-    fun testGetInterests(){
+    fun testGetInterests() {
         val neighbour = Neighbour(
             "Kalle",
             "Kallesson",
             Gender.MALE,
             58,
             mutableListOf(
-                Interest("Name", "Location"),
-                Interest("Name", "Location") ) )
+                Interest("Name", AreaOfInterest("Location")),
+                Interest("Name", AreaOfInterest("Location"))
+            )
+        )
 
         assertEquals(2, neighbour.getInterests().size)
     }
