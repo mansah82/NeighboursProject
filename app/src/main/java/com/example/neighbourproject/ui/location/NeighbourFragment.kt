@@ -41,9 +41,9 @@ class NeighbourFragment : Fragment() {
                 doing += interest.name.plus(" in ")
                     .plus(interest.location.area).plus("\n")
             }
-
             binding.neighbourInterests.setText(doing)
 
+            binding.location.text =
         }
 
 

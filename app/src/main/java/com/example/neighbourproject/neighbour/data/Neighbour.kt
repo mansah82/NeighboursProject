@@ -8,7 +8,8 @@ data class Neighbour(
     val gender: Gender,
     val age: Int,
     private val interests: MutableList<Interest> = mutableListOf(),
-    var image : String = ""
+    var image : String = "",
+    var status : Status = Status.SINGLE
 ){
     val id : String = UUID.randomUUID().toString()
 
