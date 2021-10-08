@@ -16,6 +16,8 @@
         <activity
             android:name=".ui.search.SearchActivity"/>
         <activity
+            android:name=".ui.SignUpActivity"/>
+        <activity
             android:name=".ui.HomePageActivity"
             android:exported="true">
             <intent-filter>

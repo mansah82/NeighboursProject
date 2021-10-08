@@ -4,10 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.R
+import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,44 +14,44 @@ import com.google.firebase.ktx.Firebase
 
 class HomePageActivity : AppCompatActivity() {
 
-    private lateinit var registerButton: TextView
-    private lateinit var usernameEdit: EditText
-    private lateinit var passwordEdit: EditText
+    private lateinit var  binding : ActivityHomePageBinding
+
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_page)
-
-        registerButton = findViewById(R.id.registerTextview)
-        usernameEdit = findViewById(R.id.usernameEditText)
-        passwordEdit = findViewById(R.id.passwordEditText)
+        binding = ActivityHomePageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val loginButton = findViewById<Button>(R.id.loginButton)
-        loginButton.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
 
-        registerButton.setOnClickListener {
+        binding.registerTextview.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
         }
+        binding.usernameEditText.doAfterTextChanged {
 
-        usernameEdit.doAfterTextChanged {
+        }
 
+        binding.registerTextview.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
     }
 
     fun emailCheckCorrect() { //Work in progress
-        val typo = usernameEdit.getText().toString()
+        val typo = binding.usernameEditText.text.toString()
 
         if (typo == "hej") {
-            val mail = usernameEdit.getText().toString();
+            val mail = binding.usernameEditText.text.toString();
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
-                usernameEdit.setError("Please enter a valid username");
+                binding.usernameEditText.error = "Please enter a valid username";
             } else {
 
-                usernameEdit.setCompoundDrawablesWithIntrinsicBounds(
+                binding.usernameEditText.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0,
                     R.drawable.ic_launcher_background, 0
                 )
