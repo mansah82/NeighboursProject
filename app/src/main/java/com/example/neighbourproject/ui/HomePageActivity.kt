@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.R
+import com.example.neighbourproject.ui.search.SearchActivity
 
 
 class HomePageActivity : AppCompatActivity() {
@@ -31,7 +32,7 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         registerButton.setOnClickListener {
-            //Starta skapaaktivitet
+            startActivity(Intent(this, SearchActivity::class.java))
         }
 
         usernameEdit.doAfterTextChanged {

@@ -1,6 +1,5 @@
 package com.example.neighbourproject.ui.search
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,6 @@ class SearchRecyclerAdapter(
         private lateinit var neighbour: Neighbour
 
         fun bind(newNeighbour: Neighbour){
-            Log.d(TAG, "Binding ")
             neighbour = newNeighbour
 
             itemView.setOnClickListener {
