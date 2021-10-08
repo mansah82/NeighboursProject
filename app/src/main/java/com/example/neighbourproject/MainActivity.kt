@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.neighbourproject.databinding.ActivityMainBinding
-import com.example.neighbourproject.ui.SearchActivity
+import com.example.neighbourproject.ui.HomePageActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         //TODO will be replaced with a login event
-        startActivity(Intent(this, SearchActivity::class.java))
+        startActivity(Intent(this, HomePageActivity::class.java))
     }
 }
