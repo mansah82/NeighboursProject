@@ -8,4 +8,10 @@
     <string name="location_dialog_negative">No Way!</string>
     <string name="location_dialog_permission">ACCESS_COARSE_LOCATION</string>
     <string name="location_motivation">Do you want the permission so we can pin-point your activity</string>
+
+    <string name="login_password">Password</string>
+    <string name="login_username">Username</string>
+    <string name="login_button">Login</string>
+    <string name="login_register_button">not a user? Register here</string>
+
 </resources>
