@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.EditProfileActivity
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.ui.search.SearchActivity
@@ -25,7 +26,7 @@ class HomePageActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.loginButton)
         binding.loginButton.setOnClickListener {
-            val intent = Intent(this, SearchActivity::class.java)
+            val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
 
