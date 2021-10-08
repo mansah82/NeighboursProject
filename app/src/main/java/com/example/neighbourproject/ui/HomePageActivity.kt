@@ -42,7 +42,6 @@ class HomePageActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
-
                         val intent = Intent(this, EditProfileActivity::class.java)
                         startActivity(intent)
 
@@ -56,6 +55,8 @@ class HomePageActivity : AppCompatActivity() {
                 }
 
         }
+
+
 
 
         binding.registerTextview.setOnClickListener {
