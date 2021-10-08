@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.EditProfileActivity
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.ui.search.SearchActivity
@@ -16,6 +17,9 @@ import com.google.firebase.ktx.Firebase
 
 
 class HomePageActivity : AppCompatActivity() {
+    companion object{
+        private const val TAG = "HomePageActivity"
+    }
 
     private lateinit var  binding : ActivityHomePageBinding
 
@@ -26,19 +30,20 @@ class HomePageActivity : AppCompatActivity() {
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val auth = Firebase.auth
-        val TAG = "!!!"
 
         val loginButton = findViewById<Button>(R.id.loginButton)
 
+
         loginButton.setOnClickListener {
-            auth.signInWithEmailAndPassword(binding.usernameEditText.toString(), binding.passwordEditText.toString())
+            Log.d(TAG, "Logging in: ${binding.usernameEditText.text.toString()} - ${binding.passwordEditText.text.toString()}")
+            auth.signInWithEmailAndPassword(binding.usernameEditText.text.toString(), binding.passwordEditText.text.toString())
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
-
-
+                        val intent = Intent(this, EditProfileActivity::class.java)
+                        startActivity(intent)
 
                     } else {
                         // If sign in fails, display a message to the user.
@@ -51,12 +56,8 @@ class HomePageActivity : AppCompatActivity() {
 
         }
 
-        binding.registerTextview.setOnClickListener {
 
-        }
-        binding.usernameEditText.doAfterTextChanged {
 
-        }
 
         binding.registerTextview.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
