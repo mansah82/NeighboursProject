@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NeighbourProject">
         <activity
+
             android:name=".ui.neigbour.NeighbourActivity" />
         <activity
             android:name=".ui.search.SearchActivity"/>
+
         <activity
             android:name=".ui.HomePageActivity"
             android:exported="true">
