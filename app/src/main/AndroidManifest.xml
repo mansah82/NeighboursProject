@@ -3,7 +3,6 @@
     package="com.example.neighbourproject">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <application
         android:name=".NeighbourApplication"
         android:allowBackup="true"
@@ -13,11 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NeighbourProject">
         <activity
-
             android:name=".ui.neigbour.NeighbourActivity" />
         <activity
             android:name=".ui.search.SearchActivity"/>
-
         <activity
             android:name=".ui.HomePageActivity"
             android:exported="true">
