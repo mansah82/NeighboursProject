@@ -1,10 +1,11 @@
-package com.example.neighbourproject
+package com.example.neighbourproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import com.example.neighbourproject.R
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var signUpButton : Button
