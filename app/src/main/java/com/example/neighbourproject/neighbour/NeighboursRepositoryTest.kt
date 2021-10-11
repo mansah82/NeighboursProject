@@ -12,6 +12,7 @@ class NeighboursRepositoryTest() : NeighboursService {
     private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
     override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
+
     private val neighbours = mutableListOf<People>()
     init {
         //TODO Adding some default test data, remove this
@@ -147,9 +148,9 @@ class NeighboursRepositoryTest() : NeighboursService {
         RelationshipStatus.SINGLE
     )
 
-    override suspend fun signedInAsUser(id: String){
-        //userProfileRemote.postValue(myProfile)
-        userProfileRemote.postValue(null)
+    override suspend fun signeIn(id: String){
+        userProfileRemote.postValue(myProfile)
+        //userProfileRemote.postValue(null)
     }
 
     override suspend fun updateUserProfile(profile: People) {
@@ -159,6 +160,10 @@ class NeighboursRepositoryTest() : NeighboursService {
 
     override fun signOut() {
         userProfileRemote.value = null
+    }
+
+    override fun isSignedIn(): Boolean {
+        return userProfileRemote.value != null
     }
 
 }
