@@ -31,6 +31,7 @@ class NeighbourFragment : Fragment() {
     }
 
     private fun calcDistance(lat1: Double?, lon1: Double?, lat2: String?, lon2: String?): String{
+        Log.d(TAG, "Location: ")
         return if(lat1 != null && lon1 != null && lat2 != null && lon2 != null ){
             try {
                 val results = FloatArray(1)
@@ -56,12 +57,14 @@ class NeighbourFragment : Fragment() {
             Log.d(TAG, "Got a neighbour to show in UI")
 
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
+            binding.neighbourAge.text =  it.age.toString()
 
-            var doing = "Age: ".plus(it.age.toString()).plus("\n")
+            var doing = ""
             for(interest in it.interests){
                 //TODO refactor, same function in search recycler view
                 doing += interest.name.plus(" in ")
                 if(interest.location != null) {
+                    Log.d(TAG, "Location is not null")
                     doing += interest.location.area.plus(" ")
                     doing += calcDistance(
                         model.getLocation()?.latitude,
