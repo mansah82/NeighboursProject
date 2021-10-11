@@ -14,7 +14,7 @@ class NeighboursRepository() : NeighboursService {
         private const val PERSON_COLLECTION = "neighbours"
     }
 
-    private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
+    private val userProfileRemote: MutableLiveData<People?> = MutableLiveData<People?>(null)
 
     override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
@@ -23,8 +23,6 @@ class NeighboursRepository() : NeighboursService {
     private var signedInUserUid = ""
 
     private val db = Firebase.firestore
-
-
 
     override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People> {
         val searchResult = mutableListOf<People>()
@@ -55,15 +53,14 @@ class NeighboursRepository() : NeighboursService {
         return null
     }
 
-    private fun startListeningForNeighbours(){
+    private fun startListeningForNeighbours() {
         val itemsRef = db.collection(PERSON_COLLECTION)
         itemsRef.addSnapshotListener { snapshot, e ->
-            Log.d(TAG, "onCreate: database changed!")
             if (snapshot != null) {
                 neighbours.clear()
-                for( document in snapshot.documents) {
+                for (document in snapshot.documents) {
                     val item = document.toObject(People::class.java)
-                    if ( item != null) {
+                    if (item != null) {
                         neighbours.add(item)
                     }
                 }
@@ -71,7 +68,7 @@ class NeighboursRepository() : NeighboursService {
         }
     }
 
-    override suspend fun signedInAsUser(id: String){
+    override suspend fun signeIn(id: String) {
         val docRef = db.collection(PERSON_COLLECTION).document(id)
         docRef.get()
             .addOnSuccessListener { document ->
@@ -95,11 +92,15 @@ class NeighboursRepository() : NeighboursService {
     }
 
     override suspend fun updateUserProfile(profile: People) {
-        if(signedInUserUid != "")
+        if (signedInUserUid != "")
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
     }
 
     override fun signOut() {
         signedInUserUid = ""
+    }
+
+    override fun isSignedIn(): Boolean {
+        return signedInUserUid != ""
     }
 }

@@ -23,7 +23,7 @@ class HomePageViewModel(): ViewModel(), KoinComponent{
     fun setSignedInUser(uid: String){
         signedIn = true
         viewModelScope.launch(Dispatchers.IO) {
-            service.signedInAsUser(uid)
+            service.signeIn(uid)
         }
     }
 
