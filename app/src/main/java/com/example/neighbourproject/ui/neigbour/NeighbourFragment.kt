@@ -1,6 +1,5 @@
 package com.example.neighbourproject.ui.neigbour
 
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
-import com.google.protobuf.DescriptorProtos
-import java.lang.Exception
 
 class NeighbourFragment : Fragment() {
     companion object {
@@ -30,26 +27,6 @@ class NeighbourFragment : Fragment() {
         return binding.root
     }
 
-    private fun calcDistance(lat1: Double?, lon1: Double?, lat2: String?, lon2: String?): String{
-        Log.d(TAG, "Location: ")
-        return if(lat1 != null && lon1 != null && lat2 != null && lon2 != null ){
-            try {
-                val results = FloatArray(1)
-                Location.distanceBetween(
-                    lat1, lon1,
-                    lat2.toDouble(), lon2.toDouble(),
-                    results)
-                "- ".plus("${results[0]} meters")
-            }catch (e : NumberFormatException){
-                Log.d(TAG, "Failed on getting distance -  NumberFormatException")
-                "- No dist\n"
-            }
-
-        }else {
-            "- No dist\n"
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,39 +35,27 @@ class NeighbourFragment : Fragment() {
 
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
             binding.neighbourAge.text =  it.age.toString()
+            binding.neighbourGender.text = it.gender.text
+            binding.neighbourStatus.text = it.relationshipStatus.text
 
             var doing = ""
             for(interest in it.interests){
-                //TODO refactor, same function in search recycler view
+                //TODO refactor, put into a matrix or something
                 doing += interest.name.plus(" in ")
-                if(interest.location != null) {
-                    Log.d(TAG, "Location is not null")
-                    doing += interest.location.area.plus(" ")
-                    doing += calcDistance(
-                        model.getLocation()?.latitude,
-                        model.getLocation()?.longitude,
-                        interest.location?.lat,
-                        interest.location?.lon
-                    )
-
+                val location = interest.location
+                if(location != null) {
+                    doing += location.area.plus(" ")
+                    val position = location.position
+                    doing += if(position != null) {
+                        model.calculateDistanceToMe(position).plus("\n")
+                    }else{
+                        "\n"
+                    }
                 }else {
                     doing += "-\n"
                 }
-
-
             }
             binding.neighbourInterests.setText(doing)
-
-
-
-
-            /*if(it. .area.location == null) {
-                binding.neighbourDistance.text = it.area.area
-            }else{
-                model.getLocation()?.let { location ->
-                    binding.neighbourDistance.text = location.distanceTo(it.area.location).toString()
-                }
-            }*/
         }
     }
 }

@@ -18,13 +18,14 @@ class EditViewModel: ViewModel(), KoinComponent {
 
     //TODO Remove when edit profile done
     private val myProfile = People(
-        "Kalle 3",
+        "Kalle",
         "Kallesson",
         Gender.MALE,
         58,
         mutableListOf(
-            Interest("Name", AreaOfInterest("Location")),
-            Interest("Name", AreaOfInterest("Location", "0", "0"))
+            Interest("Name", Area("Location")),
+            Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
+            Interest("Name", Area("Location", Position(59.0,17.0)))
         ),
         "url - to image",
         RelationshipStatus.SINGLE

@@ -26,7 +26,7 @@ class HomePageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomePageBinding
 
-    //private val auth = Firebase.auth
+    private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +51,12 @@ class HomePageActivity : AppCompatActivity() {
 
             model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
-            model.setSignedInUser("asdfasdf")
-            /*
+            //model.setSignedInUser("asdfasdf")
+
             auth.signInWithEmailAndPassword(
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()
             )
-
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -66,13 +65,10 @@ class HomePageActivity : AppCompatActivity() {
                             model.setSignedInUser(it.uid)
                         }
                     } else {
-
                         binding.usernameEditText.error = "Email is incorrect"
                         binding.passwordEditText.error = "Password is incorrect"
-
-
                     }
-                }*/
+                }
         }
 
         binding.usernameEditText.doAfterTextChanged {

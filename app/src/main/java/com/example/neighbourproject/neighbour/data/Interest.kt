@@ -1,5 +1,5 @@
 package com.example.neighbourproject.neighbour.data
 
 data class Interest(
-    val name: String = "",
-    val location: AreaOfInterest? = null)
+    var name: String = "",
+    val location: Area? = null)

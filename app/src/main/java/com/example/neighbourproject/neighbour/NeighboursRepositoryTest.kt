@@ -1,5 +1,6 @@
 package com.example.neighbourproject.neighbour
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.neighbourproject.neighbour.data.*
@@ -22,8 +23,8 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.MALE,
                 34,
                 mutableListOf<Interest>(
-                    Interest("Food", AreaOfInterest("Flen")),
-                    Interest("Cars", AreaOfInterest("Flen"))
+                    Interest("Food", Area("Flen")),
+                    Interest("Cars")
                 )
             )
         )
@@ -34,9 +35,10 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.FEMALE,
                 35,
                 mutableListOf<Interest>(
-                    Interest("Food", AreaOfInterest("Stockholm", "10", "31")),
-                    Interest("Movies", AreaOfInterest("Stockholm"))
-                )
+                    Interest("Food", Area("Stockholm", Position(59.0,12.0))),
+                    Interest("Movies", Area("Stockholm", null))
+                ),
+                "",RelationshipStatus.SINGLE
             )
         )
         neighbours.add(
@@ -46,8 +48,8 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.ENBY,
                 36,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Täby", "59", "17")),
-                    Interest("Movies", AreaOfInterest())
+                    Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
+                    Interest("Movies")
                 )
             )
         )
@@ -58,8 +60,8 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.NONE,
                 37,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Movies", AreaOfInterest("Ludvika"))
+                    Interest("Dance", Area("Ludvika")),
+                    Interest("Movies", Area("Ludvika"))
                 ),
             )
         )
@@ -70,8 +72,8 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.FEMALE,
                 38,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Food", AreaOfInterest("Ludvika"))
+                    Interest("Dance", Area("Ludvika")),
+                    Interest("Food", Area("Ludvika"))
                 )
             )
         )
@@ -82,10 +84,10 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.MALE,
                 39,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Food", AreaOfInterest("Ludvika")),
-                    Interest("Go-cart", AreaOfInterest("Ludvika")),
-                    Interest("Ninjas", AreaOfInterest("Ludvika"))
+                    Interest("Dance", Area("Ludvika")),
+                    Interest("Food", Area("Ludvika")),
+                    Interest("Go-cart", Area("Ludvika")),
+                    Interest("Ninjas", Area("Ludvika"))
                 )
             )
         )
@@ -96,10 +98,10 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.FEMALE,
                 40,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Avesta")),
-                    Interest("Food", AreaOfInterest("Avesta")),
-                    Interest("Go-cart", AreaOfInterest("Avesta")),
-                    Interest("Ninjas", AreaOfInterest("Avesta"))
+                    Interest("Dance", Area("Avesta")),
+                    Interest("Food", Area("Avesta")),
+                    Interest("Go-cart", Area("Avesta")),
+                    Interest("Ninjas", Area("Avesta"))
                 )
             )
         )
@@ -140,8 +142,7 @@ class NeighboursRepositoryTest() : NeighboursService {
         Gender.MALE,
         58,
         mutableListOf(
-            Interest("Name", AreaOfInterest("Location")),
-            Interest("Name", AreaOfInterest("Location", "0", "0"))
+            Interest("Name", Area("Location"))
         ),
         "url - to image",
         RelationshipStatus.SINGLE
@@ -165,4 +166,21 @@ class NeighboursRepositoryTest() : NeighboursService {
         return userProfileRemote.value != null
     }
 
+    private var myPosition : Position? = null
+
+    override fun setLastPosition(position: Position){
+        myPosition = position
+    }
+    override fun getLastPosition(): Position?{
+        return myPosition
+    }
+
+    override fun calculateDistanceToMyPosition(position: Position): Double{
+        myPosition?.let {
+            val results = FloatArray(1)
+            Location.distanceBetween(
+                it.latitude, it.longitude, position.latitude, position.longitude, results)
+            return results[0].toDouble()
+        }?: return -1.0
+    }
 }

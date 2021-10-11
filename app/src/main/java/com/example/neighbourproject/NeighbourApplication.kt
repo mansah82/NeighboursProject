@@ -24,8 +24,8 @@ class NeighbourApplication: Application() {
         startKoin{
             androidLogger()
             androidContext(this@NeighbourApplication)
-            //modules((appModule)) //For a real firebase
-            modules((appModuleTest)) //For test purpose
+            modules((appModule)) //For a real firebase
+            //modules((appModuleTest)) //For test purpose
         }
     }
 }
