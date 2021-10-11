@@ -16,7 +16,7 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     private var people : People? = null
 
-    fun setLocation(location : Location){
+    fun setLocation(location : Location?){
         myLocation = location
     }
 

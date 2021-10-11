@@ -84,7 +84,6 @@ companion object{
             Log.d(TAG, "Permission already granted")
             getLocation()
         } else {
-            //TODO requires
             if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 Log.d(TAG, "Ask for permission and explain why")
                 showPermissionRequestExplanation(
@@ -102,9 +101,19 @@ companion object{
     private fun getLocation() {
         //Using last since we do not need a super accuracy
         fusedLocationClient.lastLocation
-            .addOnSuccessListener {
-                model.setLocation(it)
-                Log.d(TAG, "Fetched my last location lat: ${it.latitude} lon: ${it.longitude}")
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    if (task.result != null) {
+                        model.setLocation(task.result)
+                        if (task.result.latitude != null && task.result.longitude != null)
+                            Log.d(
+                                TAG,
+                                "Fetched my last location lat: ${task.result.latitude} lon: ${task.result.longitude}"
+                            )
+                    } else {
+                        Log.d(TAG, "Fetched my last location - Failed on completed")
+                    }
+                }
             }
             .addOnFailureListener {
                 Log.d(TAG, "Fetched my last location - Failed")

@@ -46,8 +46,8 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.ENBY,
                 36,
                 mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Täby")),
-                    Interest("Movies", AreaOfInterest("Stockholm"))
+                    Interest("Dance", AreaOfInterest("Täby", "59", "17")),
+                    Interest("Movies", AreaOfInterest())
                 )
             )
         )

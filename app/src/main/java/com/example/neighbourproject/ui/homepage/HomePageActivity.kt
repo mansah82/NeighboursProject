@@ -26,7 +26,7 @@ class HomePageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomePageBinding
 
-    private val auth = Firebase.auth
+    //private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

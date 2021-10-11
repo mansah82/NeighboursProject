@@ -14,7 +14,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
 
