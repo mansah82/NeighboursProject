@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.example.neighbourproject.EditProfileActivity
 import com.example.neighbourproject.R
@@ -54,6 +55,7 @@ class HomePageActivity : AppCompatActivity() {
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()
             )
+
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -62,14 +64,20 @@ class HomePageActivity : AppCompatActivity() {
                             model.setSignedInUser(it.uid)
                         }
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        binding.usernameEditText.error = "Email is incorrect"
+                        binding.passwordEditText.error = "Password is incorrect"
+
+
                     }
                 }
+        }
+
+        binding.usernameEditText.doAfterTextChanged {
+            checkIfCorrectEmailFormat()
+        }
+        binding.passwordEditText.doAfterTextChanged {
+            checkIfCorrectPasswordFormat()
         }
 
         binding.registerTextview.setOnClickListener {
@@ -78,19 +86,20 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
-    fun emailCheckCorrect() { //Work in progress
-        val typo = binding.usernameEditText.text.toString()
 
-        if (typo == "hej") {
-            val mail = binding.usernameEditText.text.toString();
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
-                binding.usernameEditText.error = "Please enter a valid username";
-            } else {
-                binding.usernameEditText.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0,
-                    R.drawable.ic_launcher_background, 0
-                )
-            }
+    fun checkIfCorrectEmailFormat(){
+        if(binding.usernameEditText.text.toString().contains("@", true) &&
+            binding.usernameEditText.text.toString().contains(".", true)){
+
+        } else{
+            binding.usernameEditText.error = "Please enter a valid email"
+
         }
     }
+    fun checkIfCorrectPasswordFormat() {
+        if (binding.passwordEditText.text.length < 5) {
+            binding.passwordEditText.error = "Password needs to contain 6 letters or more"
+        }
+    }
+
 }
