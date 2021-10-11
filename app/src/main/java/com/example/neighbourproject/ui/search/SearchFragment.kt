@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import com.example.neighbourproject.EditProfileActivity
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.ui.neigbour.ExtrasKey
@@ -81,6 +82,10 @@ class SearchFragment : Fragment(), ClickListener {
         binding.freeSearchText.doAfterTextChanged {
             doSearch()
         }
+
+        binding.buttonEditProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
     }
 
     private fun selectedGenders(): List<Gender>{
@@ -106,7 +111,7 @@ class SearchFragment : Fragment(), ClickListener {
         neighbour?.let{
 
             val intent = Intent(requireContext(), NeighbourActivity::class.java).also {
-                it.putExtra(ExtrasKey.KEY_USER_ID, neighbour.id)
+               it.putExtra(ExtrasKey.KEY_USER_ID, neighbour.id)
             }
             startActivity(intent)
         }

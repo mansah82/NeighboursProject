@@ -14,14 +14,18 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.ui.SignUpActivity
+import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 open class EditProfileActivity : AppCompatActivity() {
+
+    private val model : EditViewModel by viewModels()
 
     lateinit var checkBox: ImageView
     lateinit var checkBox2: ImageView
@@ -56,6 +60,8 @@ open class EditProfileActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.button)
 
         saveButton.setOnClickListener {
+            //TODO update profile here
+            model.editUserProfile(null)
             startActivity(Intent(this, SearchActivity::class.java))
         }
 
