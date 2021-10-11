@@ -1,7 +1,8 @@
 package com.example.neighbourproject.neighbour.data
 
-enum class Status(text: String) {
+enum class RelationshipStatus(text: String) {
     SINGLE("Single"),
     MARRIED("Married"),
-    DIVORCE("Divorce")
+    DIVORCE("Divorce"),
+    NONE("None")
 }

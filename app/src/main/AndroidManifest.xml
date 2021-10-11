@@ -20,7 +20,7 @@
         <activity
             android:name=".ui.SignUpActivity"/>
         <activity
-            android:name=".ui.HomePageActivity"
+            android:name=".ui.homepage.HomePageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
