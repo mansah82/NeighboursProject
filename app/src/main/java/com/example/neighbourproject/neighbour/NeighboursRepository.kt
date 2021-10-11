@@ -1,113 +1,33 @@
 package com.example.neighbourproject.neighbour
 
-import com.example.neighbourproject.neighbour.data.AreaOfInterest
-import com.example.neighbourproject.neighbour.data.Gender
-import com.example.neighbourproject.neighbour.data.Interest
-import com.example.neighbourproject.neighbour.data.Neighbour
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.neighbourproject.neighbour.data.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-//TODO this is a Firebase data mock
-class NeighboursRepository : NeighboursService {
+class NeighboursRepository() : NeighboursService {
     companion object {
         private const val TAG = "NeighboursRepository"
+
+        private const val PERSON_COLLECTION = "neighbours"
     }
 
-    private val neighbours = mutableListOf<Neighbour>()
+    private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
 
-    init {
-        //TODO Adding some default test data, remove this
-        neighbours.add(
-            Neighbour(
-                "Adam",
-                "Adamsson",
-                Gender.MALE,
-                34,
-                mutableListOf<Interest>(
-                    Interest("Food", AreaOfInterest("Flen")),
-                    Interest("Cars", AreaOfInterest("Flen"))
-                )
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Beata",
-                "Beatasson",
-                Gender.FEMALE,
-                35,
-                mutableListOf<Interest>(
-                    Interest("Food", AreaOfInterest("Stockholm")),
-                    Interest("Movies", AreaOfInterest("Stockholm"))
-                )
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Cea",
-                "Ceasson",
-                Gender.ENBY,
-                36,
-                mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Täby")),
-                    Interest("Movies", AreaOfInterest("Stockholm"))
-                )
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Daniel",
-                "Danielsson",
-                Gender.NONE,
-                37,
-                mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Movies", AreaOfInterest("Ludvika"))
-                ),
-                area = AreaOfInterest("Ludvika", null)
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Eva",
-                "Evasson",
-                Gender.FEMALE,
-                38,
-                mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Food", AreaOfInterest("Ludvika"))
-                )
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Frans",
-                "Fransson",
-                Gender.MALE,
-                39,
-                mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Ludvika")),
-                    Interest("Food", AreaOfInterest("Ludvika")),
-                    Interest("Go-cart", AreaOfInterest("Ludvika")),
-                    Interest("Ninjas", AreaOfInterest("Ludvika"))
-                )
-            )
-        )
-        neighbours.add(
-            Neighbour(
-                "Gunhild",
-                "Gunhildsson",
-                Gender.FEMALE,
-                40,
-                mutableListOf<Interest>(
-                    Interest("Dance", AreaOfInterest("Avesta")),
-                    Interest("Food", AreaOfInterest("Avesta")),
-                    Interest("Go-cart", AreaOfInterest("Avesta")),
-                    Interest("Ninjas", AreaOfInterest("Avesta"))
-                )
-            )
-        )
-    }
+    override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
-    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<Neighbour> {
-        val searchResult = mutableListOf<Neighbour>()
+    private val neighbours = mutableListOf<People>()
+
+    private var signedInUserUid = ""
+
+    private val db = Firebase.firestore
+
+
+
+    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People> {
+        val searchResult = mutableListOf<People>()
         for (neighbour in neighbours) {
             if (neighbour.age in minAge..maxAge) {
                 searchResult.add(neighbour)
@@ -116,8 +36,8 @@ class NeighboursRepository : NeighboursService {
         return searchResult
     }
 
-    override fun getNeighboursByGender(gender: Gender): List<Neighbour> {
-        val searchResult = mutableListOf<Neighbour>()
+    override fun getNeighboursByGender(gender: Gender): List<People> {
+        val searchResult = mutableListOf<People>()
         for (neighbour in neighbours) {
             if (neighbour.gender == gender) {
                 searchResult.add(neighbour)
@@ -126,7 +46,7 @@ class NeighboursRepository : NeighboursService {
         return searchResult
     }
 
-    override fun getNeighbourById(id: String): Neighbour? {
+    override fun getNeighbourById(id: String): People? {
         for (neighbour in neighbours) {
             if (neighbour.id == id) {
                 return neighbour
@@ -135,4 +55,51 @@ class NeighboursRepository : NeighboursService {
         return null
     }
 
+    private fun startListeningForNeighbours(){
+        val itemsRef = db.collection(PERSON_COLLECTION)
+        itemsRef.addSnapshotListener { snapshot, e ->
+            Log.d(TAG, "onCreate: database changed!")
+            if (snapshot != null) {
+                neighbours.clear()
+                for( document in snapshot.documents) {
+                    val item = document.toObject(People::class.java)
+                    if ( item != null) {
+                        neighbours.add(item)
+                    }
+                }
+            }
+        }
+    }
+
+    override suspend fun signedInAsUser(id: String){
+        val docRef = db.collection(PERSON_COLLECTION).document(id)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                signedInUserUid = id
+
+                startListeningForNeighbours()
+
+                if (document.data != null) {
+                    Log.d(TAG, "Data for profile: ${document.data}")
+                    val person = document.toObject(People::class.java)
+                    userProfileRemote.postValue(person)
+
+                } else {
+                    Log.d(TAG, "No such document")
+                    userProfileRemote.postValue(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+    }
+
+    override suspend fun updateUserProfile(profile: People) {
+        if(signedInUserUid != "")
+            db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
+    }
+
+    override fun signOut() {
+        signedInUserUid = ""
+    }
 }

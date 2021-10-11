@@ -36,27 +36,21 @@ class NeighbourFragment : Fragment() {
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
 
             var doing = "Age: ".plus(it.age.toString()).plus("\n")
-            for(interest in it.getInterests()){
+            for(interest in it.interests){
                 //TODO refactor, same function in search recycler view
                 doing += interest.name.plus(" in ")
-                    .plus(interest.location.area).plus("\n")
+                    .plus(interest.location?.area).plus("\n")
             }
             binding.neighbourInterests.setText(doing)
 
+            /*
             if(it.area.location == null) {
                 binding.neighbourDistance.text = it.area.area
             }else{
                 model.getLocation()?.let { location ->
                     binding.neighbourDistance.text = location.distanceTo(it.area.location).toString()
                 }
-            }
+            }*/
         }
-
-
-
     }
-
-
-
-
 }

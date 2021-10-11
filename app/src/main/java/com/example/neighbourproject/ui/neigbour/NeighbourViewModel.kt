@@ -4,7 +4,7 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.neighbourproject.neighbour.NeighboursService
-import com.example.neighbourproject.neighbour.data.Neighbour
+import com.example.neighbourproject.neighbour.data.People
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -14,7 +14,7 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     private var myLocation : Location? = null
 
-    private var neighbour : Neighbour? = null
+    private var people : People? = null
 
     fun setLocation(location : Location){
         myLocation = location
@@ -25,12 +25,12 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
     }
 
     fun selectedNeighbour(id : String): Boolean{
-        neighbour = service.getNeighbourById(id)
-        Log.d("NeighbourViewModel", "Setting neighbour: $neighbour")
-        return neighbour != null
+        people = service.getNeighbourById(id)
+        Log.d("NeighbourViewModel", "Setting neighbour: $people")
+        return people != null
     }
 
-    fun getNeighbour(): Neighbour?{
-        return neighbour
+    fun getNeighbour(): People?{
+        return people
     }
 }

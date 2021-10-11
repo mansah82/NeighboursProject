@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
-import com.example.neighbourproject.neighbour.data.Neighbour
+import com.example.neighbourproject.neighbour.data.People
 
 class SearchRecyclerAdapter(
-    private val neighboursSearch: LiveData<List<Neighbour>>,
+    private val neighboursSearch: LiveData<List<People>>,
     lifecycleOwner: LifecycleOwner,
     private val clickListener: ClickListener) :
     RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder>() {
@@ -21,7 +21,7 @@ class SearchRecyclerAdapter(
         private const val TAG = "SearchRecyclerAdapter"
     }
 
-    private val searchResultObserver = Observer<List<Neighbour>> {
+    private val searchResultObserver = Observer<List<People>> {
         it?.let {
             //TODO A hard and not efficient way to tell recyclerview something have changed
             notifyDataSetChanged()
@@ -34,13 +34,15 @@ class SearchRecyclerAdapter(
     class ViewHolder(view: View, private val listener: ClickListener) : RecyclerView.ViewHolder(view) {
         val neighbourNameTextView: TextView = view.findViewById(R.id.neighbour_name)
         val neighbourInfoTextView: TextView = view.findViewById(R.id.neighbour_info)
-        private lateinit var neighbour: Neighbour
+        private lateinit var people: People
 
-        fun bind(newNeighbour: Neighbour){
-            neighbour = newNeighbour
+        fun bind(newPeople: People){
+            people = newPeople
 
             itemView.setOnClickListener {
-                listener.onClick(neighbour.id)
+                people.id?.let {
+                    listener.onClick(it)
+                }
             }
         }
     }
@@ -51,16 +53,16 @@ class SearchRecyclerAdapter(
         return ViewHolder(view, clickListener)
     }
 
-    private fun infoString(neighbour: Neighbour): String {
-        val info = "Age: ".plus(neighbour.age.toString()).plus("\n")
-            .plus("Gender: ").plus(neighbour.gender.text).plus("\n")
+    private fun infoString(people: People): String {
+        val info = "Age: ".plus(people.age.toString()).plus("\n")
+            .plus("Gender: ").plus(people.gender?.text).plus("\n")
 
         var doing = ""
-        for(interest in neighbour.getInterests()){
+       /* for(interest in people.getInterests()){
             //TODO OMG, please don't laugh
             doing += interest.name.plus(" in ")
                 .plus(interest.location).plus("\n")
-        }
+        }*/
         return info + doing
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -71,6 +73,5 @@ class SearchRecyclerAdapter(
             viewHolder.bind(it[position])
         }
     }
-
     override fun getItemCount() = neighboursSearch.value?.let { it.size }?: 0
 }
