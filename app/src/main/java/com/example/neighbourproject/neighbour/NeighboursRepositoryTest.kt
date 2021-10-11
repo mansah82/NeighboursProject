@@ -15,7 +15,6 @@ class NeighboursRepositoryTest() : NeighboursService {
 
     private val neighbours = mutableListOf<People>()
     init {
-        //TODO Adding some default test data, remove this
         neighbours.add(
             People(
                 "Adam",
@@ -35,7 +34,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 Gender.FEMALE,
                 35,
                 mutableListOf<Interest>(
-                    Interest("Food", AreaOfInterest("Stockholm")),
+                    Interest("Food", AreaOfInterest("Stockholm", "10", "31")),
                     Interest("Movies", AreaOfInterest("Stockholm"))
                 )
             )

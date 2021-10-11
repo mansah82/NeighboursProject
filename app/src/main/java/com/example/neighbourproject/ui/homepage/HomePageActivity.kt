@@ -34,7 +34,7 @@ class HomePageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userProfileObserver = Observer<People?> {
-            if (model.signedIn) {
+            if (model.isSignedIn()) {
                 if (it == null) {
                     //Need to edit
                     Log.d(TAG, "userProfileObserver - need profile")
@@ -51,6 +51,8 @@ class HomePageActivity : AppCompatActivity() {
 
             model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
+            model.setSignedInUser("asdfasdf")
+            /*
             auth.signInWithEmailAndPassword(
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()
@@ -70,7 +72,7 @@ class HomePageActivity : AppCompatActivity() {
 
 
                     }
-                }
+                }*/
         }
 
         binding.usernameEditText.doAfterTextChanged {

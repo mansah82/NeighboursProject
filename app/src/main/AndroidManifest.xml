@@ -12,13 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NeighbourProject">
         <activity
-            android:name=".ui.neigbour.NeighbourActivity" />
+            android:name=".ui.neigbour.NeighbourActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.search.SearchActivity"/>
         <activity
-            android:name=".EditProfileActivity"/>
+            android:name=".EditProfileActivity"
+            android:launchMode="singleTop"/>
         <activity
-            android:name=".ui.SignUpActivity"/>
+            android:name=".ui.SignUpActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.homepage.HomePageActivity"
             android:exported="true">

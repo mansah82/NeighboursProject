@@ -86,6 +86,8 @@ class SearchFragment : Fragment(), ClickListener {
         binding.buttonEditProfile.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
+
+        doSearch()
     }
 
     private fun selectedGenders(): List<Gender>{

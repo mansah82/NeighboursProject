@@ -58,11 +58,11 @@ class SearchRecyclerAdapter(
             .plus("Gender: ").plus(people.gender?.text).plus("\n")
 
         var doing = ""
-       /* for(interest in people.getInterests()){
+        for(interest in people.interests){
             //TODO OMG, please don't laugh
             doing += interest.name.plus(" in ")
                 .plus(interest.location).plus("\n")
-        }*/
+        }
         return info + doing
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

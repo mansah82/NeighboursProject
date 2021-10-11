@@ -43,8 +43,9 @@ class NeighbourFragment : Fragment() {
             }
             binding.neighbourInterests.setText(doing)
 
-            /*
-            if(it.area.location == null) {
+
+
+            /*if(it. .area.location == null) {
                 binding.neighbourDistance.text = it.area.area
             }else{
                 model.getLocation()?.let { location ->
