@@ -51,8 +51,6 @@ class HomePageActivity : AppCompatActivity() {
 
             model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
-            //model.setSignedInUser("asdfasdf")
-
             auth.signInWithEmailAndPassword(
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()

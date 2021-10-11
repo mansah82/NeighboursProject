@@ -27,7 +27,7 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
     fun calculateDistanceToMe(position: Position): String{
         val dist : Double = service.calculateDistanceToMyPosition(position)/1000
         return if(dist < 0)
-            "No position"
+            "You have no position"
         else
             String.format("%.2f", dist).plus( " km")
     }
