@@ -30,9 +30,7 @@ class HomePageActivity : AppCompatActivity() {
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val auth = Firebase.auth
-
         val loginButton = findViewById<Button>(R.id.loginButton)
-
 
         loginButton.setOnClickListener {
             Log.d(TAG, "Logging in: ${binding.usernameEditText.text.toString()} - ${binding.passwordEditText.text.toString()}")
@@ -46,18 +44,18 @@ class HomePageActivity : AppCompatActivity() {
                         startActivity(intent)
 
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
-
+                        binding.usernameEditText.error = "Email is incorrect"
+                        binding.passwordEditText.error = "Password is incorrect"
                     }
                 }
 
         }
-
-
-
+        binding.usernameEditText.doAfterTextChanged {
+            checkIfCorrectEmailFormat()
+        }
+        binding.passwordEditText.doAfterTextChanged {
+            checkIfCorrectPasswordFormat()
+        }
 
         binding.registerTextview.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
@@ -65,20 +63,18 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
-    fun emailCheckCorrect() { //Work in progress
-        val typo = binding.usernameEditText.text.toString()
+    fun checkIfCorrectEmailFormat(){
+        if(binding.usernameEditText.text.toString().contains("@", true) &&
+            binding.usernameEditText.text.toString().contains(".", true)){
 
-        if (typo == "hej") {
-            val mail = binding.usernameEditText.text.toString();
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
-                binding.usernameEditText.error = "Please enter a valid username";
-            } else {
-
-                binding.usernameEditText.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0,
-                    R.drawable.ic_launcher_background, 0
-                )
-            }
+        } else{
+            binding.usernameEditText.error = "Please enter a valid email"
         }
     }
+    fun checkIfCorrectPasswordFormat() {
+        if (binding.passwordEditText.text.length < 5) {
+            binding.passwordEditText.error = "Password needs to contain 6 letters or more"
+        }
+    }
+
 }
