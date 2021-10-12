@@ -1,11 +1,10 @@
 package com.example.neighbourproject.neighbour
 
-import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.neighbourproject.neighbour.data.*
 
-class NeighboursRepositoryTest() : NeighboursService {
+class NeighboursRepositoryTest: NeighboursService {
     companion object {
         private const val TAG = "NeighboursRepositoryTest"
     }
@@ -22,7 +21,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Adamsson",
                 Gender.MALE,
                 34,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Food", Area("Flen")),
                     Interest("Cars")
                 )
@@ -34,7 +33,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Beatasson",
                 Gender.FEMALE,
                 35,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Food", Area("Stockholm", Position(59.0,12.0))),
                     Interest("Movies", Area("Stockholm", null))
                 ),
@@ -47,7 +46,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Ceasson",
                 Gender.ENBY,
                 36,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
                     Interest("Movies")
                 )
@@ -59,7 +58,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Danielsson",
                 Gender.NONE,
                 37,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Dance", Area("Ludvika")),
                     Interest("Movies", Area("Ludvika"))
                 ),
@@ -71,7 +70,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Evasson",
                 Gender.FEMALE,
                 38,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Dance", Area("Ludvika")),
                     Interest("Food", Area("Ludvika"))
                 )
@@ -83,7 +82,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Fransson",
                 Gender.MALE,
                 39,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Dance", Area("Ludvika")),
                     Interest("Food", Area("Ludvika")),
                     Interest("Go-cart", Area("Ludvika")),
@@ -97,7 +96,7 @@ class NeighboursRepositoryTest() : NeighboursService {
                 "Gunhildsson",
                 Gender.FEMALE,
                 40,
-                mutableListOf<Interest>(
+                mutableListOf(
                     Interest("Dance", Area("Avesta")),
                     Interest("Food", Area("Avesta")),
                     Interest("Go-cart", Area("Avesta")),
@@ -156,31 +155,5 @@ class NeighboursRepositoryTest() : NeighboursService {
     override suspend fun updateUserProfile(profile: People) {
         myProfile = profile
         userProfileRemote.postValue(myProfile)
-    }
-
-    override fun signOut() {
-        userProfileRemote.value = null
-    }
-
-    override fun isSignedIn(): Boolean {
-        return userProfileRemote.value != null
-    }
-
-    private var myPosition : Position? = null
-
-    override fun setLastPosition(position: Position){
-        myPosition = position
-    }
-    override fun getLastPosition(): Position?{
-        return myPosition
-    }
-
-    override fun calculateDistanceToMyPosition(position: Position): Double{
-        myPosition?.let {
-            val results = FloatArray(1)
-            Location.distanceBetween(
-                it.latitude, it.longitude, position.latitude, position.longitude, results)
-            return results[0].toDouble()
-        }?: return -1.0
     }
 }
