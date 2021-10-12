@@ -1,9 +1,12 @@
 package com.example.neighbourproject.ui.homepage
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
@@ -64,7 +67,7 @@ class HomePageActivity : AppCompatActivity() {
             checkIfCorrectPasswordFormat()
         }
 
-        binding.registerTextview.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }

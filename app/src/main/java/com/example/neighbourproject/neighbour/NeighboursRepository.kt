@@ -1,6 +1,5 @@
 package com.example.neighbourproject.neighbour
 
-import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +7,7 @@ import com.example.neighbourproject.neighbour.data.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class NeighboursRepository() : NeighboursService {
+class NeighboursRepository : NeighboursService {
     companion object {
         private const val TAG = "NeighboursRepository"
 

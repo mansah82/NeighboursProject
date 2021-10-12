@@ -17,5 +17,4 @@ interface NeighboursService {
     fun getNeighboursByGender(gender: Gender): List<People>
 
     fun getNeighbourById(id: String): People?
-
 }
