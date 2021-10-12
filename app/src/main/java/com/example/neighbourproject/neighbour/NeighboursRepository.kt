@@ -1,6 +1,5 @@
 package com.example.neighbourproject.neighbour
 
-import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +7,7 @@ import com.example.neighbourproject.neighbour.data.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class NeighboursRepository() : NeighboursService {
+class NeighboursRepository : NeighboursService {
     companion object {
         private const val TAG = "NeighboursRepository"
 
@@ -95,31 +94,5 @@ class NeighboursRepository() : NeighboursService {
     override suspend fun updateUserProfile(profile: People) {
         if (signedInUserUid != "")
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
-    }
-
-    override fun signOut() {
-        signedInUserUid = ""
-    }
-
-    override fun isSignedIn(): Boolean {
-        return signedInUserUid != ""
-    }
-
-    private var myPosition : Position? = null
-
-    override fun setLastPosition(position: Position){
-        myPosition = position
-    }
-    override fun getLastPosition(): Position?{
-        return myPosition
-    }
-
-    override fun calculateDistanceToMyPosition(position: Position): Double{
-        myPosition?.let {
-            val results = FloatArray(1)
-            Location.distanceBetween(
-                it.latitude, it.longitude, position.latitude, position.longitude, results)
-            return results[0].toDouble()
-        }?: return -1.0
     }
 }

@@ -20,7 +20,7 @@
             android:name=".EditProfileActivity"
             android:launchMode="singleTop"/>
         <activity
-            android:name=".ui.SignUpActivity"
+            android:name=".ui.signup.SignUpActivity"
             android:launchMode="singleTop"/>
         <activity
             android:name=".ui.homepage.HomePageActivity"
