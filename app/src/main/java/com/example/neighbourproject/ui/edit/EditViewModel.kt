@@ -3,6 +3,7 @@ package com.example.neighbourproject.ui.edit
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.data.*
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,8 @@ class EditViewModel: ViewModel(), KoinComponent {
     companion object{
         private const val TAG = "EditViewModel"
     }
-    private val service: NeighboursService by inject()
+    private val neighbourService: NeighboursService by inject()
+    private val locationService: LocationService by inject()
 
     //TODO Remove when edit profile done
     private val myProfile = People(
@@ -34,10 +36,10 @@ class EditViewModel: ViewModel(), KoinComponent {
     fun editUserProfile(profile: People?) {
         viewModelScope.launch(Dispatchers.IO) {
             if(profile == null) {
-                service.updateUserProfile(myProfile)
+                neighbourService.updateUserProfile(myProfile)
                 Log.d(TAG, "Writing crap profile to db")
             }else{
-                service.updateUserProfile(profile)
+                neighbourService.updateUserProfile(profile)
                 Log.d(TAG, "Writing profile to db")
             }
         }

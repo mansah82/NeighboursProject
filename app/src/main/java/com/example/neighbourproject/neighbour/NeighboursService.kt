@@ -16,11 +16,6 @@ interface NeighboursService {
 
     suspend fun updateUserProfile(profile : People)
 
-    fun setLastPosition(position: Position)
-    fun getLastPosition(): Position?
-    fun calculateDistanceToMyPosition(position: Position): Double
-
-
     fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People>
 
     fun getNeighboursByGender(gender: Gender): List<People>
