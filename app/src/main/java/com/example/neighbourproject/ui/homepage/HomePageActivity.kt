@@ -4,18 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.example.neighbourproject.EditProfileActivity
-import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
-import com.example.neighbourproject.ui.SignUpActivity
+import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.example.neighbourproject.ui.search.SearchActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.neighbourproject.user.LoginStatus
 
 class HomePageActivity : AppCompatActivity() {
     companion object {
@@ -26,12 +23,20 @@ class HomePageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomePageBinding
 
-    private val auth = Firebase.auth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val userLoginObserver = Observer<LoginStatus>{
+            if(it.success != null){
+                model.setSignedInUser(it.success)
+            }else{
+                binding.usernameEditText.error = it.failed
+                binding.passwordEditText.error = it.failed
+            }
+        }
+        model.getUserLoginUpdate().observe(this@HomePageActivity, userLoginObserver)
 
         val userProfileObserver = Observer<People?> {
             if (model.isSignedIn()) {
@@ -46,27 +51,10 @@ class HomePageActivity : AppCompatActivity() {
                 }
             }
         }
+        model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
         binding.loginButton.setOnClickListener {
-
-            model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
-
-            auth.signInWithEmailAndPassword(
-                binding.usernameEditText.text.toString(),
-                binding.passwordEditText.text.toString()
-            )
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success")
-                        auth.currentUser?.let {
-                            model.setSignedInUser(it.uid)
-                        }
-                    } else {
-                        binding.usernameEditText.error = "Email is incorrect"
-                        binding.passwordEditText.error = "Password is incorrect"
-                    }
-                }
+            model.signInUser(binding.usernameEditText.text.toString(), binding.passwordEditText.text.toString())
         }
 
         binding.usernameEditText.doAfterTextChanged {
@@ -82,8 +70,7 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
-
-    fun checkIfCorrectEmailFormat(){
+    private fun checkIfCorrectEmailFormat(){
         if(binding.usernameEditText.text.toString().contains("@", true) &&
             binding.usernameEditText.text.toString().contains(".", true)){
 
@@ -92,10 +79,9 @@ class HomePageActivity : AppCompatActivity() {
 
         }
     }
-    fun checkIfCorrectPasswordFormat() {
+    private fun checkIfCorrectPasswordFormat() {
         if (binding.passwordEditText.text.length < 5) {
             binding.passwordEditText.error = "Password needs to contain 6 letters or more"
         }
     }
-
 }

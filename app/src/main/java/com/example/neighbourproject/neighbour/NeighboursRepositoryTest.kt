@@ -157,12 +157,4 @@ class NeighboursRepositoryTest() : NeighboursService {
         myProfile = profile
         userProfileRemote.postValue(myProfile)
     }
-
-    override fun signOut() {
-        userProfileRemote.value = null
-    }
-
-    override fun isSignedIn(): Boolean {
-        return userProfileRemote.value != null
-    }
 }

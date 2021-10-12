@@ -2,26 +2,16 @@ package com.example.neighbourproject
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.InputFilter
-import android.text.Spanned
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
-import com.example.neighbourproject.ui.SignUpActivity
 import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 open class EditProfileActivity : AppCompatActivity() {
 

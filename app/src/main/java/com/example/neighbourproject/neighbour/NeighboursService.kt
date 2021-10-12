@@ -8,11 +8,7 @@ import com.example.neighbourproject.neighbour.data.Position
 interface NeighboursService {
     val userProfileUpdate : LiveData<People?>
 
-    fun isSignedIn(): Boolean
-
     suspend fun signeIn(id : String)
-
-    fun signOut()
 
     suspend fun updateUserProfile(profile : People)
 

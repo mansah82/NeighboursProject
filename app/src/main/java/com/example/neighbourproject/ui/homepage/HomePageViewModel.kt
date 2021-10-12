@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.data.People
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.neighbourproject.user.LoginStatus
+import com.example.neighbourproject.user.UserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -14,23 +14,34 @@ import org.koin.core.component.inject
 
 class HomePageViewModel(): ViewModel(), KoinComponent{
 
-    private val service: NeighboursService by inject()
+    private val neighboursService: NeighboursService by inject()
+    private val userService: UserService by inject()
 
     fun getUserProfileUpdate(): LiveData<People?>{
-        return service.userProfileUpdate
+        return neighboursService.userProfileUpdate
+    }
+    fun getUserLoginUpdate(): LiveData<LoginStatus>{
+        return userService.loginStatus
     }
 
     fun isSignedIn(): Boolean{
-        return service.isSignedIn()
+        return userService.isLoggedIn()
     }
 
     fun setSignedInUser(uid: String){
         viewModelScope.launch(Dispatchers.IO) {
-            service.signeIn(uid)
+            neighboursService.signeIn(uid)
+        }
+    }
+    fun signInUser(username: String, password: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            userService.loginUser(username, password)
         }
     }
 
     fun signOut(){
-
+        viewModelScope.launch(Dispatchers.IO) {
+            userService.logoutUser()
+        }
     }
 }

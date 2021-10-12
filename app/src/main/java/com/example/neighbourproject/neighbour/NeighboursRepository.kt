@@ -96,12 +96,4 @@ class NeighboursRepository() : NeighboursService {
         if (signedInUserUid != "")
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
     }
-
-    override fun signOut() {
-        signedInUserUid = ""
-    }
-
-    override fun isSignedIn(): Boolean {
-        return signedInUserUid != ""
-    }
 }
