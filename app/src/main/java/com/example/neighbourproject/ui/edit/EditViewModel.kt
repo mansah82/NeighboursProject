@@ -33,6 +33,10 @@ class EditViewModel: ViewModel(), KoinComponent {
         RelationshipStatus.SINGLE
     )
 
+    fun getUserProfile(): People?{
+        return neighbourService.userProfileUpdate.value
+    }
+
     fun editUserProfile(profile: People?) {
         viewModelScope.launch(Dispatchers.IO) {
             if(profile == null) {
