@@ -8,7 +8,7 @@ class PeopleTest : TestCase() {
     fun testAddInterest() {
         val neighbour = People("Kalle", "Kallesson", Gender.MALE, 58)
         assertEquals(0, neighbour.interests.size)
-        neighbour.addInterest(Interest("Name", AreaOfInterest("Location")))
+        neighbour.addInterest(Interest("Name", Area("Location")))
         assertEquals(1, neighbour.interests.size)
     }
 
@@ -19,7 +19,7 @@ class PeopleTest : TestCase() {
             "Kallesson",
             Gender.MALE,
             58,
-            mutableListOf(Interest("Name", AreaOfInterest("Location")))
+            mutableListOf(Interest("Name", Area("Location")))
         )
 
         assertEquals(1, neighbour.interests.size)
@@ -35,8 +35,8 @@ class PeopleTest : TestCase() {
             Gender.MALE,
             58,
             mutableListOf(
-                Interest("Name", AreaOfInterest("Location")),
-                Interest("Name", AreaOfInterest("Location"))
+                Interest("Name", Area("Location")),
+                Interest("Name", Area("Location"))
             )
         )
 

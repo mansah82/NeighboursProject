@@ -1,5 +1,7 @@
 package com.example.neighbourproject.ui.neigbour
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,8 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
+import com.example.neighbourproject.neighbour.data.Area
+import com.example.neighbourproject.ui.search.ClickListener
+import com.example.neighbourproject.ui.search.SearchRecyclerAdapter
 
-class NeighbourFragment : Fragment() {
+class NeighbourFragment : Fragment(), InterestClickListener {
     companion object {
         private const val TAG = "NeighbourFragment"
     }
@@ -24,6 +29,16 @@ class NeighbourFragment : Fragment() {
     ): View {
         binding = NeighbourFragmentBinding.inflate(inflater)
 
+        model.getNeighbour()?.let {
+
+            val interestAdapter = InterestRecyclerAdapter(
+                it.interests,
+                this as InterestClickListener,
+                model
+            )
+
+            binding.interestList.adapter = interestAdapter
+        }
         return binding.root
     }
 
@@ -31,26 +46,36 @@ class NeighbourFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         model.getNeighbour()?.let {
-            Log.d(TAG, "Got a neighbour to show in UI")
-
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
-
-            var doing = "Age: ".plus(it.age.toString()).plus("\n")
-            for(interest in it.interests){
-                //TODO refactor, same function in search recycler view
-                doing += interest.name.plus(" in ")
-                    .plus(interest.location?.area).plus("\n")
-            }
-            binding.neighbourInterests.setText(doing)
-
-            /*
-            if(it.area.location == null) {
-                binding.neighbourDistance.text = it.area.area
-            }else{
-                model.getLocation()?.let { location ->
-                    binding.neighbourDistance.text = location.distanceTo(it.area.location).toString()
-                }
-            }*/
+            binding.neighbourAge.text = it.age.toString()
+            binding.neighbourGender.text = it.gender.text
+            binding.neighbourStatus.text = it.relationshipStatus.text
         }
+    }
+
+    override fun onClick(area: Area) {
+        val position = area.position
+        if(position != null){
+            val gmmIntentUri =
+                Uri.parse("geo:${position.latitude},${position.longitude}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            mapIntent.resolveActivity(requireActivity().packageManager)?.let {
+                startActivity(mapIntent)
+                Log.d(TAG, "Start google maps with coordinates")
+
+            }
+        }else{
+            val gmmIntentUri =
+                Uri.parse("geo:0,0?q=${area.area}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            mapIntent.resolveActivity(requireActivity().packageManager)?.let {
+                startActivity(mapIntent)
+                Log.d(TAG, "Start google maps with area")
+            }
+        }
+
+
     }
 }

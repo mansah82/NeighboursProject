@@ -34,7 +34,7 @@ class HomePageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userProfileObserver = Observer<People?> {
-            if (model.signedIn) {
+            if (model.isSignedIn()) {
                 if (it == null) {
                     //Need to edit
                     Log.d(TAG, "userProfileObserver - need profile")
@@ -55,7 +55,6 @@ class HomePageActivity : AppCompatActivity() {
                 binding.usernameEditText.text.toString(),
                 binding.passwordEditText.text.toString()
             )
-
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -64,11 +63,8 @@ class HomePageActivity : AppCompatActivity() {
                             model.setSignedInUser(it.uid)
                         }
                     } else {
-
                         binding.usernameEditText.error = "Email is incorrect"
                         binding.passwordEditText.error = "Password is incorrect"
-
-
                     }
                 }
         }
