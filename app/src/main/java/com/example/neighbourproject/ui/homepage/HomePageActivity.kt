@@ -57,6 +57,7 @@ class HomePageActivity : AppCompatActivity() {
         model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
         binding.loginButton.setOnClickListener {
+            //TODO we do not stop from adding no password, etc
             model.signInUser(binding.usernameEditText.text.toString(), binding.passwordEditText.text.toString())
         }
 
