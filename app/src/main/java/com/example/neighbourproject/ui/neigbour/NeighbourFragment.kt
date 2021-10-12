@@ -1,5 +1,6 @@
 package com.example.neighbourproject.ui.neigbour
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -55,27 +56,22 @@ class NeighbourFragment : Fragment(), InterestClickListener {
 
     override fun onClick(area: Area) {
         val position = area.position
-        if(position != null){
-            val gmmIntentUri =
-                Uri.parse("geo:${position.latitude},${position.longitude}")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            mapIntent.resolveActivity(requireActivity().packageManager)?.let {
-                startActivity(mapIntent)
-                Log.d(TAG, "Start google maps with coordinates")
 
-            }
-        }else{
-            val gmmIntentUri =
-                Uri.parse("geo:0,0?q=${area.area}")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            mapIntent.resolveActivity(requireActivity().packageManager)?.let {
-                startActivity(mapIntent)
-                Log.d(TAG, "Start google maps with area")
-            }
+        val gmmIntentUri = if (position != null) {
+            Uri.parse("geo:0,0?q=${position.latitude},${position.longitude}(${area.area})")
+        } else {
+            Uri.parse("geo:0,0?q=${area.area}")
         }
 
-
+        gmmIntentUri?.let {
+            Log.d(TAG, "Starting google map with: $it")
+            val mapIntent = Intent(Intent.ACTION_VIEW, it)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            try {
+                startActivity(mapIntent)
+            } catch (e: ActivityNotFoundException) {
+                Log.d(TAG, "Could not start google map")
+            }
+        }
     }
 }
