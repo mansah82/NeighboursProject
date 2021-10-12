@@ -1,12 +1,9 @@
 package com.example.neighbourproject.ui.homepage
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
@@ -32,11 +29,14 @@ class HomePageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userLoginObserver = Observer<LoginStatus>{
+            Log.d(TAG, "Login observer: ${it.success}-${it.failed}")
             if(it.success != null){
                 model.setSignedInUser(it.success)
             }else{
-                binding.usernameEditText.error = it.failed
-                binding.passwordEditText.error = it.failed
+                if(it.failed != null) {
+                    binding.usernameEditText.error = it.failed
+                    binding.passwordEditText.error = it.failed
+                }
             }
         }
         model.getUserLoginUpdate().observe(this@HomePageActivity, userLoginObserver)

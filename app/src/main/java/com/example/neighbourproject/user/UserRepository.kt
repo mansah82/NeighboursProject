@@ -1,17 +1,13 @@
 package com.example.neighbourproject.user
 
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.neighbourproject.ui.homepage.HomePageActivity
-import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class UserRepository: UserService {
-    companion object{
+class UserRepository : UserService {
+    companion object {
         private const val TAG = "UserRepository"
     }
 
@@ -26,35 +22,64 @@ class UserRepository: UserService {
     override val loginStatus: LiveData<LoginStatus> = loginStatusLive
 
     override suspend fun registerUser(username: String, password: String) {
-        auth.createUserWithEmailAndPassword(username, password)
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
-                    registerStatusLive.postValue(RegisterStatus(username, null))
-                } else {
-                    registerStatusLive.postValue(RegisterStatus(null, "createUser:failure ".plus(username)))
+        if (username.isEmpty() || password.isEmpty()) {
+            registerStatusLive.postValue(
+                RegisterStatus(
+                    null,
+                    "Email and/or password may not be empty"
+                )
+            )
+
+        } else {
+            auth.createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        registerStatusLive.postValue(RegisterStatus(username, null))
+                    } else {
+                        registerStatusLive.postValue(
+                            RegisterStatus(
+                                null,
+                                "createUser:failure ".plus(username)
+                            )
+                        )
+                    }
                 }
-            }
+        }
     }
 
+    private var isLoggedIn = false
+
     override suspend fun loginUser(username: String, password: String) {
-        auth.signInWithEmailAndPassword( username, password )
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail:success")
-                    auth.currentUser?.let {
-                        loginStatusLive.postValue(LoginStatus(it.uid, null))
+        if (username.isEmpty() || password.isEmpty()) {
+            loginStatusLive.postValue(LoginStatus(null, "Email and/or password may not be empty"))
+
+        } else {
+            auth.signInWithEmailAndPassword(username, password)
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "signInWithEmail:success")
+                        auth.currentUser?.let {
+                            isLoggedIn = true
+                            loginStatusLive.postValue(LoginStatus(it.uid, null))
+                        }
+                    } else {
+                        loginStatusLive.postValue(
+                            LoginStatus(
+                                null,
+                                "Email and/or password is incorrect"
+                            )
+                        )
                     }
-                } else {
-                    loginStatusLive.postValue(LoginStatus(null, "Email and/or password is incorrect"))
                 }
-            }
+        }
     }
 
     override suspend fun logoutUser() {
+        isLoggedIn = false
         auth.signOut()
     }
 
     override fun isLoggedIn(): Boolean {
-        return auth.currentUser != null
+        return (auth.currentUser != null) && isLoggedIn
     }
 }

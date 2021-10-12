@@ -1,5 +1,6 @@
 package com.example.neighbourproject.ui.homepage
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomePageViewModel(): ViewModel(), KoinComponent{
+    companion object{
+        private const val TAG = "HomePageViewModel"
+    }
 
     private val neighboursService: NeighboursService by inject()
     private val userService: UserService by inject()
@@ -40,8 +44,14 @@ class HomePageViewModel(): ViewModel(), KoinComponent{
     }
 
     fun signOut(){
+        Log.d(TAG, "Signing out")
         viewModelScope.launch(Dispatchers.IO) {
             userService.logoutUser()
         }
+    }
+
+    override fun onCleared() {
+        signOut()
+        super.onCleared()
     }
 }
