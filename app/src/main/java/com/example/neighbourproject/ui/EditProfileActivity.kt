@@ -13,10 +13,8 @@ import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
-<<<<<<< HEAD
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
-=======
->>>>>>> 95a8c22a35465d0f4c335419ded08b6ace484065
+
 import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -27,27 +25,22 @@ import com.google.firebase.ktx.Firebase
 
 open class EditProfileActivity : AppCompatActivity() {
 
-    val TAG = "!!!"
+    private val TAG = "EditProfileActivity"
 
-    lateinit var db : FirebaseFirestore
-    lateinit var auth : FirebaseAuth
 
-    private val model : EditViewModel by viewModels()
+    private val model: EditViewModel by viewModels()
 
     lateinit var checkBox: ImageView
-    lateinit var checkBox2: ImageView
     lateinit var checkBox3: ImageView
     lateinit var imageView: ImageView
     lateinit var nameEditText: EditText
     lateinit var lastnameEditText: EditText
-    lateinit var genderEditText: EditText
     lateinit var ageEditText: EditText
-    lateinit var cityEditText: EditText
     lateinit var interestsEditText: EditText
     lateinit var genderSpinner: Spinner
     lateinit var relationshipSpinner: Spinner
-    lateinit var saveButton : Button
-    var profile : People? = null
+    lateinit var saveButton: Button
+    var profile: People? = null
 
     private val pickImage = 100
     private var imageUri: Uri? = null
@@ -59,7 +52,7 @@ open class EditProfileActivity : AppCompatActivity() {
         title = "NeighbourProject"
 
         checkBox = findViewById(R.id.checkBox)
-        checkBox3= findViewById(R.id.checkBox3)
+        checkBox3 = findViewById(R.id.checkBox3)
         imageView = findViewById(R.id.imageView)
         nameEditText = findViewById(R.id.nameEditText)
         lastnameEditText = findViewById(R.id.lastnameEditText)
@@ -69,10 +62,10 @@ open class EditProfileActivity : AppCompatActivity() {
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
 
-        val adapter = ArrayAdapter<Gender>(this,android.R.layout.simple_spinner_item, Gender.values())
+        val adapter = ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
         genderSpinner.adapter = adapter
 
-        val adapter2 = ArrayAdapter<RelationshipStatus>(this,android.R.layout.simple_spinner_item, RelationshipStatus.values())
+        val adapter2 = ArrayAdapter<RelationshipStatus>(this, android.R.layout.simple_spinner_item, RelationshipStatus.values())
         relationshipSpinner.adapter = adapter2
 
         profile = model.getUserProfile()
@@ -85,13 +78,12 @@ open class EditProfileActivity : AppCompatActivity() {
             genderSpinner.setSelection(profile?.gender!!.ordinal)
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
 
-
         }
 
 
         saveButton.setOnClickListener {
             //TODO update profile here
-<<<<<<< HEAD
+
             profile?.firstName = nameEditText.text.toString()
             profile?.lastName = lastnameEditText.text.toString()
             profile?.age = ageEditText.text.toString().toInt()
@@ -99,10 +91,10 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.relationshipStatus = RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
             profile?.interests
 
-            model.editUserProfile(profile)
-=======
-            model.editUserProfile(People())
->>>>>>> 95a8c22a35465d0f4c335419ded08b6ace484065
+            profile?.let {
+                model.editUserProfile(it)
+            }
+
             startActivity(Intent(this, SearchActivity::class.java))
         }
 
@@ -127,20 +119,9 @@ open class EditProfileActivity : AppCompatActivity() {
             startActivityForResult(gallery, pickImage)
         }
 
-       /* ArrayAdapter.createFromResource(
-            this,
-            R.array.gender_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            genderSpinner.adapter = adapter
-        }
-
-        */
-
         class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, view:View?, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
             }
 
@@ -151,11 +132,9 @@ open class EditProfileActivity : AppCompatActivity() {
         }
 
 
-        }
+    }
 
-
-
-     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == pickImage) {
             imageUri = data?.data
@@ -165,8 +144,6 @@ open class EditProfileActivity : AppCompatActivity() {
 
 
     }
-
-
 
 
 }
