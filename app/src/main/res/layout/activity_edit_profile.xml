@@ -11,7 +11,7 @@
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,45 +21,16 @@
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:digits="qwertyuiopåasdfghjklöäzxcvbnm"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
         android:ems="10"
-        android:hint="Name"
+        android:hint="First name"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/ageEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/ageEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Age"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/cityEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-    <EditText
-        android:id="@+id/cityEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="City"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/interestsEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ageEditText" />
 
     <EditText
         android:id="@+id/interestsEditText"
@@ -69,11 +40,22 @@
         android:hint="Interests"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/genderSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/lastnameEditText" />
+
+    <EditText
+        android:id="@+id/ageEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Age"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/interestsEditText" />
 
     <Button
         android:id="@+id/button"
@@ -100,18 +82,6 @@
         app:layout_constraintTop_toTopOf="@+id/nameEditText" />
 
     <ImageView
-        android:id="@+id/checkBox2"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/checkbox"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/cityEditText"
-        app:layout_constraintEnd_toStartOf="@+id/cityEditText"
-        app:layout_constraintHorizontal_bias="0.868"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
         android:id="@+id/checkBox3"
         android:layout_width="15dp"
         android:layout_height="15dp"
@@ -126,11 +96,34 @@
         android:id="@+id/genderSpinner"
         android:layout_width="215dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/interestsEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/ageEditText" />
+
+    <EditText
+        android:id="@+id/lastnameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:minHeight="48dp"
+        android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+        android:hint="Last name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText" />
+
+    <Spinner
+        android:id="@+id/relationshipSpinner"
+        android:layout_width="215dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
