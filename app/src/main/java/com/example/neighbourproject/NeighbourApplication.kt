@@ -1,6 +1,7 @@
 package com.example.neighbourproject
 
 import android.app.Application
+import android.util.Log
 import com.example.neighbourproject.location.LocationRepository
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursRepository
@@ -16,6 +17,9 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class NeighbourApplication: Application() {
+    companion object{
+        private const val TAG = "NeighbourApplication"
+    }
     private val appModule = module {
         single<NeighboursService> { NeighboursRepository() }
         single<LocationService> { LocationRepository() }
@@ -30,11 +34,17 @@ class NeighbourApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.i(TAG, "Repository config: ${BuildConfig.BUILD_TYPE}")
         startKoin{
             androidLogger()
             androidContext(this@NeighbourApplication)
-            modules((appModule)) //For a real firebase
-            //modules((appModuleTest)) //For test purpose
+
+
+            if(BuildConfig.BUILD_TYPE == "demo")
+                modules((appModuleTest)) //For test purpose
+            else
+                modules((appModule)) //For a real firebase
+
         }
     }
 }

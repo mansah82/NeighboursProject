@@ -37,8 +37,12 @@ class SignUpActivity : AppCompatActivity() {
                 startActivity(Intent(this, HomePageActivity::class.java))
                 finish()
             }else{
-                Toast.makeText(baseContext, "Failed: ${it.failed}",
-                    Toast.LENGTH_SHORT).show()
+                if(it.failed != null) {
+                    Toast.makeText(
+                        baseContext, "Failed: ${it.failed}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
         model.getUserRegisterUpdate().observe(this@SignUpActivity, userResisterObserver)

@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+
     compileSdk 31
 
     buildFeatures {
@@ -26,6 +27,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        demo {
+            initWith debug
+            buildConfigField("String", "BUILD_TYPE", "\"demo\"")
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
