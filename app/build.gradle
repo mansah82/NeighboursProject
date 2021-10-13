@@ -29,7 +29,6 @@ android {
         }
         demo {
             initWith debug
-            buildConfigField("String", "BUILD_TYPE", "\"demo\"")
         }
 
     }
