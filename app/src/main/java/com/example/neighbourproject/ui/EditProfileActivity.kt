@@ -6,14 +6,27 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 open class EditProfileActivity : AppCompatActivity() {
+
+    val TAG = "!!!"
+
+    lateinit var db : FirebaseFirestore
+    lateinit var auth : FirebaseAuth
 
     private val model : EditViewModel by viewModels()
 
@@ -35,6 +48,10 @@ open class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
+        db = Firebase.firestore
+        auth = Firebase.auth
+
         title = "NeighbourProject"
 
         checkBox = findViewById(R.id.checkBox)
@@ -42,15 +59,17 @@ open class EditProfileActivity : AppCompatActivity() {
         checkBox3= findViewById(R.id.checkBox3)
         imageView = findViewById(R.id.imageView)
         nameEditText = findViewById(R.id.nameEditText)
-        //genderEditText = findViewById(R.id.genderEditText)
         ageEditText = findViewById(R.id.ageEditText)
         cityEditText = findViewById(R.id.cityEditText)
         interestsEditText = findViewById(R.id.interestsEditText)
         genderSpinner = findViewById(R.id.genderSpinner)
         saveButton = findViewById(R.id.button)
+        model.
 
         saveButton.setOnClickListener {
             //TODO update profile here
+            saveInformation()
+
             model.editUserProfile(null)
             startActivity(Intent(this, SearchActivity::class.java))
         }
@@ -83,7 +102,7 @@ open class EditProfileActivity : AppCompatActivity() {
             startActivityForResult(gallery, pickImage)
         }
 
-        ArrayAdapter.createFromResource(
+       /* ArrayAdapter.createFromResource(
             this,
             R.array.gender_array,
             android.R.layout.simple_spinner_item
@@ -91,6 +110,10 @@ open class EditProfileActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             genderSpinner.adapter = adapter
         }
+
+        */
+        val adapter = ArrayAdapter<Gender>(this,android.R.layout.simple_spinner_item, Gender.values())
+        genderSpinner.adapter = adapter
 
         class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
 
@@ -103,6 +126,23 @@ open class EditProfileActivity : AppCompatActivity() {
             }
 
         }
+
+    }
+
+    fun saveInformation() {
+        val information = People(nameEditText.text.toString(), "", Gender.valueOf(genderSpinner.selectedItem.toString()),  )
+
+
+        val user = auth.currentUser
+        if (user == null)
+            return
+
+        /*db.collection("neighbours").document(user.uid).set(information)
+            .addOnCompleteListener {
+                Log.d(TAG, "saveItem: add: ${it.exception}")
+            }
+
+         */
 
     }
 
