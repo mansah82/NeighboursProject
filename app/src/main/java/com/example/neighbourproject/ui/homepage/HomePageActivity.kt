@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
-import com.example.neighbourproject.EditProfileActivity
+import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.ui.signup.SignUpActivity
