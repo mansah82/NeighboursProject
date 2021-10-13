@@ -18,34 +18,13 @@ class EditViewModel: ViewModel(), KoinComponent {
     private val neighbourService: NeighboursService by inject()
     private val locationService: LocationService by inject()
 
-    //TODO Remove when edit profile done
-    private val myProfile = People(
-        "Kalle",
-        "Kallesson",
-        Gender.MALE,
-        58,
-        mutableListOf(
-            Interest("Name", Area("Location")),
-            Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
-            Interest("Name", Area("Location", Position(59.0,17.0)))
-        ),
-        "url - to image",
-        RelationshipStatus.SINGLE
-    )
-
     fun getUserProfile(): People?{
         return neighbourService.userProfileUpdate.value
     }
 
-    fun editUserProfile(profile: People?) {
+    fun editUserProfile(profile: People) {
         viewModelScope.launch(Dispatchers.IO) {
-            if(profile == null) {
-                neighbourService.updateUserProfile(myProfile)
-                Log.d(TAG, "Writing crap profile to db")
-            }else{
-                neighbourService.updateUserProfile(profile)
-                Log.d(TAG, "Writing profile to db")
-            }
+            neighbourService.updateUserProfile(profile)
         }
     }
 }

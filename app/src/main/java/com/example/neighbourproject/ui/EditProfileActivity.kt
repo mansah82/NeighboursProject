@@ -13,7 +13,10 @@ import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
+<<<<<<< HEAD
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
+=======
+>>>>>>> 95a8c22a35465d0f4c335419ded08b6ace484065
 import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -88,6 +91,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
             //TODO update profile here
+<<<<<<< HEAD
             profile?.firstName = nameEditText.text.toString()
             profile?.lastName = lastnameEditText.text.toString()
             profile?.age = ageEditText.text.toString().toInt()
@@ -96,6 +100,9 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.interests
 
             model.editUserProfile(profile)
+=======
+            model.editUserProfile(People())
+>>>>>>> 95a8c22a35465d0f4c335419ded08b6ace484065
             startActivity(Intent(this, SearchActivity::class.java))
         }
 
