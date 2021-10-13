@@ -92,7 +92,9 @@ class NeighboursRepository : NeighboursService {
     }
 
     override suspend fun updateUserProfile(profile: People) {
-        if (signedInUserUid != "")
+        if (signedInUserUid != "") {
+            userProfileRemote.postValue(profile)
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
+        }
     }
 }

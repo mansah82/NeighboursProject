@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
 
@@ -51,7 +53,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
             //TODO update profile here
-            model.editUserProfile(null)
+            model.editUserProfile(People())
             startActivity(Intent(this, SearchActivity::class.java))
         }
 
