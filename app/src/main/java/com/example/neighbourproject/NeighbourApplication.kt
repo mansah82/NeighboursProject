@@ -38,10 +38,14 @@ class NeighbourApplication: Application() {
         startKoin{
             androidLogger()
             androidContext(this@NeighbourApplication)
+
+
             if(BuildConfig.BUILD_TYPE == "demo")
                 modules((appModuleTest)) //For test purpose
             else
                 modules((appModule)) //For a real firebase
+
+
         }
     }
 }

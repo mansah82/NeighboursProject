@@ -1,8 +1,11 @@
 package com.example.neighbourproject.neighbour.data
 
+import android.text.Editable
+import android.widget.EditText
+import com.example.neighbourproject.EditProfileActivity
 import java.util.*
 
-data class People(
+data class People (
     var firstName: String = "",
     var lastName: String = "",
     var gender: Gender = Gender.NONE,
@@ -16,6 +19,8 @@ data class People(
         id = UUID.randomUUID().toString()
     }
 
+
+
     fun addInterest(interest: Interest) {
         interests.add(interest)
     }
@@ -23,5 +28,7 @@ data class People(
     fun removeInterest(interest: Interest) {
         interests.remove(interest)
     }
+
+
 }
 
