@@ -51,11 +51,6 @@ open class EditProfileActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.genderSpinner)
         saveButton = findViewById(R.id.button)
 
-        var profile = People()
-        Gender.NONE.ordinal
-
-        genderSpinner.setSelection(profile.gender.ordinal)
-
         saveButton.setOnClickListener {
             //TODO update profile here
             model.editUserProfile(People())
