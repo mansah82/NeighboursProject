@@ -39,13 +39,12 @@ class NeighbourApplication: Application() {
             androidLogger()
             androidContext(this@NeighbourApplication)
 
-            modules((appModule))
-            /*if(BuildConfig.BUILD_TYPE == "demo")
+
+            if(BuildConfig.BUILD_TYPE == "demo")
                 modules((appModuleTest)) //For test purpose
             else
                 modules((appModule)) //For a real firebase
 
-             */
 
         }
     }
