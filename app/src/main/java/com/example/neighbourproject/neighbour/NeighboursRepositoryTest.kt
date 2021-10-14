@@ -18,7 +18,7 @@ class NeighboursRepositoryTest : NeighboursService {
     override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
     private var searchParameters: SearchParameters? = null
-    
+
     override fun setSearch(searchParameters: SearchParameters) {
         this.searchParameters = searchParameters
 
