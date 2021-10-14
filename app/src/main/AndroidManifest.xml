@@ -17,7 +17,7 @@
         <activity
             android:name=".ui.search.SearchActivity"/>
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".ui.edit.EditProfileActivity"
             android:launchMode="singleTop"/>
         <activity
             android:name=".ui.signup.SignUpActivity"

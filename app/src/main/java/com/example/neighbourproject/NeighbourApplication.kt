@@ -19,6 +19,7 @@ import org.koin.dsl.module
 class NeighbourApplication: Application() {
     companion object{
         private const val TAG = "NeighbourApplication"
+        private const val TEST_BUILD = "demo"
     }
     private val appModule = module {
         single<NeighboursService> { NeighboursRepository() }
@@ -38,14 +39,10 @@ class NeighbourApplication: Application() {
         startKoin{
             androidLogger()
             androidContext(this@NeighbourApplication)
-
-
-            if(BuildConfig.BUILD_TYPE == "demo")
-                //modules((appModuleTest)) //For test purpose
+            if(BuildConfig.BUILD_TYPE == TEST_BUILD)
+                modules((appModuleTest)) //For test purpose
             else
                 modules((appModule)) //For a real firebase
-
-
         }
     }
 }

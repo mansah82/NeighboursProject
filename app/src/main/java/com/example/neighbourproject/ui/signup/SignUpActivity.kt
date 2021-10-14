@@ -14,15 +14,15 @@ import com.example.neighbourproject.ui.homepage.HomePageActivity
 import com.example.neighbourproject.user.RegisterStatus
 
 class SignUpActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val TAG = "SignUpActivity"
     }
 
     private val model: SignUpViewModel by viewModels()
 
-    lateinit var signUpButton : Button
-    lateinit var editTextEmail : EditText
-    lateinit var editTextPassword : EditText
+    private lateinit var signUpButton: Button
+    private lateinit var editTextEmail: EditText
+    private lateinit var editTextPassword: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +32,12 @@ class SignUpActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         signUpButton = findViewById(R.id.signUpButton)
 
-        val userResisterObserver = Observer<RegisterStatus>{
-            if(it.success != null){
+        val userResisterObserver = Observer<RegisterStatus> {
+            if (it.success != null) {
                 startActivity(Intent(this, HomePageActivity::class.java))
                 finish()
-            }else{
-                if(it.failed != null) {
+            } else {
+                if (it.failed != null) {
                     Toast.makeText(
                         baseContext, "Failed: ${it.failed}",
                         Toast.LENGTH_SHORT
@@ -48,26 +48,22 @@ class SignUpActivity : AppCompatActivity() {
         model.getUserRegisterUpdate().observe(this@SignUpActivity, userResisterObserver)
 
         signUpButton.setOnClickListener {
-          signUpUser()
+            signUpUser()
         }
     }
 
-    private fun signUpUser(){
-        if(editTextEmail.text.toString().isEmpty()){
-            editTextEmail.error = "Please enter email"
-            editTextPassword.requestFocus()
-            return
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(editTextEmail.text.toString()).matches()){
+    private fun signUpUser() {
+        if (!Patterns.EMAIL_ADDRESS.matcher(editTextEmail.text.toString())
+                .matches() || editTextEmail.text.toString().isEmpty()
+        ) {
             editTextEmail.error = "Please enter valid email"
             editTextEmail.requestFocus()
             return
         }
-        if(editTextPassword.text.toString().isEmpty()){
+        if (editTextPassword.text.toString().isEmpty()) {
             editTextPassword.error = "Enter a password"
             editTextPassword.requestFocus()
             return
-
         }
         model.resisterUser(editTextEmail.text.toString(), editTextPassword.text.toString())
     }

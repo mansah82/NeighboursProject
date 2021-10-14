@@ -1,4 +1,4 @@
-package com.example.neighbourproject
+package com.example.neighbourproject.ui.edit
 
 import android.app.Activity
 import android.content.Intent
@@ -6,27 +6,21 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
+import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
 
-import com.example.neighbourproject.ui.edit.EditViewModel
 import com.example.neighbourproject.ui.search.SearchActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 open class EditProfileActivity : AppCompatActivity() {
-
-    private val TAG = "EditProfileActivity"
-
+    companion object {
+        private const val TAG = "EditProfileActivity"
+    }
 
     private val model: EditViewModel by viewModels()
 
@@ -81,12 +75,11 @@ open class EditProfileActivity : AppCompatActivity() {
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
             emailEditText.setText(profile?.email)
 
+
         }
 
 
         saveButton.setOnClickListener {
-            //TODO update profile here
-
             profile?.firstName = nameEditText.text.toString()
             profile?.lastName = lastnameEditText.text.toString()
             profile?.age = ageEditText.text.toString().toInt()

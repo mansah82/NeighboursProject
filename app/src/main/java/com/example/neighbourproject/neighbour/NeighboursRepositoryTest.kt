@@ -4,14 +4,71 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.neighbourproject.neighbour.data.*
 
-class NeighboursRepositoryTest: NeighboursService {
+class NeighboursRepositoryTest : NeighboursService {
     companion object {
         private const val TAG = "NeighboursRepositoryTest"
     }
 
     private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
+
     override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
+    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+
+    override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
+
+    private var searchParameters: SearchParameters? = null
+
+    override fun setSearch(searchParameters: SearchParameters) {
+        this.searchParameters = searchParameters
+
+        doSearch()
+    }
+
+    private fun doSearch(){
+        searchParameters?.let { params ->
+            val searchResult = mutableListOf<People>()
+            val removeResult = mutableListOf<People>()
+
+            // Get by age
+            for (neighbour in neighbours) {
+                if (neighbour.age in params.minAge..params.maxAge) {
+                    searchResult.add(neighbour)
+                }
+            }
+
+            // Get by gender
+            for (neighbour in searchResult) {
+                if (neighbour.gender !in params.genders) {
+                    removeResult.add(neighbour)
+                }
+            }
+            searchResult.removeAll(removeResult)
+            removeResult.clear()
+
+            // Get by relationship status
+            for (neighbour in searchResult) {
+                if (neighbour.relationshipStatus !in params.relationshipStatuses) {
+                    removeResult.add(neighbour)
+                }
+            }
+            searchResult.removeAll(removeResult)
+            removeResult.clear()
+
+            // Get by free search
+            if (params.text != "") {
+                for (neighbour in searchResult) {
+                    if (!neighbour.toString().contains(params.text, true)) {
+                        removeResult.add(neighbour)
+                    }
+                }
+                searchResult.removeAll(removeResult)
+                removeResult.clear()
+            }
+
+            searchResultRemote.value = searchResult
+        }
+    }
 
     private val neighbours = mutableListOf<People>()
     init {
@@ -104,26 +161,6 @@ class NeighboursRepositoryTest: NeighboursService {
                 )
             )
         )
-    }
-
-    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People> {
-        val searchResult = mutableListOf<People>()
-        for (neighbour in neighbours) {
-            if (neighbour.age in minAge..maxAge) {
-                searchResult.add(neighbour)
-            }
-        }
-        return searchResult
-    }
-
-    override fun getNeighboursByGender(gender: Gender): List<People> {
-        val searchResult = mutableListOf<People>()
-        for (neighbour in neighbours) {
-            if (neighbour.gender == gender) {
-                searchResult.add(neighbour)
-            }
-        }
-        return searchResult
     }
 
     override fun getNeighbourById(id: String): People? {
