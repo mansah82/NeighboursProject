@@ -24,26 +24,6 @@ class NeighboursRepository : NeighboursService {
 
     private val db = Firebase.firestore
 
-    override fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People> {
-        val searchResult = mutableListOf<People>()
-        for (neighbour in neighbours) {
-            if (neighbour.age in minAge..maxAge) {
-                searchResult.add(neighbour)
-            }
-        }
-        return searchResult
-    }
-
-    override fun getNeighboursByGender(gender: Gender): List<People> {
-        val searchResult = mutableListOf<People>()
-        for (neighbour in neighbours) {
-            if (neighbour.gender == gender) {
-                searchResult.add(neighbour)
-            }
-        }
-        return searchResult
-    }
-
     override fun getNeighbourById(id: String): People? {
         for (neighbour in neighbours) {
             if (neighbour.id == id) {
@@ -64,6 +44,7 @@ class NeighboursRepository : NeighboursService {
                         neighbours.add(item)
                     }
                 }
+                doSearch()
             }
         }
     }
@@ -95,6 +76,61 @@ class NeighboursRepository : NeighboursService {
         if (signedInUserUid != "") {
             userProfileRemote.postValue(profile)
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
+        }
+    }
+
+    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+    override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
+
+    private var searchParameters: SearchParameters? = null
+    override fun setSearch(searchParameters: SearchParameters) {
+        this.searchParameters = searchParameters
+
+        doSearch()
+    }
+
+    private fun doSearch(){
+        searchParameters?.let { params ->
+            val searchResult = mutableListOf<People>()
+            val removeResult = mutableListOf<People>()
+
+            // Get by age
+            for (neighbour in neighbours) {
+                if (neighbour.age in params.minAge..params.maxAge) {
+                    searchResult.add(neighbour)
+                }
+            }
+
+            // Get by gender
+            for (neighbour in searchResult) {
+                if (neighbour.gender !in params.genders) {
+                    removeResult.add(neighbour)
+                }
+            }
+            searchResult.removeAll(removeResult)
+            removeResult.clear()
+
+            // Get by relationship status
+            for (neighbour in searchResult) {
+                if (neighbour.relationshipStatus !in params.relationshipStatuses) {
+                    removeResult.add(neighbour)
+                }
+            }
+            searchResult.removeAll(removeResult)
+            removeResult.clear()
+
+            // Get by free search
+            if (params.text != "") {
+                for (neighbour in searchResult) {
+                    if (!neighbour.toString().contains(params.text, true)) {
+                        removeResult.add(neighbour)
+                    }
+                }
+                searchResult.removeAll(removeResult)
+                removeResult.clear()
+            }
+
+            searchResultRemote.value = searchResult
         }
     }
 }
