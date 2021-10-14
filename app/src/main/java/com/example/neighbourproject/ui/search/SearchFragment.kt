@@ -10,15 +10,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.SearchFragmentBinding
+import com.example.neighbourproject.neighbour.SearchParameters
 import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.neighbour.data.RelationshipStatus
 import com.example.neighbourproject.ui.neigbour.ExtrasKey
 import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 
 class SearchFragment : Fragment(), ClickListener {
     companion object{
         private const val TAG = "SearchFragment"
-        private const val DEFAULT_MIN_AGE = 0
-        private const val DEFAULT_MAX_AGE = 140
     }
     private lateinit var binding: SearchFragmentBinding
 
@@ -30,7 +30,7 @@ class SearchFragment : Fragment(), ClickListener {
     ): View {
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
-        val searchAdapter = SearchRecyclerAdapter(model.searchResult,
+        val searchAdapter = SearchRecyclerAdapter(model.getSearchObserver(),
             viewLifecycleOwner,
             this as ClickListener)
 
@@ -44,8 +44,8 @@ class SearchFragment : Fragment(), ClickListener {
         return binding.root
     }
 
-    private var minAge = DEFAULT_MIN_AGE
-    private var maxAge = DEFAULT_MAX_AGE
+    private var minAge = SearchParameters.DEFAULT_MIN_AGE
+    private var maxAge = SearchParameters.DEFAULT_MAX_AGE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.chipFemale.setOnClickListener {
@@ -65,7 +65,7 @@ class SearchFragment : Fragment(), ClickListener {
             minAge = try {
                 binding.minAge.text.toString().toInt()
             }catch (e : NumberFormatException){
-                DEFAULT_MIN_AGE
+                SearchParameters.DEFAULT_MIN_AGE
             }
             doSearch()
         }
@@ -74,7 +74,7 @@ class SearchFragment : Fragment(), ClickListener {
             maxAge = try {
                 binding.maxAge.text.toString().toInt()
             }catch (e : NumberFormatException){
-                DEFAULT_MAX_AGE
+                SearchParameters.DEFAULT_MAX_AGE
             }
             doSearch()
         }
@@ -104,8 +104,24 @@ class SearchFragment : Fragment(), ClickListener {
         return result
     }
 
+    private fun selectedRelationship(): List<RelationshipStatus>{
+        //TODO Today we search for all statuses
+        val result = mutableListOf<RelationshipStatus>()
+        result.add(RelationshipStatus.SINGLE)
+        result.add(RelationshipStatus.NONE)
+        result.add(RelationshipStatus.DIVORCE)
+        result.add(RelationshipStatus.MARRIED)
+        return result
+    }
+
     private fun doSearch(){
-        model.search(minAge, maxAge, selectedGenders(), binding.freeSearchText.text.toString())
+        val params = SearchParameters(
+            minAge,
+            maxAge,
+            selectedGenders(),
+            selectedRelationship(),
+            binding.freeSearchText.text.toString())
+        model.setSearch(params)
     }
 
     override fun onClick(id: String) {

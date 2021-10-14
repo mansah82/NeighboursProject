@@ -12,9 +12,9 @@ interface NeighboursService {
 
     suspend fun updateUserProfile(profile : People)
 
-    fun getNeighboursByAge(minAge: Int, maxAge: Int): List<People>
-
-    fun getNeighboursByGender(gender: Gender): List<People>
-
     fun getNeighbourById(id: String): People?
+
+    val searchResultUpdate: LiveData<List<People>>
+
+    fun setSearch(searchParameters : SearchParameters)
 }
