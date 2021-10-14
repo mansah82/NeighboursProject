@@ -34,6 +34,7 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var genderSpinner: Spinner
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
+    lateinit var emailEditText: EditText
     var profile: People? = null
 
     private val pickImage = 100
@@ -55,6 +56,7 @@ open class EditProfileActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.genderSpinner)
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
+        emailEditText = findViewById(R.id.emailEditText)
 
         val adapter = ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
         genderSpinner.adapter = adapter
@@ -71,6 +73,9 @@ open class EditProfileActivity : AppCompatActivity() {
             ageEditText.setText(profile?.age.toString())
             genderSpinner.setSelection(profile?.gender!!.ordinal)
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
+            emailEditText.setText(profile?.email)
+
+
         }
 
 
@@ -81,6 +86,7 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.gender = Gender.valueOf(genderSpinner.selectedItem.toString())
             profile?.relationshipStatus = RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
             profile?.interests
+            profile?.email = emailEditText.text.toString()
 
             profile?.let {
                 model.editUserProfile(it)
