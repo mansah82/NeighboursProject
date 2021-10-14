@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
-import com.example.neighbourproject.EditProfileActivity
+import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.SearchParameters
 import com.example.neighbourproject.neighbour.data.Gender

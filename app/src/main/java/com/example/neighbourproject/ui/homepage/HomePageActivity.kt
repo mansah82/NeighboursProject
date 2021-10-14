@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
-import com.example.neighbourproject.EditProfileActivity
+import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.ui.signup.SignUpActivity
@@ -28,12 +28,12 @@ class HomePageActivity : AppCompatActivity() {
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userLoginObserver = Observer<LoginStatus>{
+        val userLoginObserver = Observer<LoginStatus> {
             Log.d(TAG, "Login observer: ${it.success}-${it.failed}")
-            if(it.success != null){
+            if (it.success != null) {
                 model.setSignedInUser(it.success)
-            }else{
-                if(it.failed != null) {
+            } else {
+                if (it.failed != null) {
                     binding.usernameEditText.error = it.failed
                     binding.passwordEditText.error = it.failed
                 }
@@ -57,8 +57,11 @@ class HomePageActivity : AppCompatActivity() {
         model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
         binding.loginButton.setOnClickListener {
-            //TODO we do not stop from adding no password, etc
-            model.signInUser(binding.usernameEditText.text.toString(), binding.passwordEditText.text.toString())
+            if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
+            model.signInUser(
+                binding.usernameEditText.text.toString(),
+                binding.passwordEditText.text.toString()
+            )
         }
 
         binding.usernameEditText.doAfterTextChanged {
@@ -74,18 +77,21 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkIfCorrectEmailFormat(){
-        if(binding.usernameEditText.text.toString().contains("@", true) &&
-            binding.usernameEditText.text.toString().contains(".", true)){
-
-        } else{
+    private fun checkIfCorrectEmailFormat(): Boolean {
+        if (!binding.usernameEditText.text.toString().contains("@", true) ||
+            !binding.usernameEditText.text.toString().contains(".", true)
+        ) {
             binding.usernameEditText.error = "Please enter a valid email"
-
+            return false
         }
+        return true
     }
-    private fun checkIfCorrectPasswordFormat() {
+
+    private fun checkIfCorrectPasswordFormat(): Boolean {
         if (binding.passwordEditText.text.length < 5) {
             binding.passwordEditText.error = "Password needs to contain 6 letters or more"
+            return false
         }
+        return true
     }
 }

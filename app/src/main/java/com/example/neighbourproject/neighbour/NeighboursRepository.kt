@@ -42,24 +42,35 @@ class NeighboursRepository : NeighboursService {
                     val item = document.toObject(People::class.java)
                     if (item != null) {
                         neighbours.add(item)
+                        //Remove my profile from this list
+                        if(myProfileId != ""){
+                            if(item.id == myProfileId){
+                                neighbours.remove(item)
+                            }
+                        }
                     }
                 }
                 doSearch()
             }
         }
     }
+    private var myProfileId = ""
 
     override suspend fun signeIn(id: String) {
         val docRef = db.collection(PERSON_COLLECTION).document(id)
         docRef.get()
             .addOnSuccessListener { document ->
                 signedInUserUid = id
+                myProfileId = ""
 
                 startListeningForNeighbours()
 
                 if (document.data != null) {
                     Log.d(TAG, "Data for profile: ${document.data}")
                     val person = document.toObject(People::class.java)
+                    person?.let {
+                        myProfileId = it.id
+                    }
                     userProfileRemote.postValue(person)
 
                 } else {
@@ -74,6 +85,7 @@ class NeighboursRepository : NeighboursService {
 
     override suspend fun updateUserProfile(profile: People) {
         if (signedInUserUid != "") {
+            myProfileId = profile.id
             userProfileRemote.postValue(profile)
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
         }
