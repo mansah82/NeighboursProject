@@ -10,12 +10,15 @@ class NeighboursRepositoryTest : NeighboursService {
     }
 
     private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
+
     override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
     private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+
     override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
     private var searchParameters: SearchParameters? = null
+    
     override fun setSearch(searchParameters: SearchParameters) {
         this.searchParameters = searchParameters
 

@@ -11,7 +11,7 @@ data class SearchParameters(
     val text : String = ""
 ) {
     companion object {
-        private const val DEFAULT_MIN_AGE = 0
-        private const val DEFAULT_MAX_AGE = 140
+        const val DEFAULT_MIN_AGE = 0
+        const val DEFAULT_MAX_AGE = 140
     }
 }

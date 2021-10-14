@@ -19,8 +19,6 @@ import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 class SearchFragment : Fragment(), ClickListener {
     companion object{
         private const val TAG = "SearchFragment"
-        private const val DEFAULT_MIN_AGE = 0
-        private const val DEFAULT_MAX_AGE = 140
     }
     private lateinit var binding: SearchFragmentBinding
 
@@ -46,8 +44,8 @@ class SearchFragment : Fragment(), ClickListener {
         return binding.root
     }
 
-    private var minAge = DEFAULT_MIN_AGE
-    private var maxAge = DEFAULT_MAX_AGE
+    private var minAge = SearchParameters.DEFAULT_MIN_AGE
+    private var maxAge = SearchParameters.DEFAULT_MAX_AGE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.chipFemale.setOnClickListener {
@@ -67,7 +65,7 @@ class SearchFragment : Fragment(), ClickListener {
             minAge = try {
                 binding.minAge.text.toString().toInt()
             }catch (e : NumberFormatException){
-                DEFAULT_MIN_AGE
+                SearchParameters.DEFAULT_MIN_AGE
             }
             doSearch()
         }
@@ -76,7 +74,7 @@ class SearchFragment : Fragment(), ClickListener {
             maxAge = try {
                 binding.maxAge.text.toString().toInt()
             }catch (e : NumberFormatException){
-                DEFAULT_MAX_AGE
+                SearchParameters.DEFAULT_MAX_AGE
             }
             doSearch()
         }

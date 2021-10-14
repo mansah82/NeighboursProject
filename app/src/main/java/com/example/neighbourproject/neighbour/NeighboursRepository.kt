@@ -13,7 +13,7 @@ class NeighboursRepository : NeighboursService {
 
         private const val PERSON_COLLECTION = "neighbours"
     }
-    
+
     private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
 
     override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
