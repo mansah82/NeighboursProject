@@ -51,6 +51,7 @@ class NeighbourFragment : Fragment(), InterestClickListener {
             binding.neighbourAge.text = it.age.toString()
             binding.neighbourGender.text = it.gender.text
             binding.neighbourStatus.text = it.relationshipStatus.text
+            binding.neighbourEmail.text = it.email
         }
     }
 

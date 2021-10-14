@@ -41,7 +41,7 @@ class NeighbourApplication: Application() {
 
 
             if(BuildConfig.BUILD_TYPE == "demo")
-                modules((appModuleTest)) //For test purpose
+                //modules((appModuleTest)) //For test purpose
             else
                 modules((appModule)) //For a real firebase
 
