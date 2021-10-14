@@ -13,6 +13,10 @@ class NeighboursRepository : NeighboursService {
 
         private const val PERSON_COLLECTION = "neighbours"
     }
+    
+    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+
+    override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
     private val userProfileRemote: MutableLiveData<People?> = MutableLiveData<People?>(null)
 
@@ -90,9 +94,6 @@ class NeighboursRepository : NeighboursService {
             db.collection(PERSON_COLLECTION).document(signedInUserUid).set(profile)
         }
     }
-
-    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
-    override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
     private var searchParameters: SearchParameters? = null
     override fun setSearch(searchParameters: SearchParameters) {
