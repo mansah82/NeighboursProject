@@ -77,6 +77,7 @@ class HomePageTest {
         onView(withId(R.id.loginButton)).perform(click())
 
         onView(withId(R.id.minAge)).check(matches(isDisplayed()))
+        onView(withId(R.id.search_result_list)).check(matches(isDisplayed()))
     }
 
     @Test

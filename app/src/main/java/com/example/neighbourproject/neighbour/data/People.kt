@@ -11,6 +11,7 @@ data class People (
     var image: String = "",
     var relationshipStatus: RelationshipStatus = RelationshipStatus.NONE,
     var id: String = "",
+    var email: String = ""
 ) {
     init {
         id = UUID.randomUUID().toString()
