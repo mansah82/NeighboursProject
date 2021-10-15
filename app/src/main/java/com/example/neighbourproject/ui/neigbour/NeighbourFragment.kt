@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
 import com.example.neighbourproject.neighbour.data.Area
@@ -47,6 +48,8 @@ class NeighbourFragment : Fragment(), InterestClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.neighbourEmail.isVisible = false
+        
         model.getNeighbour()?.let {
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
             binding.neighbourAge.text = it.age.toString()
@@ -55,6 +58,9 @@ class NeighbourFragment : Fragment(), InterestClickListener {
             binding.neighbourEmail.text = it.email
             if(model.getFriendsStatus().containsKey(it.id)){
                 binding.neighbourFriendStatus.text = model.getFriendsStatus()[it.id].toString()
+                if(model.getFriendsStatus()[it.id] == FriendStatus.FRIENDS)
+
+                    binding.neighbourEmail.isVisible = true
             }else{
                 binding.neighbourFriendStatus.text = FriendStatus.NONE.toString()
             }
