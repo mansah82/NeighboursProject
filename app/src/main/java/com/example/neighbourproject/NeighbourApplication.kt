@@ -2,6 +2,7 @@ package com.example.neighbourproject
 
 import android.app.Application
 import android.util.Log
+import androidx.viewbinding.BuildConfig
 import com.example.neighbourproject.location.LocationRepository
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursRepository
