@@ -2,13 +2,17 @@ package com.example.neighbourproject.ui.edit
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Gender
@@ -24,6 +28,9 @@ open class EditProfileActivity : AppCompatActivity() {
 
     private val model: EditViewModel by viewModels()
 
+    private val REQUEST_CAMERA = 1
+    private val REQUEST_GALLERY = 1
+
     lateinit var checkBox: ImageView
     lateinit var checkBox3: ImageView
     lateinit var imageView: ImageView
@@ -34,6 +41,8 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var genderSpinner: Spinner
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
+
+    lateinit var takePhotoButton: Button
     lateinit var emailEditText: EditText
     var profile: People? = null
 
@@ -56,12 +65,20 @@ open class EditProfileActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.genderSpinner)
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
+
+        takePhotoButton = findViewById(R.id.takePhotoButton)
         emailEditText = findViewById(R.id.emailEditText)
 
-        val adapter = ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
+
+        val adapter =
+            ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
         genderSpinner.adapter = adapter
 
-        val adapter2 = ArrayAdapter<RelationshipStatus>(this, android.R.layout.simple_spinner_item, RelationshipStatus.values())
+        val adapter2 = ArrayAdapter<RelationshipStatus>(
+            this,
+            android.R.layout.simple_spinner_item,
+            RelationshipStatus.values()
+        )
         relationshipSpinner.adapter = adapter2
 
         profile = model.getUserProfile()
@@ -84,7 +101,8 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.lastName = lastnameEditText.text.toString()
             profile?.age = ageEditText.text.toString().toInt()
             profile?.gender = Gender.valueOf(genderSpinner.selectedItem.toString())
-            profile?.relationshipStatus = RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
+            profile?.relationshipStatus =
+                RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
             profile?.interests
             profile?.email = emailEditText.text.toString()
 
@@ -94,6 +112,33 @@ open class EditProfileActivity : AppCompatActivity() {
 
             startActivity(Intent(this, SearchActivity::class.java))
         }
+
+
+        takePhotoButton.setOnClickListener {
+            // 1. kolla om vi har tillåtelse if()
+            //  2. om vi inte har tillåtelse -> requestPErmission
+            //  3. om vi har tillåtelse då öppnar vi kameran
+            //4. override onRequestPermissionResult -> körs näranvändare tryckt ja gör punkt 3 här också
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d(TAG, "onCreate: Permission not granted")
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA
+                )
+
+            } else {
+                Log.d(TAG, "onCreate: Permission is already granted!")
+                capturePhoto()
+
+            }
+
+        }
+
+
 
         nameEditText.doAfterTextChanged {
             if (nameEditText.length() > 3) {
@@ -128,15 +173,37 @@ open class EditProfileActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    val REQUEST_CODE = 200
+
+    fun capturePhoto() {
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, REQUEST_CODE)
+
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == pickImage) {
-            imageUri = data?.data
-            imageView.setImageURI(imageUri)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
+            imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+        }
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CAMERA) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onRequestPermissionsResult: Permission Granted!")
+            } else {
+                Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
+            }
         }
 
 
