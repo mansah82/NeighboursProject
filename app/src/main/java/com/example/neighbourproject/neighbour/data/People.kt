@@ -10,12 +10,11 @@ data class People (
     var interests: MutableList<Interest> = mutableListOf(),
     var image: String = "",
     var relationshipStatus: RelationshipStatus = RelationshipStatus.NONE,
-    var id: String = "",
-    var email: String = ""
+    var id: String = UUID.randomUUID().toString(),
+    var email: String = "",
+    var friends : MutableList<String> = mutableListOf()
 ) {
-    init {
-        id = UUID.randomUUID().toString()
-    }
+
 
     fun addInterest(interest: Interest) {
         interests.add(interest)

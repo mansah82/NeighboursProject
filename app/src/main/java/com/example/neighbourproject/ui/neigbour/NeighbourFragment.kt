@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
 import com.example.neighbourproject.neighbour.data.Area
+import com.example.neighbourproject.neighbour.data.FriendStatus
 import com.example.neighbourproject.ui.search.ClickListener
 import com.example.neighbourproject.ui.search.SearchRecyclerAdapter
 
@@ -52,6 +53,18 @@ class NeighbourFragment : Fragment(), InterestClickListener {
             binding.neighbourGender.text = it.gender.text
             binding.neighbourStatus.text = it.relationshipStatus.text
             binding.neighbourEmail.text = it.email
+            if(model.getFriendsStatus().containsKey(it.id)){
+                binding.neighbourFriendStatus.text = model.getFriendsStatus()[it.id].toString()
+            }else{
+                binding.neighbourFriendStatus.text = FriendStatus.NONE.toString()
+            }
+        }
+
+        binding.friendRequestButton.setOnClickListener {
+            Log.d(TAG, "Clicked on add friend")
+            model.getNeighbour()?.let {
+                model.setFriend(it.id)
+            }
         }
     }
 

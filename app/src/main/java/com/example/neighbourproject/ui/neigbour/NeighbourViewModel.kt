@@ -2,10 +2,14 @@ package com.example.neighbourproject.ui.neigbour
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursService
+import com.example.neighbourproject.neighbour.data.FriendStatus
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.Position
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -39,5 +43,14 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     fun getNeighbour(): People?{
         return people
+    }
+    fun getFriendsStatus(): Map<String, FriendStatus>{
+        return neighboursService.getFriendsStatus()
+    }
+
+    fun setFriend(friendId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            neighboursService.setFriend(friendId)
+        }
     }
 }

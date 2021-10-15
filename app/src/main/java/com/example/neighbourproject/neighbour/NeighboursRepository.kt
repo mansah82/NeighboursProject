@@ -28,6 +28,20 @@ class NeighboursRepository : NeighboursService {
 
     private val db = Firebase.firestore
 
+    private val friendStatuses : MutableMap<String, FriendStatus> = mutableMapOf()
+
+    override fun getFriendsStatus(): Map<String, FriendStatus> {
+        return friendStatuses
+    }
+
+    override suspend fun setFriend(friendId: String) {
+        userProfileRemote.value?.let {
+            if(!it.friends.contains(friendId))
+                it.friends.add(friendId)
+            updateUserProfile(it)
+        }
+    }
+
     override fun getNeighbourById(id: String): People? {
         for (neighbour in neighbours) {
             if (neighbour.id == id) {
@@ -42,6 +56,7 @@ class NeighboursRepository : NeighboursService {
         itemsRef.addSnapshotListener { snapshot, _ ->
             if (snapshot != null) {
                 neighbours.clear()
+
                 for (document in snapshot.documents) {
                     val item = document.toObject(People::class.java)
                     if (item != null) {
@@ -54,6 +69,7 @@ class NeighboursRepository : NeighboursService {
                         }
                     }
                 }
+                updateFriendsMap()
                 doSearch()
             }
         }
@@ -100,6 +116,31 @@ class NeighboursRepository : NeighboursService {
         this.searchParameters = searchParameters
 
         doSearch()
+    }
+
+    private fun updateFriendsMap(){
+        userProfileRemote.value?.let {
+            for (neighbour in neighbours) {
+                var requested: Boolean = false
+                var askedFor: Boolean = false
+                //if(neighbour) set the stuff
+                if (neighbour.friends.contains(myProfileId))
+                    requested = true
+                if (it.friends.contains(neighbour.id))
+                    askedFor = true
+
+                //Update the friends map
+                if (!requested && !askedFor) {
+                    friendStatuses[neighbour.id] = FriendStatus.NONE
+                } else if (!requested && askedFor) {
+                    friendStatuses[neighbour.id] = FriendStatus.PENDING
+                } else if (requested && !askedFor) {
+                    friendStatuses[neighbour.id] = FriendStatus.REQUEST
+                } else if (requested && askedFor) {
+                    friendStatuses[neighbour.id] = FriendStatus.FRIENDS
+                }
+            }
+        }
     }
 
     private fun doSearch(){
