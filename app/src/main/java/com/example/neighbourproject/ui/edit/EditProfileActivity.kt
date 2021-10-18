@@ -109,8 +109,10 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.let {
                 model.editUserProfile(it)
             }
-
-            startActivity(Intent(this, SearchActivity::class.java))
+            val intent =  Intent(this, SearchActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
         }
 
 
