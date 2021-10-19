@@ -1,10 +1,12 @@
 package com.example.neighbourproject.ui.edit
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +15,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.widget.doAfterTextChanged
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Gender
@@ -26,10 +29,14 @@ open class EditProfileActivity : AppCompatActivity() {
         private const val TAG = "EditProfileActivity"
     }
 
+
+        private val IMAGE_CHOOSE = 1000;
+        private val REQUEST_GALLERY = 1001;
+
+
     private val model: EditViewModel by viewModels()
 
     private val REQUEST_CAMERA = 1
-    private val REQUEST_GALLERY = 1
 
     lateinit var checkBox: ImageView
     lateinit var checkBox3: ImageView
@@ -41,13 +48,11 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var genderSpinner: Spinner
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
+    lateinit var galleryButton: Button
 
     lateinit var takePhotoButton: Button
     lateinit var emailEditText: EditText
     var profile: People? = null
-
-    private val pickImage = 100
-    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +70,7 @@ open class EditProfileActivity : AppCompatActivity() {
         genderSpinner = findViewById(R.id.genderSpinner)
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
+        galleryButton = findViewById(R.id.galleryButton)
 
         takePhotoButton = findViewById(R.id.takePhotoButton)
         emailEditText = findViewById(R.id.emailEditText)
@@ -92,9 +98,7 @@ open class EditProfileActivity : AppCompatActivity() {
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
             emailEditText.setText(profile?.email)
 
-
         }
-
 
         saveButton.setOnClickListener {
             profile?.firstName = nameEditText.text.toString()
@@ -138,58 +142,48 @@ open class EditProfileActivity : AppCompatActivity() {
 
         }
 
-
-
-        nameEditText.doAfterTextChanged {
-            if (nameEditText.length() > 3) {
-                checkBox.visibility = View.VISIBLE
+        galleryButton.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_GALLERY)
             } else {
-                checkBox.visibility = View.INVISIBLE
+                chooseImageGallery()
             }
         }
 
-        interestsEditText.doAfterTextChanged {
-            if (interestsEditText.length() > 1) {
-                checkBox3.visibility = View.VISIBLE
-            } else {
-                checkBox3.visibility = View.INVISIBLE
-            }
-        }
-
-        imageView.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
-        }
-
-        class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
-
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-        }
 
     }
 
-    val REQUEST_CODE = 200
+    val REQUEST_CODE_CAMERA = 200
 
     fun capturePhoto() {
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CODE)
+        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
 
 
     }
 
+
+    private fun chooseImageGallery() {
+        val intent = Intent(Intent.ACTION_PICK )
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_CHOOSE)
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null){
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null){
             imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
         }
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
+            val imageUri = data.data
+            imageView.setImageURI(imageUri)
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -205,12 +199,30 @@ open class EditProfileActivity : AppCompatActivity() {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
             }
         }
-
+        if (requestCode == REQUEST_GALLERY) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Log.d(TAG, "onRequestPermissionsResult: Permission Granted!")
+            } else {
+                Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
+            }
+        }
 
     }
 
+}
+
+class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
 
 }
+
 
 
 
