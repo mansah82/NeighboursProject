@@ -1,12 +1,10 @@
 package com.example.neighbourproject.ui.edit
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -29,6 +27,11 @@ import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.util.*
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
@@ -36,12 +39,10 @@ open class EditProfileActivity : AppCompatActivity() {
     }
 
 
-        private val IMAGE_CHOOSE = 1000;
-        private val REQUEST_GALLERY = 1001;
-
-
     private val model: EditViewModel by viewModels()
 
+    private val IMAGE_CHOOSE = 1000;
+    private val REQUEST_GALLERY = 1001;
     private val REQUEST_CAMERA = 1
 
     lateinit var checkBox: ImageView
@@ -64,6 +65,7 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var interestRecyclerView : RecyclerView
     lateinit var userInterestList: ArrayList<Interest>
     lateinit var interestAdapter : InterestAddAdapter
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,6 +135,7 @@ addBtn.setOnClickListener{
                 RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
             profile?.interests
             profile?.email = emailEditText.text.toString()
+            upLoadImageToFirebaseStorage()
 
             profile?.let {
                 model.editUserProfile(it)
@@ -143,12 +146,7 @@ addBtn.setOnClickListener{
             finish()
         }
 
-
         takePhotoButton.setOnClickListener {
-            // 1. kolla om vi har tillåtelse if()
-            //  2. om vi inte har tillåtelse -> requestPErmission
-            //  3. om vi har tillåtelse då öppnar vi kameran
-            //4. override onRequestPermissionResult -> körs näranvändare tryckt ja gör punkt 3 här också
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
@@ -169,16 +167,20 @@ addBtn.setOnClickListener{
         }
 
         galleryButton.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                != PackageManager.PERMISSION_GRANTED
             ) {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                REQUEST_GALLERY)
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    REQUEST_GALLERY
+                )
             } else {
                 chooseImageGallery()
             }
         }
-
 
     }
 
@@ -216,7 +218,27 @@ addBtn.setOnClickListener{
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
 
+    }
 
+    private fun upLoadImageToFirebaseStorage() {
+        if (imageUri == null) return
+
+        val filename = UUID.randomUUID().toString()
+        val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
+
+        ref.putFile(imageUri!!)
+            .addOnSuccessListener {
+                Log.d(
+                    TAG,
+                    "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
+                )
+
+                ref.downloadUrl.addOnSuccessListener {
+                    Log.d(TAG, "File Location: $it")
+
+
+                }
+            }
     }
 
 
@@ -227,13 +249,16 @@ addBtn.setOnClickListener{
     }
 
 
+    var imageUri: Uri? = null
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null){
             imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+
         }
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
-            val imageUri = data.data
+            imageUri = data.data
             imageView.setImageURI(imageUri)
         }
 
@@ -275,13 +300,4 @@ class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
     }
 
 }
-
-
-
-
-
-
-
-
-
 
