@@ -17,12 +17,18 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.neighbour.data.Interest
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
 
 import com.example.neighbourproject.ui.search.SearchActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
@@ -49,10 +55,16 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
     lateinit var galleryButton: Button
-
     lateinit var takePhotoButton: Button
     lateinit var emailEditText: EditText
     var profile: People? = null
+    //For interest recyckler
+    lateinit var db : DatabaseReference
+    lateinit var addBtn : FloatingActionButton
+    lateinit var interestRecyclerView : RecyclerView
+    lateinit var userInterestList: ArrayList<Interest>
+    lateinit var interestAdapter : InterestAddAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +83,21 @@ open class EditProfileActivity : AppCompatActivity() {
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
         galleryButton = findViewById(R.id.galleryButton)
-
         takePhotoButton = findViewById(R.id.takePhotoButton)
         emailEditText = findViewById(R.id.emailEditText)
+        //for interest recycler view
+        interestRecyclerView = findViewById(R.id.addInterestRecycler)
+        interestRecyclerView.layoutManager = LinearLayoutManager(this)
+//interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
+        interestRecyclerView.setHasFixedSize(true)
+        userInterestList = arrayListOf<Interest>()
+        getUserData()
+/*addBtn = findViewById(R.id.addInterestFloatingBtn)
+addBtn.setOnClickListener{
+    addInterest()
+} */
+
+
 
 
         val adapter =
@@ -155,6 +179,33 @@ open class EditProfileActivity : AppCompatActivity() {
             }
         }
 
+
+    }
+
+    private fun getUserData() {
+        db = FirebaseDatabase.getInstance().getReference("neighbours")
+        Log.d("!!!", "onDataChange: 1 ")
+
+
+        db.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists())  {
+                    for (interestSnapshot in snapshot.children)  {
+                        val interest = interestSnapshot.getValue(Interest::class.java)
+                        userInterestList.add(interest!!)
+                        Log.d("!!!", "onDataChange: 2")
+                    }
+                    interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
+                    Log.d("!!!", "onDataChange: User  ${userInterestList.size} ")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        } )
 
     }
 
