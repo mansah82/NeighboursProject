@@ -91,10 +91,10 @@ class NeighbourActivity : AppCompatActivity() {
                 showPermissionRequestExplanation(
                     getString(R.string.location_dialog_permission),
                     getString(R.string.location_motivation),
-                ) { requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION) }
+                ) { requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION) }
             } else {
                 Log.d(TAG, "Just request permission")
-                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
             }
         }
     }

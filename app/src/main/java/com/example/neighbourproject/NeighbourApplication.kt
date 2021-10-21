@@ -2,7 +2,6 @@ package com.example.neighbourproject
 
 import android.app.Application
 import android.util.Log
-import androidx.viewbinding.BuildConfig
 import com.example.neighbourproject.location.LocationRepository
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursRepository
@@ -41,9 +40,9 @@ class NeighbourApplication: Application() {
             androidLogger()
             androidContext(this@NeighbourApplication)
             if(BuildConfig.BUILD_TYPE == TEST_BUILD)
-                modules((appModuleTest)) //For test purpose
+                modules(appModuleTest) //For test purpose
             else
-                modules((appModule)) //For a real firebase
+                modules(appModule) //For a real firebase
         }
     }
 }

@@ -122,6 +122,7 @@ open class EditProfileActivity : AppCompatActivity() {
             upLoadImageToFirebaseStorage()
 
             startActivity(Intent(this, SearchActivity::class.java))
+
         }
 
         takePhotoButton.setOnClickListener {
