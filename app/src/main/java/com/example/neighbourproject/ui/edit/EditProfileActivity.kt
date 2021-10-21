@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,8 @@ import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
@@ -20,8 +23,12 @@ import com.example.neighbourproject.neighbour.data.RelationshipStatus
 
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import org.koin.android.ext.android.get
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
@@ -48,9 +55,9 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
     lateinit var galleryButton: Button
-
     lateinit var takePhotoButton: Button
     lateinit var emailEditText: EditText
+
     var profile: People? = null
 
 
@@ -71,10 +78,10 @@ open class EditProfileActivity : AppCompatActivity() {
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
         galleryButton = findViewById(R.id.galleryButton)
-
         takePhotoButton = findViewById(R.id.takePhotoButton)
         emailEditText = findViewById(R.id.emailEditText)
 
+        val storageReference = Firebase.storage.reference
 
         val adapter =
             ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
@@ -98,6 +105,9 @@ open class EditProfileActivity : AppCompatActivity() {
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
             emailEditText.setText(profile?.email)
 
+            Glide.with(this)
+                .load(profile?.image)
+                .into(imageView)
         }
 
         saveButton.setOnClickListener {
@@ -111,13 +121,8 @@ open class EditProfileActivity : AppCompatActivity() {
             profile?.email = emailEditText.text.toString()
             upLoadImageToFirebaseStorage()
 
-            profile?.let {
-                model.editUserProfile(it)
-            }
-            val intent =  Intent(this, SearchActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            finish()
+            startActivity(Intent(this, SearchActivity::class.java))
+
         }
 
         takePhotoButton.setOnClickListener {
@@ -164,30 +169,32 @@ open class EditProfileActivity : AppCompatActivity() {
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
-
     }
 
     private fun upLoadImageToFirebaseStorage() {
-        if (imageUri == null) return
+        if (imageUri != null) {
+            val filename = UUID.randomUUID().toString()
+            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
 
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
+            ref.putFile(imageUri!!)
+                .addOnSuccessListener {
+                    Log.d(
+                        TAG,
+                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
+                    )
 
-        ref.putFile(imageUri!!)
-            .addOnSuccessListener {
-                Log.d(
-                    TAG,
-                    "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
-                )
+                    ref.downloadUrl.addOnSuccessListener {
+                        Log.d(TAG, "File Location: $it")
 
-                ref.downloadUrl.addOnSuccessListener {
-                    Log.d(TAG, "File Location: $it")
+                        profile?.image = it.toString()
+                        profile?.let {
+                            model.editUserProfile(it)
+                        }
 
-
+                    }
                 }
-            }
+        }
     }
-
 
     private fun chooseImageGallery() {
         val intent = Intent(Intent.ACTION_PICK )
@@ -195,14 +202,38 @@ open class EditProfileActivity : AppCompatActivity() {
         startActivityForResult(intent, IMAGE_CHOOSE)
     }
 
-
     var imageUri: Uri? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null){
-            imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+        val bitMap = data.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(bitMap)
 
+            val filename = UUID.randomUUID().toString()
+            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
+            val baos = ByteArrayOutputStream()
+            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            ref.putBytes(data)
+                .addOnSuccessListener {
+                    Log.d(
+                        TAG,
+                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
+                    )
+
+                    ref.downloadUrl.addOnSuccessListener {
+                        Log.d(TAG, "File Location: $it")
+
+                        profile?.image = it.toString()
+                        profile?.let {
+                            model.editUserProfile(it)
+                        }
+
+                    }
+
+                }
         }
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
             imageUri = data.data
@@ -233,7 +264,6 @@ open class EditProfileActivity : AppCompatActivity() {
         }
 
     }
-
 }
 
 class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
@@ -245,6 +275,5 @@ class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
-
 }
 
