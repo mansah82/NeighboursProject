@@ -1,5 +1,6 @@
 package com.example.neighbourproject.neighbour
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.neighbourproject.neighbour.data.*
@@ -19,13 +20,52 @@ class NeighboursRepositoryTest : NeighboursService {
 
     private var searchParameters: SearchParameters? = null
 
+    private val friendStatuses : MutableMap<String, FriendStatus> = mutableMapOf()
+
+    override fun getFriendsStatus(): Map<String, FriendStatus> {
+        return friendStatuses
+    }
+
+    override suspend fun setFriend(friendId: String) {
+        if(!myProfile.friends.contains(friendId)){
+            Log.d(TAG, "Adding Friend:  $friendId")
+            myProfile.friends.add(friendId)
+        }
+    }
+
     override fun setSearch(searchParameters: SearchParameters) {
         this.searchParameters = searchParameters
 
         doSearch()
     }
 
+    private fun updateFriendsMap(){
+        for (neighbour in neighbours) {
+            var requested : Boolean = false
+            var askedFor : Boolean = false
+            //if(neighbour) set the stuff
+            if(neighbour.friends.contains(myProfile.id))
+                requested = true
+            if(myProfile.friends.contains(neighbour.id))
+                askedFor = true
+
+            //Update the friends map
+            if(!requested && !askedFor){
+                friendStatuses[neighbour.id] = FriendStatus.NONE
+            }else if(!requested && askedFor ){
+                friendStatuses[neighbour.id] = FriendStatus.PENDING
+            }else if(requested && !askedFor ){
+                friendStatuses[neighbour.id] = FriendStatus.REQUEST
+            }else if(requested && askedFor ){
+                friendStatuses[neighbour.id] = FriendStatus.FRIENDS
+            }
+
+        }
+    }
+
     private fun doSearch(){
+        updateFriendsMap()
+
         searchParameters?.let { params ->
             val searchResult = mutableListOf<People>()
             val removeResult = mutableListOf<People>()
@@ -106,7 +146,10 @@ class NeighboursRepositoryTest : NeighboursService {
                 mutableListOf(
                     Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
                     Interest("Movies")
-                )
+                ),
+                friends = mutableListOf("Yroll"),
+                id = "Cea"
+
             )
         )
         neighbours.add(
@@ -119,6 +162,9 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Dance", Area("Ludvika")),
                     Interest("Movies", Area("Ludvika"))
                 ),
+                friends = mutableListOf("Yroll"),
+                id = "Daniel"
+
             )
         )
         neighbours.add(
@@ -181,7 +227,9 @@ class NeighboursRepositoryTest : NeighboursService {
             Interest("Name", Area("Location"))
         ),
         "url - to image",
-        RelationshipStatus.SINGLE
+        RelationshipStatus.SINGLE,
+        id = "Yroll",
+        friends = mutableListOf("Cea"),
     )
 
     override suspend fun signeIn(id: String){

@@ -1,9 +1,8 @@
 package com.example.neighbourproject.neighbour
 
 import androidx.lifecycle.LiveData
-import com.example.neighbourproject.neighbour.data.Gender
+import com.example.neighbourproject.neighbour.data.FriendStatus
 import com.example.neighbourproject.neighbour.data.People
-import com.example.neighbourproject.neighbour.data.Position
 
 interface NeighboursService {
     val userProfileUpdate : LiveData<People?>
@@ -17,4 +16,8 @@ interface NeighboursService {
     val searchResultUpdate: LiveData<List<People>>
 
     fun setSearch(searchParameters : SearchParameters)
+
+    fun getFriendsStatus(): Map<String, FriendStatus>
+
+    suspend fun setFriend(friendId: String)
 }
