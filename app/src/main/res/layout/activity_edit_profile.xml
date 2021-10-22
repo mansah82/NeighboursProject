@@ -10,16 +10,27 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/galleryButton"
+        android:layout_width="72dp"
+        android:layout_height="78dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circularPhoto"
+        app:layout_constraintEnd_toEndOf="@+id/circularPhoto"
+        app:layout_constraintStart_toStartOf="@+id/circularPhoto"
+        app:layout_constraintTop_toTopOf="@+id/circularPhoto"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circularPhoto"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        app:civ_border_width="4dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/nameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/white" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/nameEditText"
@@ -34,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@+id/lastnameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/circularPhoto" />
 
     <EditText
         android:id="@+id/interestsEditText"
@@ -72,29 +83,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/checkBox"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/checkbox"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/nameEditText"
-        app:layout_constraintHorizontal_bias="0.883"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nameEditText" />
-
-    <ImageView
-        android:id="@+id/checkBox3"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/interestsEditText"
-        app:srcCompat="@drawable/checkbox" />
 
     <Spinner
         android:id="@+id/genderSpinner"
@@ -135,7 +123,7 @@
         android:layout_height="wrap_content"
         android:text="Camera"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@id/circularPhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -173,15 +161,6 @@
         app:layout_constraintEnd_toEndOf="@+id/addInterestRecycler"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-
-    <Button
-        android:id="@+id/galleryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,9 +55,7 @@ open class EditProfileActivity : AppCompatActivity() {
     private val REQUEST_GALLERY = 1001;
     private val REQUEST_CAMERA = 1
 
-    lateinit var checkBox: ImageView
-    lateinit var checkBox3: ImageView
-    lateinit var imageView: ImageView
+    lateinit var circularPhoto: ImageView
     lateinit var nameEditText: EditText
     lateinit var lastnameEditText: EditText
     lateinit var ageEditText: EditText
@@ -65,7 +63,7 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var genderSpinner: Spinner
     lateinit var relationshipSpinner: Spinner
     lateinit var saveButton: Button
-    lateinit var galleryButton: Button
+    lateinit var galleryButton: ImageView
     lateinit var takePhotoButton: Button
     lateinit var emailEditText: EditText
 
@@ -86,9 +84,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         title = "NeighbourProject"
 
-        checkBox = findViewById(R.id.checkBox)
-        checkBox3 = findViewById(R.id.checkBox3)
-        imageView = findViewById(R.id.imageView)
+        circularPhoto = findViewById(R.id.circularPhoto)
         nameEditText = findViewById(R.id.nameEditText)
         lastnameEditText = findViewById(R.id.lastnameEditText)
         ageEditText = findViewById(R.id.ageEditText)
@@ -139,7 +135,7 @@ addBtn.setOnClickListener{
 
             Glide.with(this)
                 .load(profile?.image)
-                .into(imageView)
+                .into(circularPhoto)
         }
 
         saveButton.setOnClickListener {
@@ -271,7 +267,7 @@ addBtn.setOnClickListener{
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null){
         val bitMap = data.extras?.get("data") as Bitmap
-            imageView.setImageBitmap(bitMap)
+            circularPhoto.setImageBitmap(bitMap)
 
             val filename = UUID.randomUUID().toString()
             val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
@@ -300,8 +296,9 @@ addBtn.setOnClickListener{
         }
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
             imageUri = data.data
-            imageView.setImageURI(imageUri)
+            circularPhoto.setImageURI(imageUri)
         }
+
 
     }
 
