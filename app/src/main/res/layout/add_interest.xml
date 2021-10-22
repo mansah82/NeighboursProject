@@ -26,7 +26,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/addInterestET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -42,7 +42,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/userNo"
+            android:id="@+id/addLocationET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

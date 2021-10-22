@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
@@ -15,6 +16,7 @@ class InterestAddAdapter( val interestList:ArrayList<Interest>): RecyclerView.Ad
     inner class InterestViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val name: TextView = view.findViewById(R.id.interestTextView)
         val location: TextView = view.findViewById(R.id.locationTextView)
+        val remove : ImageView = view.findViewById(R.id.deleteInterestImage)
     }
 
     @SuppressLint("ResourceType")
@@ -31,6 +33,12 @@ class InterestAddAdapter( val interestList:ArrayList<Interest>): RecyclerView.Ad
         holder.name.text = itemPosition.name
         holder.location.text = itemPosition.location.toString()
         Log.d("!!!", "onBindViewHolder: ")
+
+        holder.remove.setOnClickListener {
+            interestList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position,interestList.size)
+        }
     }
 
     override fun getItemCount(): Int {

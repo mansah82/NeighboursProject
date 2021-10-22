@@ -65,6 +65,7 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var interestRecyclerView : RecyclerView
     lateinit var userInterestList: ArrayList<Interest>
     lateinit var interestAdapter : InterestAddAdapter
+    //lateinit var interest: Interest
 
 
 
@@ -93,12 +94,12 @@ open class EditProfileActivity : AppCompatActivity() {
 //interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
         interestRecyclerView.setHasFixedSize(true)
         userInterestList = arrayListOf<Interest>()
+
         getUserData()
 /*addBtn = findViewById(R.id.addInterestFloatingBtn)
 addBtn.setOnClickListener{
     addInterest()
 } */
-
 
 
 
@@ -133,9 +134,11 @@ addBtn.setOnClickListener{
             profile?.gender = Gender.valueOf(genderSpinner.selectedItem.toString())
             profile?.relationshipStatus =
                 RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
-            profile?.interests
+
             profile?.email = emailEditText.text.toString()
+            bind(Interest())
             upLoadImageToFirebaseStorage()
+
 
             profile?.let {
                 model.editUserProfile(it)
@@ -183,6 +186,10 @@ addBtn.setOnClickListener{
         }
 
     }
+    fun bind(newInterest: Interest){
+        var interest = newInterest
+    interest.name = interestsEditText.text.toString() }
+
 
     private fun getUserData() {
         db = FirebaseDatabase.getInstance().getReference("neighbours")
