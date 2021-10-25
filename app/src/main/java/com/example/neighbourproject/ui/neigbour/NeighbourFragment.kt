@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
 import com.example.neighbourproject.neighbour.data.Area
 import com.example.neighbourproject.neighbour.data.FriendStatus
+import com.example.neighbourproject.ui.chat.LatestMessageActivity
 import com.example.neighbourproject.ui.search.ClickListener
 import com.example.neighbourproject.ui.search.SearchRecyclerAdapter
 
