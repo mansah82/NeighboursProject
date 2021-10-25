@@ -58,12 +58,10 @@ class HomePageActivity : AppCompatActivity() {
         model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
         binding.loginButton.setOnClickListener {
-            val intent = Intent(this, LatestMessageActivity::class.java)
-            startActivity(intent)
-           //if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
-            //model.signInUser(
-                //binding.usernameEditText.text.toString(),
-               // binding.passwordEditText.text.toString() )
+            if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
+                model.signInUser(
+                binding.usernameEditText.text.toString(),
+                binding.passwordEditText.text.toString() )
         }
 
 
