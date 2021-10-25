@@ -73,9 +73,22 @@ class NeighbourFragment : Fragment(), InterestClickListener {
                 model.setFriend(it.id)
             }
         }
+
+        binding.neighbourEmail.setOnClickListener {
+            model.getNeighbour()?.let {
+                val email = Intent(Intent.ACTION_SEND)
+                email.putExtra(Intent.EXTRA_EMAIL, it.email)
+                email.putExtra(Intent.EXTRA_SUBJECT, "Please be my friende")
+                email.putExtra(Intent.EXTRA_TEXT, "Hi Stranger!")
+
+                email.type = "message/rfc822"
+
+                startActivity(Intent.createChooser(email, "Choose an Email client :"))
+            }
+        }
     }
 
-    override fun onClick(area: Area) {
+    override fun onClickInterest(area: Area) {
         val position = area.position
 
         val gmmIntentUri = if (position != null) {
