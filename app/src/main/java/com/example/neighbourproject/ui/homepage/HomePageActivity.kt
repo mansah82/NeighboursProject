@@ -14,6 +14,7 @@ import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.example.neighbourproject.user.EvaluationHelper
+import com.example.neighbourproject.user.ExtrasKey
 import com.example.neighbourproject.user.LoginStatus
 
 class HomePageActivity : AppCompatActivity() {
@@ -29,6 +30,14 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        intent.getStringExtra(ExtrasKey.KEY_USER_NAME)?.let {
+            binding.usernameEditText.setText(it)
+        }
+        intent.getStringExtra(ExtrasKey.KEY_PASSWORD)?.let {
+            binding.passwordEditText.setText(it)
+        }
+
         val userLoginObserver = Observer<LoginStatus> {
             Log.d(TAG, "Login observer: ${it.success}-${it.failed}")
             if (it.success != null) {

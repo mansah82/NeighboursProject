@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivitySignUpBinding
 import com.example.neighbourproject.ui.homepage.HomePageActivity
+import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 import com.example.neighbourproject.user.EvaluationHelper
+import com.example.neighbourproject.user.ExtrasKey
 import com.example.neighbourproject.user.RegisterStatus
 
 class SignUpActivity : AppCompatActivity() {
@@ -27,14 +29,24 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userResisterObserver = Observer<RegisterStatus> {
-            if (it.success != null) {
-                startActivity(Intent(this, HomePageActivity::class.java))
+        val userResisterObserver = Observer<RegisterStatus> { status ->
+            if (status.success != null) {
+                val intent = Intent(this, HomePageActivity::class.java).also {
+                    it.putExtra(
+                        ExtrasKey.KEY_USER_NAME,
+                        EvaluationHelper.evaluateUsername(binding.editTextEmailAddress.text.toString())
+                    )
+                    it.putExtra(
+                        ExtrasKey.KEY_PASSWORD,
+                        EvaluationHelper.evaluatePassword(binding.editTextPassword.text.toString())
+                    )
+                }
+                startActivity(intent)
                 finish()
             } else {
-                if (it.failed != null) {
+                if (status.failed != null) {
                     Toast.makeText(
-                        baseContext, "Failed: ${it.failed}",
+                        baseContext, "Failed: ${status.failed}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
