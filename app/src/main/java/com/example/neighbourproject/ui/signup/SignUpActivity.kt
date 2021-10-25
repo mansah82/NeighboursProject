@@ -2,15 +2,15 @@ package com.example.neighbourproject.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.example.neighbourproject.R
+import com.example.neighbourproject.databinding.ActivitySignUpBinding
 import com.example.neighbourproject.ui.homepage.HomePageActivity
+import com.example.neighbourproject.user.EvaluationHelper
 import com.example.neighbourproject.user.RegisterStatus
 
 class SignUpActivity : AppCompatActivity() {
@@ -20,17 +20,12 @@ class SignUpActivity : AppCompatActivity() {
 
     private val model: SignUpViewModel by viewModels()
 
-    private lateinit var signUpButton: Button
-    private lateinit var editTextEmail: EditText
-    private lateinit var editTextPassword: EditText
+    private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
-
-        editTextEmail = findViewById(R.id.editTextEmailAddress)
-        editTextPassword = findViewById(R.id.editTextPassword)
-        signUpButton = findViewById(R.id.signUpButton)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val userResisterObserver = Observer<RegisterStatus> {
             if (it.success != null) {
@@ -47,24 +42,28 @@ class SignUpActivity : AppCompatActivity() {
         }
         model.getUserRegisterUpdate().observe(this@SignUpActivity, userResisterObserver)
 
-        signUpButton.setOnClickListener {
-            signUpUser()
+        binding.editTextEmailAddress.doAfterTextChanged {
+            if (EvaluationHelper.evaluateUsername(binding.editTextEmailAddress.text.toString()) == null) {
+                binding.editTextEmailAddress.error = getString(R.string.wrong_username_format)
+            }
         }
-    }
 
-    private fun signUpUser() {
-        if (!Patterns.EMAIL_ADDRESS.matcher(editTextEmail.text.toString())
-                .matches() || editTextEmail.text.toString().isEmpty()
-        ) {
-            editTextEmail.error = "Please enter valid email"
-            editTextEmail.requestFocus()
-            return
+        binding.editTextPassword.doAfterTextChanged {
+            if (EvaluationHelper.evaluatePassword(binding.editTextPassword.text.toString()) == null) {
+                binding.editTextPassword.error = getString(R.string.wrong_password_format)
+            }
         }
-        if (editTextPassword.text.toString().isEmpty()) {
-            editTextPassword.error = "Enter a password"
-            editTextPassword.requestFocus()
-            return
+
+        binding.signUpButton.setOnClickListener {
+            if (EvaluationHelper.evaluateUsername(binding.editTextEmailAddress.text.toString()) != null &&
+                EvaluationHelper.evaluatePassword(binding.editTextPassword.text.toString()) != null
+            )
+                model.resisterUser(
+                    EvaluationHelper.evaluateUsername(binding.editTextEmailAddress.text.toString())
+                        ?: "",
+                    EvaluationHelper.evaluatePassword(binding.editTextPassword.text.toString())
+                        ?: ""
+                )
         }
-        model.resisterUser(editTextEmail.text.toString(), editTextPassword.text.toString())
     }
 }
