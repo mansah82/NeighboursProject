@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
+import com.example.neighbourproject.ui.chat.LatestMessageActivity
+import com.example.neighbourproject.ui.chat.NewMessageActivity
 import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.example.neighbourproject.user.LoginStatus
@@ -27,7 +29,6 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val userLoginObserver = Observer<LoginStatus> {
             Log.d(TAG, "Login observer: ${it.success}-${it.failed}")
             if (it.success != null) {
@@ -57,12 +58,14 @@ class HomePageActivity : AppCompatActivity() {
         model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
         binding.loginButton.setOnClickListener {
-            if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
-            model.signInUser(
-                binding.usernameEditText.text.toString(),
-                binding.passwordEditText.text.toString()
-            )
+            val intent = Intent(this, LatestMessageActivity::class.java)
+            startActivity(intent)
+           //if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
+            //model.signInUser(
+                //binding.usernameEditText.text.toString(),
+               // binding.passwordEditText.text.toString() )
         }
+
 
         binding.usernameEditText.doAfterTextChanged {
             checkIfCorrectEmailFormat()
@@ -93,5 +96,7 @@ class HomePageActivity : AppCompatActivity() {
             return false
         }
         return true
+
     }
+
 }
