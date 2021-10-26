@@ -15,7 +15,7 @@
     <string name="login_register_button">SIGN UP</string>
     <string name="sign_up_text_view">Hello there stranger!</string>
     <string name="wrong_username_format">Please enter a valid email</string>
-    <string name="wrong_password_format">Password must contain 6 letters, at least one lowercase and 1 uppercase</string>
+    <string name="wrong_password_format">Password must contain 6 letters, at least one lowercase and one uppercase</string>
     <string name="signup_enter_password">Enter password</string>
     <string name="signup_sign_up">Sign Up</string>
     <string name="signup_enter_email">Enter email</string>
