@@ -48,8 +48,8 @@ class NeighboursRepositoryTest : NeighboursService {
 
     private fun updateFriendsMap() {
         for (neighbour in neighbours) {
-            var requested: Boolean = false
-            var askedFor: Boolean = false
+            var requested = false
+            var askedFor = false
             //if(neighbour) set the stuff
             if (neighbour.friends.contains(myProfile.id))
                 requested = true

@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivitySignUpBinding
 import com.example.neighbourproject.ui.homepage.HomePageActivity
-import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 import com.example.neighbourproject.user.EvaluationHelper
 import com.example.neighbourproject.user.ExtrasKey
 import com.example.neighbourproject.user.RegisterStatus

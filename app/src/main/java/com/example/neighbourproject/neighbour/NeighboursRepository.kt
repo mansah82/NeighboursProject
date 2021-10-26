@@ -14,7 +14,7 @@ class NeighboursRepository : NeighboursService {
         private const val PERSON_COLLECTION = "neighbours"
     }
 
-    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+    private val searchResultRemote: MutableLiveData<List<People>> = MutableLiveData(listOf())
 
     override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
@@ -28,7 +28,7 @@ class NeighboursRepository : NeighboursService {
 
     private val db = Firebase.firestore
 
-    private val friendStatuses : MutableMap<String, FriendStatus> = mutableMapOf()
+    private val friendStatuses: MutableMap<String, FriendStatus> = mutableMapOf()
 
     override fun getFriendsStatus(): Map<String, FriendStatus> {
         return friendStatuses
@@ -36,7 +36,7 @@ class NeighboursRepository : NeighboursService {
 
     override suspend fun addFriend(friendId: String) {
         userProfileRemote.value?.let {
-            if(!it.friends.contains(friendId))
+            if (!it.friends.contains(friendId))
                 it.friends.add(friendId)
             updateUserProfile(it)
         }
@@ -44,7 +44,7 @@ class NeighboursRepository : NeighboursService {
 
     override suspend fun removeFriend(friendId: String) {
         userProfileRemote.value?.let {
-            if(it.friends.contains(friendId))
+            if (it.friends.contains(friendId))
                 it.friends.remove(friendId)
             updateUserProfile(it)
         }
@@ -70,8 +70,8 @@ class NeighboursRepository : NeighboursService {
                     if (item != null) {
                         neighbours.add(item)
                         //Remove my profile from this list
-                        if(myProfileId != ""){
-                            if(item.id == myProfileId){
+                        if (myProfileId != "") {
+                            if (item.id == myProfileId) {
                                 neighbours.remove(item)
                             }
                         }
@@ -82,6 +82,7 @@ class NeighboursRepository : NeighboursService {
             }
         }
     }
+
     private var myProfileId = ""
 
     override suspend fun signeIn(id: String) {
@@ -126,11 +127,11 @@ class NeighboursRepository : NeighboursService {
         doSearch()
     }
 
-    private fun updateFriendsMap(){
+    private fun updateFriendsMap() {
         userProfileRemote.value?.let {
             for (neighbour in neighbours) {
-                var requested: Boolean = false
-                var askedFor: Boolean = false
+                var requested = false
+                var askedFor = false
                 //if(neighbour) set the stuff
                 if (neighbour.friends.contains(myProfileId))
                     requested = true
@@ -151,7 +152,7 @@ class NeighboursRepository : NeighboursService {
         }
     }
 
-    private fun doSearch(){
+    private fun doSearch() {
         searchParameters?.let { params ->
             val searchResult = mutableListOf<People>()
             val removeResult = mutableListOf<People>()
