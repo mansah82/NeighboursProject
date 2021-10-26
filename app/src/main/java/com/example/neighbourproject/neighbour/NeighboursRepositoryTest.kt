@@ -244,10 +244,14 @@ class NeighboursRepositoryTest : NeighboursService {
         Gender.MALE,
         58,
         mutableListOf(
-            Interest("Name", Area("Location"))
+            Interest("Tennis", Area()),
+            Interest("Dance", Area("Täby", Position(59.2889, 17.8888))),
+            Interest("Dance", Area("Ludvika")),
+            Interest("Movies", Area("Ludvika")),
+            Interest("Go-cart", Area("Avesta")),
+            Interest("Ninjas", Area("Avesta"))
         ),
-        "url - to image",
-        RelationshipStatus.SINGLE,
+        relationshipStatus = RelationshipStatus.SINGLE,
         id = "Yroll",
         friends = mutableListOf("Beata", "Daniel", "Gunhild"),
     )

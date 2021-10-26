@@ -4,156 +4,88 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.widget.doAfterTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
-
-import com.example.neighbourproject.R
+import com.example.neighbourproject.databinding.ActivityEditProfileBinding
 import com.example.neighbourproject.neighbour.data.Gender
-import com.example.neighbourproject.neighbour.data.Interest
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
-
 import com.example.neighbourproject.ui.search.SearchActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.database.*
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import org.koin.android.ext.android.get
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.util.*
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EditProfileActivity"
+        private const val IMAGE_CHOOSE = 1000
+        private const val REQUEST_GALLERY = 1001
+        private const val REQUEST_CAMERA = 1
+        private const val REQUEST_CODE_CAMERA = 200
     }
-
 
     private val model: EditViewModel by viewModels()
 
-    private val IMAGE_CHOOSE = 1000;
-    private val REQUEST_GALLERY = 1001;
-    private val REQUEST_CAMERA = 1
+    private lateinit var binding: ActivityEditProfileBinding
 
-    lateinit var circularPhoto: ImageView
-    lateinit var nameEditText: EditText
-    lateinit var lastnameEditText: EditText
-    lateinit var ageEditText: EditText
-    lateinit var interestsEditText: EditText
-    lateinit var genderSpinner: Spinner
-    lateinit var relationshipSpinner: Spinner
-    lateinit var saveButton: Button
-    lateinit var galleryButton: ImageView
-    lateinit var takePhotoButton: Button
-    lateinit var emailEditText: EditText
-
-    var profile: People? = null
-    //For interest recyckler
-    lateinit var db : DatabaseReference
-    lateinit var addBtn : FloatingActionButton
-    lateinit var interestRecyclerView : RecyclerView
-    lateinit var userInterestList: ArrayList<Interest>
-    lateinit var interestAdapter : InterestAddAdapter
-    //lateinit var interest: Interest
-
-
+    private lateinit var profile: People
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        title = "NeighbourProject"
+        profile = model.getUserProfile() ?: People()
 
-        circularPhoto = findViewById(R.id.circularPhoto)
-        nameEditText = findViewById(R.id.nameEditText)
-        lastnameEditText = findViewById(R.id.lastnameEditText)
-        ageEditText = findViewById(R.id.ageEditText)
-        interestsEditText = findViewById(R.id.interestsEditText)
-        genderSpinner = findViewById(R.id.genderSpinner)
-        relationshipSpinner = findViewById(R.id.relationshipSpinner)
-        saveButton = findViewById(R.id.button)
-        galleryButton = findViewById(R.id.galleryButton)
-        takePhotoButton = findViewById(R.id.takePhotoButton)
-        emailEditText = findViewById(R.id.emailEditText)
-        //for interest recycler view
-        interestRecyclerView = findViewById(R.id.addInterestRecycler)
-        interestRecyclerView.layoutManager = LinearLayoutManager(this)
-//interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
-        interestRecyclerView.setHasFixedSize(true)
-        userInterestList = arrayListOf<Interest>()
-
-        getUserData()
-/*addBtn = findViewById(R.id.addInterestFloatingBtn)
-addBtn.setOnClickListener{
-    addInterest()
-} */
-
-
-        val storageReference = Firebase.storage.reference
-
-        val adapter =
-            ArrayAdapter<Gender>(this, android.R.layout.simple_spinner_item, Gender.values())
-        genderSpinner.adapter = adapter
-
-        val adapter2 = ArrayAdapter<RelationshipStatus>(
-            this,
-            android.R.layout.simple_spinner_item,
-            RelationshipStatus.values()
-        )
-        relationshipSpinner.adapter = adapter2
-
-        profile = model.getUserProfile()
-        if (profile == null) {
-            profile = People()
-        } else {
-            nameEditText.setText(profile?.firstName)
-            lastnameEditText.setText(profile?.lastName)
-            ageEditText.setText(profile?.age.toString())
-            genderSpinner.setSelection(profile?.gender!!.ordinal)
-            relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
-            emailEditText.setText(profile?.email)
-
+        if (profile.image != "") {
             Glide.with(this)
-                .load(profile?.image)
-                .into(circularPhoto)
+                .load(profile.image)
+                .into(binding.circularPhoto)
         }
 
-        saveButton.setOnClickListener {
-            profile?.firstName = nameEditText.text.toString()
-            profile?.lastName = lastnameEditText.text.toString()
-            profile?.age = ageEditText.text.toString().toInt()
-            profile?.gender = Gender.valueOf(genderSpinner.selectedItem.toString())
-            profile?.relationshipStatus =
-                RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
+        binding.genderSpinner.adapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values())
 
-            profile?.email = emailEditText.text.toString()
-            bind(Interest())
-            upLoadImageToFirebaseStorage()
+        binding.relationshipSpinner.adapter =
+            ArrayAdapter(
+                this, android.R.layout.simple_spinner_item, RelationshipStatus.values()
+            )
+
+        binding.nameEditText.setText(profile.firstName)
+        binding.lastnameEditText.setText(profile.lastName)
+        binding.ageEditText.setText(profile.age.toString())
+        binding.genderSpinner.setSelection(profile.gender.ordinal)
+        binding.relationshipSpinner.setSelection(profile.relationshipStatus.ordinal)
+
+        binding.emailEditText.setText(profile.email)
+
+        binding.addInterestRecycler.adapter = InterestAddAdapter(profile)
+
+        binding.saveButton.setOnClickListener {
+            profile.firstName = binding.nameEditText.text.toString()
+            profile.lastName = binding.lastnameEditText.text.toString()
+            profile.age = binding.ageEditText.text.toString().toInt()
+            profile.gender = Gender.valueOf(binding.genderSpinner.selectedItem.toString())
+            profile.relationshipStatus =
+                RelationshipStatus.valueOf(binding.relationshipSpinner.selectedItem.toString())
+
+            profile.email = binding.emailEditText.text.toString()
+
+
+            model.editUserProfile(profile)
+            //upLoadImageToFirebaseStorage()
 
             startActivity(Intent(this, SearchActivity::class.java))
         }
 
-        takePhotoButton.setOnClickListener {
+        binding.takePhotoButton.setOnClickListener {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
@@ -164,16 +96,13 @@ addBtn.setOnClickListener{
                     arrayOf(android.Manifest.permission.CAMERA),
                     REQUEST_CAMERA
                 )
-
             } else {
                 Log.d(TAG, "onCreate: Permission is already granted!")
                 capturePhoto()
-
             }
-
         }
 
-        galleryButton.setOnClickListener {
+        binding.circularPhoto.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -188,44 +117,9 @@ addBtn.setOnClickListener{
                 chooseImageGallery()
             }
         }
-
-    }
-    fun bind(newInterest: Interest){
-        var interest = newInterest
-    interest.name = interestsEditText.text.toString() }
-
-
-    private fun getUserData() {
-        db = FirebaseDatabase.getInstance().getReference("neighbours")
-        Log.d("!!!", "onDataChange: 1 ")
-
-
-        db.addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists())  {
-                    for (interestSnapshot in snapshot.children)  {
-                        val interest = interestSnapshot.getValue(Interest::class.java)
-                        userInterestList.add(interest!!)
-                        Log.d("!!!", "onDataChange: 2")
-                    }
-                    interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
-                    Log.d("!!!", "onDataChange: User  ${userInterestList.size} ")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        } )
-
     }
 
-    val REQUEST_CODE_CAMERA = 200
-
-    fun capturePhoto() {
-
+    private fun capturePhoto() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
     }
@@ -234,7 +128,7 @@ addBtn.setOnClickListener{
         if (imageUri != null) {
             val filename = UUID.randomUUID().toString()
             val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-
+            Log.d(TAG, "upLoadImageToFirebaseStorage ${ref.toString()}")
             ref.putFile(imageUri!!)
                 .addOnSuccessListener {
                     Log.d(
@@ -242,12 +136,12 @@ addBtn.setOnClickListener{
                         "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
                     )
 
-                    ref.downloadUrl.addOnSuccessListener {
-                        Log.d(TAG, "File Location: $it")
+                    ref.downloadUrl.addOnSuccessListener { uri ->
+                        Log.d(TAG, "File Location: $uri")
 
-                        profile?.image = it.toString()
-                        profile?.let {
-                            model.editUserProfile(it)
+                        profile.image = uri.toString()
+                        profile.let { people ->
+                            model.editUserProfile(people)
                         }
 
                     }
@@ -256,26 +150,26 @@ addBtn.setOnClickListener{
     }
 
     private fun chooseImageGallery() {
-        val intent = Intent(Intent.ACTION_PICK )
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_CHOOSE)
     }
 
-    var imageUri: Uri? = null
+    private var imageUri: Uri? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null){
-        val bitMap = data.extras?.get("data") as Bitmap
-            circularPhoto.setImageBitmap(bitMap)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null) {
+            val bitMap = data.extras?.get("data") as Bitmap
+            binding.circularPhoto.setImageBitmap(bitMap)
 
             val filename = UUID.randomUUID().toString()
             val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
             val baos = ByteArrayOutputStream()
             bitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
+            val fileData = baos.toByteArray()
 
-            ref.putBytes(data)
+            ref.putBytes(fileData)
                 .addOnSuccessListener {
                     Log.d(
                         TAG,
@@ -284,22 +178,17 @@ addBtn.setOnClickListener{
 
                     ref.downloadUrl.addOnSuccessListener {
                         Log.d(TAG, "File Location: $it")
-
-                        profile?.image = it.toString()
-                        profile?.let {
+                        profile.image = it.toString()
+                        profile.let {
                             model.editUserProfile(it)
                         }
-
                     }
-
                 }
         }
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
             imageUri = data.data
-            circularPhoto.setImageURI(imageUri)
+            binding.circularPhoto.setImageURI(imageUri)
         }
-
-
     }
 
     override fun onRequestPermissionsResult(
@@ -316,24 +205,11 @@ addBtn.setOnClickListener{
             }
         }
         if (requestCode == REQUEST_GALLERY) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Granted!")
             } else {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
             }
         }
-
     }
 }
-
-class SpinnerActivity : Activity(), AdapterView.OnItemSelectedListener {
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-}
-

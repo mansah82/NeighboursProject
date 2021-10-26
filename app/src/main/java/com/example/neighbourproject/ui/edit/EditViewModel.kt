@@ -23,8 +23,13 @@ class EditViewModel: ViewModel(), KoinComponent {
     }
 
     fun editUserProfile(profile: People) {
+        Log.d(TAG, "Profile: $profile")
         viewModelScope.launch(Dispatchers.IO) {
             neighbourService.updateUserProfile(profile)
         }
+    }
+
+    fun getCurrentPosition(): Position?{
+        return locationService.getLastPosition()
     }
 }
