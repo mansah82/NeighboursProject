@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -15,7 +16,8 @@ import com.example.neighbourproject.neighbour.data.People
 class SearchRecyclerAdapter(
     private val neighboursSearch: LiveData<List<People>>,
     lifecycleOwner: LifecycleOwner,
-    private val clickListener: ClickListener) :
+    private val clickListener: ClickListener,
+    private val model: SearchViewModel) :
     RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder>() {
 
     companion object{
@@ -37,6 +39,7 @@ class SearchRecyclerAdapter(
         val neighbourAgeTextView: TextView = view.findViewById(R.id.neighbour_age)
         val neighbourGenderTextView: TextView = view.findViewById(R.id.neighbour_gender)
         val neighbourInfoTextView: TextView = view.findViewById(R.id.neighbour_info)
+        val neighbourImage : ImageView = view.findViewById(R.id.imageView)
         private lateinit var people: People
 
         fun bind(newPeople: People){
@@ -68,6 +71,7 @@ class SearchRecyclerAdapter(
             viewHolder.neighbourAgeTextView.text = it[position].age.toString()
             viewHolder.neighbourGenderTextView.text = it[position].gender.text
             viewHolder.neighbourInfoTextView.text = infoString(it[position])
+            model.loadImage(it[position].image, viewHolder.neighbourImage)
 
             viewHolder.bind(it[position])
         }

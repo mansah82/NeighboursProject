@@ -1,10 +1,10 @@
 package com.example.neighbourproject.ui.edit
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,13 +19,6 @@ import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
 import com.example.neighbourproject.ui.search.SearchActivity
-import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
-import java.util.*
-import android.os.Environment
-import android.os.Environment.getExternalStoragePublicDirectory
-import java.io.File
-
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
@@ -84,7 +77,6 @@ open class EditProfileActivity : AppCompatActivity() {
             model.editUserProfile(profile)
 
             //TODO decide when to push image to firestore
-
             startActivity(Intent(this, SearchActivity::class.java))
             finish()
         }

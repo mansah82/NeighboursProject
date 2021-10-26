@@ -1,6 +1,8 @@
 package com.example.neighbourproject.ui.neigbour
 
+import android.content.Context
 import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.neighbourproject.location.LocationService
@@ -8,6 +10,7 @@ import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.data.FriendStatus
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.Position
+import com.example.neighbourproject.storage.StorageService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -20,6 +23,7 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     private val neighboursService: NeighboursService by inject()
     private val locationService: LocationService by inject()
+    private val storageService: StorageService by inject()
 
     private var people: People? = null
 
@@ -55,5 +59,9 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch(Dispatchers.IO) {
             neighboursService.removeFriend(friendId)
         }
+    }
+
+    fun loadImage(context: Context, url: String, view: ImageView){
+        storageService.loadImage(context, url, view)
     }
 }
