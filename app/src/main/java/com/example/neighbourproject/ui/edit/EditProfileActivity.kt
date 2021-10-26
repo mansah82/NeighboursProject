@@ -66,7 +66,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         binding.emailEditText.setText(profile.email)
 
-        binding.addInterestRecycler.adapter = InterestAddAdapter(profile)
+        binding.addInterestRecycler.adapter = InterestAddAdapter(profile, model)
 
         binding.saveButton.setOnClickListener {
             profile.firstName = binding.nameEditText.text.toString()
