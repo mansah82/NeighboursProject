@@ -1,6 +1,5 @@
 package com.example.neighbourproject.ui.edit
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,9 @@ import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Interest
 
 class InterestAddAdapter(private val interestList:MutableList<Interest>): RecyclerView.Adapter<InterestAddAdapter.InterestViewHolder>() {
-    val TAG = "InterestAddAdapter"
+    companion object {
+        private const val TAG = "InterestAddAdapter"
+    }
     inner class InterestViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val name: TextView = view.findViewById(R.id.interestTextView)
         val location: TextView = view.findViewById(R.id.locationTextView)
@@ -21,7 +22,7 @@ class InterestAddAdapter(private val interestList:MutableList<Interest>): Recycl
         val removeButton : ImageView = view.findViewById(R.id.deleteInterestImage)
     }
 
-    @SuppressLint("ResourceType")
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val v = inflater.inflate(R.layout.item_interest_profile,parent,false)
@@ -41,16 +42,11 @@ class InterestAddAdapter(private val interestList:MutableList<Interest>): Recycl
             }
 
         }
-
         Log.d(TAG, "onBindViewHolder: ")
-
         holder.removeButton.setOnClickListener {
             interestList.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position,interestList.size)
-
-
-
         }
     }
 
