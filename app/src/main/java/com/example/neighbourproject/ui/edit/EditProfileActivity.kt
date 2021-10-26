@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
@@ -21,14 +22,16 @@ import com.example.neighbourproject.ui.search.SearchActivity
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 import java.util.*
+import android.os.Environment
+import android.os.Environment.getExternalStoragePublicDirectory
+import java.io.File
+
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EditProfileActivity"
-        private const val IMAGE_CHOOSE = 1000
         private const val REQUEST_GALLERY = 1001
-        private const val REQUEST_CAMERA = 1
-        private const val REQUEST_CODE_CAMERA = 200
+        private const val REQUEST_CAMERA = 2002
     }
 
     private val model: EditViewModel by viewModels()
@@ -78,32 +81,34 @@ open class EditProfileActivity : AppCompatActivity() {
 
             profile.email = binding.emailEditText.text.toString()
 
-
             model.editUserProfile(profile)
-            //upLoadImageToFirebaseStorage()
+
+            //TODO decide when to push image to firestore
 
             startActivity(Intent(this, SearchActivity::class.java))
+            finish()
         }
 
+        //TODO perhaps a selector to select image
         binding.takePhotoButton.setOnClickListener {
-
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.CAMERA
+                )
                 != PackageManager.PERMISSION_GRANTED
             ) {
-                Log.d(TAG, "onCreate: Permission not granted")
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.CAMERA),
                     REQUEST_CAMERA
                 )
             } else {
-                Log.d(TAG, "onCreate: Permission is already granted!")
                 capturePhoto()
             }
         }
 
         binding.circularPhoto.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
+           if (ActivityCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 )
@@ -119,12 +124,43 @@ open class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun capturePhoto() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
+    private val cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            result.data?.let { intent ->
+                Log.d(TAG, "Camera: $intent")
+                val bitMap = intent.extras?.get("data") as Bitmap
+                Log.d(TAG, "Camera: - bitmap $bitMap")
+                binding.circularPhoto.setImageBitmap(bitMap)
+                //TODO Write stuff to firestore
+            }
+        }
     }
 
-    private fun upLoadImageToFirebaseStorage() {
+    private fun capturePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        //TODO save picture to internal storage
+        cameraResultLauncher.launch(intent)
+    }
+
+    private val galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            result.data?.let { intent ->
+                Log.d(TAG, "Gallery: $intent")
+                val url = intent.data
+                Log.d(TAG, "Gallery - url: $url")
+                binding.circularPhoto.setImageURI(url)
+                //TODO Write stuff to firestore
+            }
+        }
+    }
+
+    private fun chooseImageGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        galleryResultLauncher.launch(intent)
+    }
+
+   /* private fun upLoadImageToFirebaseStorage() {
         if (imageUri != null) {
             val filename = UUID.randomUUID().toString()
             val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
@@ -138,25 +174,13 @@ open class EditProfileActivity : AppCompatActivity() {
 
                     ref.downloadUrl.addOnSuccessListener { uri ->
                         Log.d(TAG, "File Location: $uri")
-
                         profile.image = uri.toString()
-                        profile.let { people ->
-                            model.editUserProfile(people)
-                        }
-
                     }
                 }
         }
     }
 
-    private fun chooseImageGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_CHOOSE)
-    }
-
     private var imageUri: Uri? = null
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null) {
@@ -188,9 +212,11 @@ open class EditProfileActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
             imageUri = data.data
             binding.circularPhoto.setImageURI(imageUri)
+
+            upLoadImageToFirebaseStorage()
         }
     }
-
+*/
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -200,6 +226,7 @@ open class EditProfileActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Granted!")
+                capturePhoto()
             } else {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
             }
@@ -207,6 +234,7 @@ open class EditProfileActivity : AppCompatActivity() {
         if (requestCode == REQUEST_GALLERY) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Granted!")
+                chooseImageGallery()
             } else {
                 Log.d(TAG, "onRequestPermissionsResult: Permission Denied!")
             }
