@@ -16,10 +16,11 @@ class SearchViewModel : ViewModel(), KoinComponent {
         return repository.getNeighbourById(id)
     }
 
-    fun getSearchObserver():LiveData<List<People>>{
+    fun getSearchObserver(): LiveData<List<People>> {
         return repository.searchResultUpdate
     }
-    fun setSearch(searchParameters: SearchParameters){
+
+    fun setSearch(searchParameters: SearchParameters) {
         repository.setSearch(searchParameters)
     }
 }

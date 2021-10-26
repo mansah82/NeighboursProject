@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.NeighbourFragmentBinding
 import com.example.neighbourproject.neighbour.data.Area
 import com.example.neighbourproject.neighbour.data.FriendStatus
-import com.example.neighbourproject.ui.chat.LatestMessageActivity
-import com.example.neighbourproject.ui.search.ClickListener
-import com.example.neighbourproject.ui.search.SearchRecyclerAdapter
 
 class NeighbourFragment : Fragment(), InterestClickListener {
     companion object {
@@ -50,32 +49,108 @@ class NeighbourFragment : Fragment(), InterestClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.neighbourEmail.isVisible = false
-        
+
         model.getNeighbour()?.let {
             binding.neighbourName.text = it.firstName.plus(" ").plus(it.lastName)
             binding.neighbourAge.text = it.age.toString()
             binding.neighbourGender.text = it.gender.text
             binding.neighbourStatus.text = it.relationshipStatus.text
             binding.neighbourEmail.text = it.email
-            if(model.getFriendsStatus().containsKey(it.id)){
-                binding.neighbourFriendStatus.text = model.getFriendsStatus()[it.id].toString()
-                if(model.getFriendsStatus()[it.id] == FriendStatus.FRIENDS)
 
+            val friends = model.getFriendsStatus()[it.id] ?: FriendStatus.NONE
+
+            binding.neighbourFriendStatus.text = friends.toString()
+
+            when (friends) {
+                FriendStatus.NONE -> {
+                    setAddIcon()
+                }
+                FriendStatus.REQUESTED -> {
+                    setAddIcon()
+                }
+                FriendStatus.PENDING -> {
+                    setRemoveIcon()
+                }
+                FriendStatus.FRIENDS -> {
+                    setRemoveIcon()
                     binding.neighbourEmail.isVisible = true
-            }else{
-                binding.neighbourFriendStatus.text = FriendStatus.NONE.toString()
+                }
             }
         }
 
         binding.friendRequestButton.setOnClickListener {
             Log.d(TAG, "Clicked on add friend")
             model.getNeighbour()?.let {
-                model.setFriend(it.id)
+                when (model.getFriendsStatus()[it.id] ?: FriendStatus.NONE) {
+                    FriendStatus.NONE -> {
+                        model.addFriend(it.id)
+                        binding.neighbourEmail.isVisible = false
+                        setRemoveIcon()
+                        binding.neighbourFriendStatus.text = FriendStatus.PENDING.toString()
+                    }
+                    FriendStatus.REQUESTED -> {
+                        model.addFriend(it.id)
+                        binding.neighbourEmail.isVisible = true
+                        setRemoveIcon()
+                        binding.neighbourFriendStatus.text = FriendStatus.FRIENDS.toString()
+                    }
+                    FriendStatus.PENDING -> {
+                        model.removeFriend(it.id)
+                        binding.neighbourEmail.isVisible = false
+                        setAddIcon()
+                        binding.neighbourFriendStatus.text = FriendStatus.NONE.toString()
+                    }
+                    FriendStatus.FRIENDS -> {
+                        model.removeFriend(it.id)
+                        binding.neighbourEmail.isVisible = false
+                        setAddIcon()
+                        binding.neighbourFriendStatus.text = FriendStatus.REQUESTED.toString()
+                    }
+                }
+            }
+        }
+
+        binding.neighbourEmail.setOnClickListener {
+            model.getNeighbour()?.let {
+                val email = Intent(Intent.ACTION_SEND)
+                email.putExtra(Intent.EXTRA_EMAIL, it.email)
+                email.putExtra(
+                    Intent.EXTRA_SUBJECT,
+                    getString(R.string.neighbour_email_intent_subject)
+                )
+                email.putExtra(Intent.EXTRA_TEXT, getString(R.string.neighbour_email_intent_text))
+                email.type = "message/rfc822"
+                startActivity(
+                    Intent.createChooser(
+                        email,
+                        getString(R.string.neighbour_email_intent_message)
+                    )
+                )
             }
         }
     }
 
-    override fun onClick(area: Area) {
+    private fun setRemoveIcon() {
+        binding.friendRequestButton.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                requireActivity().resources,
+                R.drawable.ic_baseline_delete_24,
+                null
+            )
+        )
+    }
+
+    private fun setAddIcon() {
+        binding.friendRequestButton.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                requireActivity().resources,
+                R.drawable.ic_baseline_person_add_24,
+                null
+            )
+        )
+    }
+
+    override fun onClickInterest(area: Area) {
         val position = area.position
 
         val gmmIntentUri = if (position != null) {

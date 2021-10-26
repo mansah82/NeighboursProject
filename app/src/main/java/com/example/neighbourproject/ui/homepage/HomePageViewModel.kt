@@ -13,37 +13,39 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class HomePageViewModel(): ViewModel(), KoinComponent{
-    companion object{
+class HomePageViewModel : ViewModel(), KoinComponent {
+    companion object {
         private const val TAG = "HomePageViewModel"
     }
 
     private val neighboursService: NeighboursService by inject()
     private val userService: UserService by inject()
 
-    fun getUserProfileUpdate(): LiveData<People?>{
+    fun getUserProfileUpdate(): LiveData<People?> {
         return neighboursService.userProfileUpdate
     }
-    fun getUserLoginUpdate(): LiveData<LoginStatus>{
+
+    fun getUserLoginUpdate(): LiveData<LoginStatus> {
         return userService.loginStatus
     }
 
-    fun isSignedIn(): Boolean{
+    fun isSignedIn(): Boolean {
         return userService.isLoggedIn()
     }
 
-    fun setSignedInUser(uid: String){
+    fun setSignedInUser(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
             neighboursService.signeIn(uid)
         }
     }
-    fun signInUser(username: String, password: String){
+
+    fun signInUser(username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             userService.loginUser(username, password)
         }
     }
 
-    fun signOut(){
+    fun signOut() {
         Log.d(TAG, "Signing out")
         viewModelScope.launch(Dispatchers.IO) {
             userService.logoutUser()

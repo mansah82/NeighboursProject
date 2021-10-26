@@ -44,13 +44,20 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
     fun getNeighbour(): People?{
         return people
     }
+
     fun getFriendsStatus(): Map<String, FriendStatus>{
         return neighboursService.getFriendsStatus()
     }
 
-    fun setFriend(friendId: String){
+    fun addFriend(friendId: String){
         viewModelScope.launch(Dispatchers.IO) {
-            neighboursService.setFriend(friendId)
+            neighboursService.addFriend(friendId)
+        }
+    }
+
+    fun removeFriend(friendId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            neighboursService.removeFriend(friendId)
         }
     }
 }

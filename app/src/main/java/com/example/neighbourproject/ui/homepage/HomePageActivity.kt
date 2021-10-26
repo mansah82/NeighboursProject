@@ -7,13 +7,14 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
+import com.example.neighbourproject.R
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
-import com.example.neighbourproject.ui.chat.LatestMessageActivity
-import com.example.neighbourproject.ui.chat.NewMessageActivity
 import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.example.neighbourproject.ui.search.SearchActivity
+import com.example.neighbourproject.user.EvaluationHelper
+import com.example.neighbourproject.user.ExtrasKey
 import com.example.neighbourproject.user.LoginStatus
 
 class HomePageActivity : AppCompatActivity() {
@@ -29,6 +30,14 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        intent.getStringExtra(ExtrasKey.KEY_USER_NAME)?.let {
+            binding.usernameEditText.setText(it)
+        }
+        intent.getStringExtra(ExtrasKey.KEY_PASSWORD)?.let {
+            binding.passwordEditText.setText(it)
+        }
+
         val userLoginObserver = Observer<LoginStatus> {
             Log.d(TAG, "Login observer: ${it.success}-${it.failed}")
             if (it.success != null) {
@@ -57,19 +66,28 @@ class HomePageActivity : AppCompatActivity() {
         }
         model.getUserProfileUpdate().observe(this@HomePageActivity, userProfileObserver)
 
-        binding.loginButton.setOnClickListener {
-            if (checkIfCorrectEmailFormat() && checkIfCorrectPasswordFormat())
-                model.signInUser(
-                binding.usernameEditText.text.toString(),
-                binding.passwordEditText.text.toString() )
-        }
-
-
         binding.usernameEditText.doAfterTextChanged {
-            checkIfCorrectEmailFormat()
+            if (EvaluationHelper.evaluateUsername(binding.usernameEditText.text.toString()) == null) {
+                binding.usernameEditText.error = getString(R.string.wrong_username_format)
+            }
         }
+
         binding.passwordEditText.doAfterTextChanged {
-            checkIfCorrectPasswordFormat()
+            if (EvaluationHelper.evaluatePassword(binding.passwordEditText.text.toString()) == null) {
+                binding.passwordEditText.error = getString(R.string.wrong_password_format)
+            }
+        }
+
+        binding.loginButton.setOnClickListener {
+            if (EvaluationHelper.evaluateUsername(binding.usernameEditText.text.toString()) != null &&
+                EvaluationHelper.evaluatePassword(binding.passwordEditText.text.toString()) != null
+            )
+                model.signInUser(
+                    EvaluationHelper.evaluateUsername(binding.usernameEditText.text.toString())
+                        ?: "",
+                    EvaluationHelper.evaluatePassword(binding.passwordEditText.text.toString())
+                        ?: ""
+                )
         }
 
         binding.registerButton.setOnClickListener {
@@ -77,24 +95,4 @@ class HomePageActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-    private fun checkIfCorrectEmailFormat(): Boolean {
-        if (!binding.usernameEditText.text.toString().contains("@", true) ||
-            !binding.usernameEditText.text.toString().contains(".", true)
-        ) {
-            binding.usernameEditText.error = "Please enter a valid email"
-            return false
-        }
-        return true
-    }
-
-    private fun checkIfCorrectPasswordFormat(): Boolean {
-        if (binding.passwordEditText.text.length < 5) {
-            binding.passwordEditText.error = "Password needs to contain 6 letters or more"
-            return false
-        }
-        return true
-
-    }
-
 }
