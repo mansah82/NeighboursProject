@@ -23,10 +23,6 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
 
     private var people : People? = null
 
-    fun setLastPosition(position: Position){
-        locationService.setLastPosition(position)
-    }
-
     fun calculateDistanceToMe(position: Position): String{
         val dist : Double = locationService.calculateDistanceToMyPosition(position)/1000
         return if(dist < 0)
