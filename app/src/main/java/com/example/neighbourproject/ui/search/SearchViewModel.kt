@@ -15,7 +15,7 @@ class SearchViewModel : ViewModel(), KoinComponent {
     private val neighboursService: NeighboursService by inject()
     private val locationService: LocationService by inject()
 
-    fun setLastPosition(position: Position){
+    fun setLastPosition(position: Position) {
         locationService.setLastPosition(position)
     }
 

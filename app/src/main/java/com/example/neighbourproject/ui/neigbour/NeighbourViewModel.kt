@@ -14,44 +14,44 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class NeighbourViewModel : ViewModel(), KoinComponent {
-    companion object{
+    companion object {
         private const val TAG = "NeighbourViewModel"
     }
 
     private val neighboursService: NeighboursService by inject()
     private val locationService: LocationService by inject()
 
-    private var people : People? = null
+    private var people: People? = null
 
-    fun calculateDistanceToMe(position: Position): String{
-        val dist : Double = locationService.calculateDistanceToMyPosition(position)/1000
-        return if(dist < 0)
+    fun calculateDistanceToMe(position: Position): String {
+        val dist: Double = locationService.calculateDistanceToMyPosition(position) / 1000
+        return if (dist < 0)
             "You have no position"
         else
-            String.format("%.2f", dist).plus( " km")
+            String.format("%.2f", dist).plus(" km")
     }
 
-    fun selectedNeighbour(id : String): Boolean{
+    fun selectedNeighbour(id: String): Boolean {
         people = neighboursService.getNeighbourById(id)
         Log.d("NeighbourViewModel", "Setting neighbour: $people")
         return people != null
     }
 
-    fun getNeighbour(): People?{
+    fun getNeighbour(): People? {
         return people
     }
 
-    fun getFriendsStatus(): Map<String, FriendStatus>{
+    fun getFriendsStatus(): Map<String, FriendStatus> {
         return neighboursService.getFriendsStatus()
     }
 
-    fun addFriend(friendId: String){
+    fun addFriend(friendId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             neighboursService.addFriend(friendId)
         }
     }
 
-    fun removeFriend(friendId: String){
+    fun removeFriend(friendId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             neighboursService.removeFriend(friendId)
         }

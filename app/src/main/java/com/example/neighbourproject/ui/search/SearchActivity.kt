@@ -18,13 +18,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 class SearchActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val TAG = "SearchActivity"
     }
 
     private val model: SearchViewModel by viewModels()
 
-    private lateinit var binding : ActivitySearchBinding
+    private lateinit var binding: ActivitySearchBinding
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     if (task.result != null) {
-                        model.setLastPosition(Position( task.result.latitude, task.result.longitude))
+                        model.setLastPosition(Position(task.result.latitude, task.result.longitude))
                         Log.d(TAG, "Fetched my last location")
                     } else {
                         Log.d(TAG, "Fetched my last location - Failed on completed")
