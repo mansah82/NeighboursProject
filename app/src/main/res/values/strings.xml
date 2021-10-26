@@ -19,4 +19,8 @@
     <string name="signup_enter_password">Enter password</string>
     <string name="signup_sign_up">Sign Up</string>
     <string name="signup_enter_email">Enter email</string>
+
+    <string name="neighbour_email_intent_subject">Please be my friend!</string>
+    <string name="neighbour_email_intent_text">Hi Stranger! Would you like to be my friend</string>
+    <string name="neighbour_email_intent_message">Choose an Email client :</string>
 </resources>

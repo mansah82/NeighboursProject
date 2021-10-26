@@ -90,6 +90,11 @@ class SearchFragment : Fragment(), ClickListener {
         doSearch()
     }
 
+    override fun onResume() {
+        super.onResume()
+        doSearch()
+    }
+
     private fun selectedGenders(): List<Gender>{
         val result = mutableListOf<Gender>()
         if(binding.chipFemale.isChecked)
@@ -105,7 +110,6 @@ class SearchFragment : Fragment(), ClickListener {
     }
 
     private fun selectedRelationship(): List<RelationshipStatus>{
-        //TODO Today we search for all statuses
         val result = mutableListOf<RelationshipStatus>()
         result.add(RelationshipStatus.SINGLE)
         result.add(RelationshipStatus.NONE)

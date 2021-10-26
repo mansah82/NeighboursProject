@@ -19,5 +19,7 @@ interface NeighboursService {
 
     fun getFriendsStatus(): Map<String, FriendStatus>
 
-    suspend fun setFriend(friendId: String)
+    suspend fun addFriend(friendId: String)
+
+    suspend fun removeFriend(friendId: String)
 }

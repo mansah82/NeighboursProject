@@ -26,10 +26,17 @@ class NeighboursRepositoryTest : NeighboursService {
         return friendStatuses
     }
 
-    override suspend fun setFriend(friendId: String) {
+    override suspend fun addFriend(friendId: String) {
         if (!myProfile.friends.contains(friendId)) {
             Log.d(TAG, "Adding Friend:  $friendId")
             myProfile.friends.add(friendId)
+        }
+    }
+
+    override suspend fun removeFriend(friendId: String) {
+        if (myProfile.friends.contains(friendId)) {
+            Log.d(TAG, "Removing Friend:  $friendId")
+            myProfile.friends.remove(friendId)
         }
     }
 
@@ -55,7 +62,7 @@ class NeighboursRepositoryTest : NeighboursService {
             } else if (!requested && askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.PENDING
             } else if (requested && !askedFor) {
-                friendStatuses[neighbour.id] = FriendStatus.REQUEST
+                friendStatuses[neighbour.id] = FriendStatus.REQUESTED
             } else if (requested && askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.FRIENDS
             }
@@ -64,6 +71,7 @@ class NeighboursRepositoryTest : NeighboursService {
     }
 
     private fun doSearch() {
+        Log.d(TAG, "doSearch")
         updateFriendsMap()
 
         searchParameters?.let { params ->
@@ -123,7 +131,8 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Food", Area("Flen")),
                     Interest("Cars")
                 ),
-                id = "Adam"
+                id = "Adam",
+                email = "adam.adamsson@gmail.com"
             )
         )
         neighbours.add(
@@ -138,7 +147,7 @@ class NeighboursRepositoryTest : NeighboursService {
                 ),
                 "", RelationshipStatus.SINGLE,
                 id = "Beata",
-                friends = mutableListOf("Yroll", "Daniel"),
+                email = "beata.beatasson@gmail.com"
             )
         )
         neighbours.add(
@@ -167,7 +176,8 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Movies", Area("Ludvika"))
                 ),
                 friends = mutableListOf("Yroll"),
-                id = "Daniel"
+                id = "Daniel",
+                email = "daniel.danielsson@gmail.com"
 
             )
         )
@@ -180,7 +190,9 @@ class NeighboursRepositoryTest : NeighboursService {
                 mutableListOf(
                     Interest("Dance", Area("Ludvika")),
                     Interest("Food", Area("Ludvika"))
-                )
+                ),
+                id = "Eva",
+                email = "eva.evasson@gmail.com"
             )
         )
         neighbours.add(
@@ -194,7 +206,9 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Food", Area("Ludvika")),
                     Interest("Go-cart", Area("Ludvika")),
                     Interest("Ninjas", Area("Ludvika"))
-                )
+                ),
+                id = "Frans",
+                email = "frans.fransson@gmail.com"
             )
         )
         neighbours.add(
@@ -209,7 +223,8 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Go-cart", Area("Avesta")),
                     Interest("Ninjas", Area("Avesta"))
                 ),
-                id = "Gunhild"
+                id = "Gunhild",
+                email = "gunhild.gunhildsson@gmail.com"
             )
         )
     }
@@ -234,7 +249,7 @@ class NeighboursRepositoryTest : NeighboursService {
         "url - to image",
         RelationshipStatus.SINGLE,
         id = "Yroll",
-        friends = mutableListOf("Cea", "Gunhild"),
+        friends = mutableListOf("Beata", "Daniel", "Gunhild"),
     )
 
     override suspend fun signeIn(id: String) {

@@ -34,10 +34,18 @@ class NeighboursRepository : NeighboursService {
         return friendStatuses
     }
 
-    override suspend fun setFriend(friendId: String) {
+    override suspend fun addFriend(friendId: String) {
         userProfileRemote.value?.let {
             if(!it.friends.contains(friendId))
                 it.friends.add(friendId)
+            updateUserProfile(it)
+        }
+    }
+
+    override suspend fun removeFriend(friendId: String) {
+        userProfileRemote.value?.let {
+            if(it.friends.contains(friendId))
+                it.friends.remove(friendId)
             updateUserProfile(it)
         }
     }
@@ -135,7 +143,7 @@ class NeighboursRepository : NeighboursService {
                 } else if (!requested && askedFor) {
                     friendStatuses[neighbour.id] = FriendStatus.PENDING
                 } else if (requested && !askedFor) {
-                    friendStatuses[neighbour.id] = FriendStatus.REQUEST
+                    friendStatuses[neighbour.id] = FriendStatus.REQUESTED
                 } else if (requested && askedFor) {
                     friendStatuses[neighbour.id] = FriendStatus.FRIENDS
                 }
