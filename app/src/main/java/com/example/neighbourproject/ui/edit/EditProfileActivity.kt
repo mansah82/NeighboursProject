@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.contentValuesOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,13 +71,12 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var emailEditText: EditText
 
     var profile: People? = null
-    //For interest recyckler
     lateinit var db : DatabaseReference
     lateinit var addBtn : FloatingActionButton
     lateinit var interestRecyclerView : RecyclerView
-    lateinit var userInterestList: ArrayList<Interest>
+    lateinit var interestList: MutableList<Interest>
     lateinit var interestAdapter : InterestAddAdapter
-    //lateinit var interest: Interest
+    lateinit var interest: Interest
 
 
 
@@ -87,30 +87,20 @@ open class EditProfileActivity : AppCompatActivity() {
         title = "NeighbourProject"
 
         checkBox = findViewById(R.id.checkBox)
-        checkBox3 = findViewById(R.id.checkBox3)
         imageView = findViewById(R.id.imageView)
         nameEditText = findViewById(R.id.nameEditText)
         lastnameEditText = findViewById(R.id.lastnameEditText)
         ageEditText = findViewById(R.id.ageEditText)
-        interestsEditText = findViewById(R.id.interestsEditText)
         genderSpinner = findViewById(R.id.genderSpinner)
         relationshipSpinner = findViewById(R.id.relationshipSpinner)
         saveButton = findViewById(R.id.button)
         galleryButton = findViewById(R.id.galleryButton)
         takePhotoButton = findViewById(R.id.takePhotoButton)
         emailEditText = findViewById(R.id.emailEditText)
-        //for interest recycler view
         interestRecyclerView = findViewById(R.id.addInterestRecycler)
-        interestRecyclerView.layoutManager = LinearLayoutManager(this)
-//interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
-        interestRecyclerView.setHasFixedSize(true)
-        userInterestList = arrayListOf<Interest>()
+        //db = FirebaseDatabase.getInstance().getReference("neighbours")
 
-        getUserData()
-/*addBtn = findViewById(R.id.addInterestFloatingBtn)
-addBtn.setOnClickListener{
-    addInterest()
-} */
+
 
 
         val storageReference = Firebase.storage.reference
@@ -136,6 +126,8 @@ addBtn.setOnClickListener{
             genderSpinner.setSelection(profile?.gender!!.ordinal)
             relationshipSpinner.setSelection(profile?.relationshipStatus!!.ordinal)
             emailEditText.setText(profile?.email)
+            interestAdapter = InterestAddAdapter(profile?.interests?: mutableListOf())
+            interestRecyclerView.adapter = interestAdapter
 
             Glide.with(this)
                 .load(profile?.image)
@@ -151,7 +143,11 @@ addBtn.setOnClickListener{
                 RelationshipStatus.valueOf(relationshipSpinner.selectedItem.toString())
 
             profile?.email = emailEditText.text.toString()
-            bind(Interest())
+            /*profile?.interests.let {
+                model.editUserProfile(People(interest.name))
+            }*/
+            profile?.interests
+
             upLoadImageToFirebaseStorage()
 
             startActivity(Intent(this, SearchActivity::class.java))
@@ -192,39 +188,8 @@ addBtn.setOnClickListener{
                 chooseImageGallery()
             }
         }
-
     }
-    fun bind(newInterest: Interest){
-        var interest = newInterest
-    interest.name = interestsEditText.text.toString() }
 
-
-    private fun getUserData() {
-        db = FirebaseDatabase.getInstance().getReference("neighbours")
-        Log.d("!!!", "onDataChange: 1 ")
-
-
-        db.addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists())  {
-                    for (interestSnapshot in snapshot.children)  {
-                        val interest = interestSnapshot.getValue(Interest::class.java)
-                        userInterestList.add(interest!!)
-                        Log.d("!!!", "onDataChange: 2")
-                    }
-                    interestRecyclerView.adapter = InterestAddAdapter(userInterestList)
-                    Log.d("!!!", "onDataChange: User  ${userInterestList.size} ")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        } )
-
-    }
 
     val REQUEST_CODE_CAMERA = 200
 

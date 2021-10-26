@@ -11,19 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Interest
 
-class InterestAddAdapter( val interestList:ArrayList<Interest>): RecyclerView.Adapter<InterestAddAdapter.InterestViewHolder>() {
-
+class InterestAddAdapter(private val interestList:MutableList<Interest>): RecyclerView.Adapter<InterestAddAdapter.InterestViewHolder>() {
+    val TAG = "InterestAddAdapter"
     inner class InterestViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val name: TextView = view.findViewById(R.id.interestTextView)
         val location: TextView = view.findViewById(R.id.locationTextView)
-        val remove : ImageView = view.findViewById(R.id.deleteInterestImage)
+        val longitude: TextView = view.findViewById(R.id.longitudeTextView)
+        val latitude: TextView = view.findViewById(R.id.latitudeTextView)
+        val removeButton : ImageView = view.findViewById(R.id.deleteInterestImage)
     }
 
     @SuppressLint("ResourceType")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val v = inflater.inflate(R.layout.fragment_interest_profile,parent,false)
-        Log.d("!!!", "onCreateViewHolder: 1")
+        val v = inflater.inflate(R.layout.item_interest_profile,parent,false)
+        Log.d(TAG, "onCreateViewHolder: 1")
         return InterestViewHolder(v)
 
     }
@@ -31,17 +33,30 @@ class InterestAddAdapter( val interestList:ArrayList<Interest>): RecyclerView.Ad
     override fun onBindViewHolder(holder: InterestViewHolder, position: Int) {
         val itemPosition = interestList[position]
         holder.name.text = itemPosition.name
-        holder.location.text = itemPosition.location.toString()
-        Log.d("!!!", "onBindViewHolder: ")
+        itemPosition.location?.let {area ->
+            holder.location.text = area.area
+            area.position?.let {
+                holder.latitude.text = it.latitude.toString()
+                holder.longitude.text = it.longitude.toString()
+            }
 
-        holder.remove.setOnClickListener {
+        }
+
+        Log.d(TAG, "onBindViewHolder: ")
+
+        holder.removeButton.setOnClickListener {
             interestList.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position,interestList.size)
+
+
+
         }
     }
 
     override fun getItemCount(): Int {
         return  interestList.size
     }
+
+
 }

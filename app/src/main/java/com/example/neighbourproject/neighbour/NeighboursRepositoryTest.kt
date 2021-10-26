@@ -10,24 +10,24 @@ class NeighboursRepositoryTest : NeighboursService {
         private const val TAG = "NeighboursRepositoryTest"
     }
 
-    private val userProfileRemote : MutableLiveData<People?> = MutableLiveData<People?>(null)
+    private val userProfileRemote: MutableLiveData<People?> = MutableLiveData<People?>(null)
 
     override val userProfileUpdate: LiveData<People?> = userProfileRemote
 
-    private val searchResultRemote : MutableLiveData<List<People>> =  MutableLiveData(listOf())
+    private val searchResultRemote: MutableLiveData<List<People>> = MutableLiveData(listOf())
 
     override val searchResultUpdate: LiveData<List<People>> = searchResultRemote
 
     private var searchParameters: SearchParameters? = null
 
-    private val friendStatuses : MutableMap<String, FriendStatus> = mutableMapOf()
+    private val friendStatuses: MutableMap<String, FriendStatus> = mutableMapOf()
 
     override fun getFriendsStatus(): Map<String, FriendStatus> {
         return friendStatuses
     }
 
     override suspend fun setFriend(friendId: String) {
-        if(!myProfile.friends.contains(friendId)){
+        if (!myProfile.friends.contains(friendId)) {
             Log.d(TAG, "Adding Friend:  $friendId")
             myProfile.friends.add(friendId)
         }
@@ -39,31 +39,31 @@ class NeighboursRepositoryTest : NeighboursService {
         doSearch()
     }
 
-    private fun updateFriendsMap(){
+    private fun updateFriendsMap() {
         for (neighbour in neighbours) {
-            var requested : Boolean = false
-            var askedFor : Boolean = false
+            var requested: Boolean = false
+            var askedFor: Boolean = false
             //if(neighbour) set the stuff
-            if(neighbour.friends.contains(myProfile.id))
+            if (neighbour.friends.contains(myProfile.id))
                 requested = true
-            if(myProfile.friends.contains(neighbour.id))
+            if (myProfile.friends.contains(neighbour.id))
                 askedFor = true
 
             //Update the friends map
-            if(!requested && !askedFor){
+            if (!requested && !askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.NONE
-            }else if(!requested && askedFor ){
+            } else if (!requested && askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.PENDING
-            }else if(requested && !askedFor ){
+            } else if (requested && !askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.REQUEST
-            }else if(requested && askedFor ){
+            } else if (requested && askedFor) {
                 friendStatuses[neighbour.id] = FriendStatus.FRIENDS
             }
 
         }
     }
 
-    private fun doSearch(){
+    private fun doSearch() {
         updateFriendsMap()
 
         searchParameters?.let { params ->
@@ -111,6 +111,7 @@ class NeighboursRepositoryTest : NeighboursService {
     }
 
     private val neighbours = mutableListOf<People>()
+
     init {
         neighbours.add(
             People(
@@ -131,10 +132,10 @@ class NeighboursRepositoryTest : NeighboursService {
                 Gender.FEMALE,
                 35,
                 mutableListOf(
-                    Interest("Food", Area("Stockholm", Position(59.0,12.0))),
+                    Interest("Food", Area("Stockholm", Position(59.0, 12.0))),
                     Interest("Movies", Area("Stockholm", null))
                 ),
-                "",RelationshipStatus.SINGLE
+                "", RelationshipStatus.SINGLE
             )
         )
         neighbours.add(
@@ -144,7 +145,7 @@ class NeighboursRepositoryTest : NeighboursService {
                 Gender.ENBY,
                 36,
                 mutableListOf(
-                    Interest("Dance", Area("Täby", Position(59.2889,17.8888))),
+                    Interest("Dance", Area("Täby", Position(59.2889, 17.8888))),
                     Interest("Movies")
                 ),
                 friends = mutableListOf("Yroll"),
@@ -224,7 +225,13 @@ class NeighboursRepositoryTest : NeighboursService {
         Gender.MALE,
         58,
         mutableListOf(
-            Interest("Name", Area("Location"))
+            Interest("Tennis", Area("Location")),
+            Interest("Dance", Area("Täby", Position(59.2889, 17.8888))),
+            Interest("Dance", Area("Ludvika")),
+            Interest("Movies", Area("Ludvika")),
+            Interest("Go-cart", Area("Avesta")),
+            Interest("Ninjas", Area("Avesta"))
+
         ),
         "url - to image",
         RelationshipStatus.SINGLE,
@@ -232,7 +239,7 @@ class NeighboursRepositoryTest : NeighboursService {
         friends = mutableListOf("Cea"),
     )
 
-    override suspend fun signeIn(id: String){
+    override suspend fun signeIn(id: String) {
         userProfileRemote.postValue(myProfile)
         //userProfileRemote.postValue(null)
     }
