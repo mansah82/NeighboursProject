@@ -9,6 +9,8 @@ interface NeighboursService {
 
     suspend fun signeIn(id: String)
 
+    fun getSignedInUid(): String
+
     suspend fun updateUserProfile(profile: People)
 
     fun getNeighbourById(id: String): People?

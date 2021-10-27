@@ -1,7 +1,6 @@
 package com.example.neighbourproject.ui.edit
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,7 +12,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-import com.bumptech.glide.Glide
 import com.example.neighbourproject.databinding.ActivityEditProfileBinding
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
@@ -72,6 +70,9 @@ open class EditProfileActivity : AppCompatActivity() {
 
             profile.email = binding.emailEditText.text.toString()
 
+            // TODO remove this to make stuff be stored
+            profile.image = ""
+
             model.editUserProfile(profile)
 
             //TODO decide when to push image to firestore
@@ -119,16 +120,14 @@ open class EditProfileActivity : AppCompatActivity() {
             result.data?.let { intent ->
                 Log.d(TAG, "Camera: $intent")
                 val bitMap = intent.extras?.get("data") as Bitmap
-                Log.d(TAG, "Camera: - bitmap $bitMap")
                 binding.circularPhoto.setImageBitmap(bitMap)
-                //TODO Write stuff to firestore
+                profile.image = model.writeImage(bitMap)
             }
         }
     }
 
     private fun capturePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        //TODO save picture to internal storage
         cameraResultLauncher.launch(intent)
     }
 
@@ -136,10 +135,12 @@ open class EditProfileActivity : AppCompatActivity() {
         if(result.resultCode == Activity.RESULT_OK){
             result.data?.let { intent ->
                 Log.d(TAG, "Gallery: $intent")
-                val url = intent.data
-                Log.d(TAG, "Gallery - url: $url")
-                binding.circularPhoto.setImageURI(url)
-                //TODO Write stuff to firestore
+                val uri = intent.data
+
+                if(uri != null) {
+                    binding.circularPhoto.setImageURI(uri)
+                    profile.image = model.writeImage(uri)
+                }
             }
         }
     }
@@ -152,66 +153,8 @@ open class EditProfileActivity : AppCompatActivity() {
 
     /*
     https://firebasestorage.googleapis.com/v0/b/neighbourproject.appspot.com/o/Images%2F07a3cd50-8e70-4195-9c49-140568f2b556?alt=media&token=8c5a3349-8bcb-4aa4-8085-bc4e55567932
+    */
 
-     */
-
-   /* private fun upLoadImageToFirebaseStorage() {
-        if (imageUri != null) {
-            val filename = UUID.randomUUID().toString()
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-            Log.d(TAG, "upLoadImageToFirebaseStorage ${ref.toString()}")
-            ref.putFile(imageUri!!)
-                .addOnSuccessListener {
-                    Log.d(
-                        TAG,
-                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
-                    )
-
-                    ref.downloadUrl.addOnSuccessListener { uri ->
-                        Log.d(TAG, "File Location: $uri")
-                        profile.image = uri.toString()
-                    }
-                }
-        }
-    }
-
-    private var imageUri: Uri? = null
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null) {
-            val bitMap = data.extras?.get("data") as Bitmap
-            binding.circularPhoto.setImageBitmap(bitMap)
-
-            val filename = UUID.randomUUID().toString()
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-            val baos = ByteArrayOutputStream()
-            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val fileData = baos.toByteArray()
-
-            ref.putBytes(fileData)
-                .addOnSuccessListener {
-                    Log.d(
-                        TAG,
-                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
-                    )
-
-                    ref.downloadUrl.addOnSuccessListener {
-                        Log.d(TAG, "File Location: $it")
-                        profile.image = it.toString()
-                        profile.let {
-                            model.editUserProfile(it)
-                        }
-                    }
-                }
-        }
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
-            imageUri = data.data
-            binding.circularPhoto.setImageURI(imageUri)
-
-            upLoadImageToFirebaseStorage()
-        }
-    }
-*/
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

@@ -1,10 +1,14 @@
 package com.example.neighbourproject.storage
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.ImageView
 
 interface StorageService {
-    fun writeImageStorage(byte: ByteArray)
+    fun writeImageStorage(filename: String, bitmap: Bitmap): String
+
+    fun writeImageStorage(filename: String, uri: Uri): String
 
     fun loadImage(context: Context, url: String, view: ImageView)
 }
