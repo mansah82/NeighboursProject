@@ -2,6 +2,9 @@ package com.example.neighbourproject
 
 import android.app.Application
 import android.util.Log
+import com.example.neighbourproject.chat.ChatRepository
+import com.example.neighbourproject.chat.ChatRepositoryTest
+import com.example.neighbourproject.chat.ChatService
 import com.example.neighbourproject.location.LocationRepository
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursRepository
@@ -30,6 +33,7 @@ class NeighbourApplication : Application() {
         single<LocationService> { LocationRepository() }
         single<UserService> { UserRepository() }
         single<StorageService> { StorageRepository() }
+        single<ChatService> { ChatRepository() }
     }
 
     private val appModuleTest = module {
@@ -37,6 +41,7 @@ class NeighbourApplication : Application() {
         single<LocationService> { LocationRepository() }
         single<UserService> { UserRepositoryTest() }
         single<StorageService> { StorageRepositoryTest() }
+        single<ChatService> { ChatRepositoryTest() }
     }
 
     override fun onCreate() {
