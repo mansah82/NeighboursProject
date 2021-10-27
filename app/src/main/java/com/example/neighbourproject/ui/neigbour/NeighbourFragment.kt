@@ -76,6 +76,7 @@ class NeighbourFragment : Fragment(), InterestClickListener {
                     binding.neighbourEmail.isVisible = true
                 }
             }
+            model.loadImage(requireContext(), it.image, binding.neighbourImage)
         }
 
         binding.friendRequestButton.setOnClickListener {

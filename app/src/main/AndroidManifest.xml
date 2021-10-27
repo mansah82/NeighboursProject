@@ -16,8 +16,6 @@
         android:theme="@style/Theme.NeighbourProject">
         <activity android:name=".ui.chat.NewMessageActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-
-
                 android:value=".ui.chat.LatestMessageActivity"/>
         </activity>
         <activity android:name=".ui.chat.LatestMessageActivity" />
@@ -35,5 +33,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

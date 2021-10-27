@@ -1,6 +1,5 @@
 package com.example.neighbourproject.ui.edit
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,39 +8,89 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
+import com.example.neighbourproject.neighbour.data.Area
 import com.example.neighbourproject.neighbour.data.Interest
+import com.example.neighbourproject.neighbour.data.People
+import com.example.neighbourproject.neighbour.data.Position
 
-class InterestAddAdapter( val interestList:ArrayList<Interest>): RecyclerView.Adapter<InterestAddAdapter.InterestViewHolder>() {
-
-    inner class InterestViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val name: TextView = view.findViewById(R.id.interestTextView)
-        val location: TextView = view.findViewById(R.id.locationTextView)
-        val remove : ImageView = view.findViewById(R.id.deleteInterestImage)
+class InterestAddAdapter(private val profile: People,  private val model: EditViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    companion object {
+        private const val TAG = "InterestAddAdapter"
+        private const val VIEW_TYPE_FOOTER = 0
+        private const val VIEW_TYPE_CELL = 1
     }
 
-    @SuppressLint("ResourceType")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val v = inflater.inflate(R.layout.fragment_interest_profile,parent,false)
-        Log.d("!!!", "onCreateViewHolder: 1")
-        return InterestViewHolder(v)
-
+    class InterestViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val interestName: TextView = view.findViewById(R.id.interestTextView)
+        val area: TextView = view.findViewById(R.id.locationTextView)
+        val longitude: TextView = view.findViewById(R.id.longitudeTextView)
+        val latitude: TextView = view.findViewById(R.id.latitudeTextView)
+        val removeButton: ImageView = view.findViewById(R.id.deleteInterestImage)
     }
 
-    override fun onBindViewHolder(holder: InterestViewHolder, position: Int) {
-        val itemPosition = interestList[position]
-        holder.name.text = itemPosition.name
-        holder.location.text = itemPosition.location.toString()
-        Log.d("!!!", "onBindViewHolder: ")
+    class InterestAddViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val interestName: TextView = view.findViewById(R.id.interestTextView)
+        val area: TextView = view.findViewById(R.id.locationTextView)
+        val addButton: ImageView = view.findViewById(R.id.addInterestImage)
+    }
 
-        holder.remove.setOnClickListener {
-            interestList.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position,interestList.size)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == VIEW_TYPE_CELL) {
+            val inflater = LayoutInflater.from(parent.context)
+            val v = inflater.inflate(R.layout.item_interest_profile, parent, false)
+            Log.d(TAG, "onCreateViewHolder: CELL")
+            return InterestViewHolder(v)
+        } else {
+            val inflater = LayoutInflater.from(parent.context)
+            val v = inflater.inflate(R.layout.item_interest_profile_add, parent, false)
+            Log.d(TAG, "onCreateViewHolder: FOOTER")
+            return InterestAddViewHolder(v)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (position == profile.interests.size) {
+            (holder as InterestAddViewHolder).addButton.setOnClickListener {
+                if(holder.interestName.text.toString().isNotEmpty()) {
+                    Log.d(TAG, "Adding a new thing ${holder.interestName} - ${holder.area}")
+                    profile.addInterest(
+                        Interest(
+                            holder.interestName.text.toString(),
+                            Area(holder.area.text.toString(), model.getCurrentPosition())
+                        )
+                    )
+                    notifyItemInserted(position)
+                    notifyItemRangeChanged(position, itemCount)
+                }
+            }
+        } else {
+            val itemPosition = profile.interests[position]
+            (holder as InterestViewHolder).interestName.text = itemPosition.name
+            itemPosition.location?.let { area ->
+                holder.area.text = area.area
+                area.position?.let {
+                    holder.latitude.text = it.latitude.toString()
+                    holder.longitude.text = it.longitude.toString()
+                }
+            }
+
+            Log.d(TAG, "onBindViewHolder")
+
+            holder.removeButton.setOnClickListener {
+                profile.interests.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, itemCount)
+            }
         }
     }
 
     override fun getItemCount(): Int {
-        return  interestList.size
+        return profile.interests.size + 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == profile.interests.size) VIEW_TYPE_FOOTER else VIEW_TYPE_CELL
     }
 }

@@ -31,10 +31,13 @@ class SearchFragment : Fragment(), ClickListener {
     ): View {
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
+        model.setContext(requireContext())
+
         val searchAdapter = SearchRecyclerAdapter(
             model.getSearchObserver(),
             viewLifecycleOwner,
-            this as ClickListener
+            this as ClickListener,
+            model
         )
 
         binding.searchResultList.adapter = searchAdapter
