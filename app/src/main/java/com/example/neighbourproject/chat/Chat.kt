@@ -1,6 +1,6 @@
-package com.example.neighbourproject.neighbour.data
+package com.example.neighbourproject.chat
 
 data class Chat(
-    var send : String = "",
-    var receive : String = ""
+    var name : String = "",
+    var message : String = ""
 )

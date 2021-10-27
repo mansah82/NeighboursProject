@@ -76,6 +76,8 @@ class NeighboursRepository : NeighboursService {
     }
     private var myProfileId = ""
 
+   // private fun updateFriendsList(){}
+
     override suspend fun signeIn(id: String) {
         val docRef = db.collection(PERSON_COLLECTION).document(id)
         docRef.get()
@@ -117,6 +119,12 @@ class NeighboursRepository : NeighboursService {
 
         doSearch()
     }
+
+
+    override fun getFriends(): List<People> {
+    TODO("Not yet implemented")
+    }
+
 
     private fun updateFriendsMap(){
         userProfileRemote.value?.let {

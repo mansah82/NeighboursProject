@@ -39,6 +39,24 @@ class NeighboursRepositoryTest : NeighboursService {
         doSearch()
     }
 
+    override fun getFriends(): List<People> {
+        val friendsList = mutableListOf<People>()
+        for (neighbour in neighbours) {
+            var requested: Boolean = false
+            var askedFor: Boolean = false
+            if(neighbour.friends.contains(myProfile.id))
+                requested = true
+            if(myProfile.friends.contains(neighbour.id))
+                askedFor = true
+            if(requested && askedFor ){
+                friendsList.add(neighbour)
+            }
+
+
+        }
+    return friendsList
+    }
+
     private fun updateFriendsMap(){
         for (neighbour in neighbours) {
             var requested : Boolean = false
@@ -190,7 +208,9 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Food", Area("Ludvika")),
                     Interest("Go-cart", Area("Ludvika")),
                     Interest("Ninjas", Area("Ludvika"))
-                )
+                ),
+                friends = mutableListOf("Yroll"),
+                id = "Frans"
             )
         )
         neighbours.add(
@@ -229,7 +249,7 @@ class NeighboursRepositoryTest : NeighboursService {
         "url - to image",
         RelationshipStatus.SINGLE,
         id = "Yroll",
-        friends = mutableListOf("Cea"),
+        friends = mutableListOf("Cea","Frans"),
     )
 
     override suspend fun signeIn(id: String){
