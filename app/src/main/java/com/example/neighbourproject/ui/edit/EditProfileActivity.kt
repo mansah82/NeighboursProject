@@ -41,9 +41,7 @@ open class EditProfileActivity : AppCompatActivity() {
         profile = model.getUserProfile() ?: People()
 
         if (profile.image != "") {
-            Glide.with(this)
-                .load(profile.image)
-                .into(binding.circularPhoto)
+            model.loadImage(this, profile.image, binding.circularPhoto)
         }
 
         binding.genderSpinner.adapter =
