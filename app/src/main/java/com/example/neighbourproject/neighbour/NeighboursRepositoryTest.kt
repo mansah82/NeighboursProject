@@ -256,7 +256,10 @@ class NeighboursRepositoryTest : NeighboursService {
         friends = mutableListOf("Beata", "Daniel", "Gunhild"),
     )
 
+    private var uid = ""
+
     override suspend fun signeIn(id: String) {
+        uid = id
         userProfileRemote.postValue(myProfile)
         //userProfileRemote.postValue(null)
     }
@@ -264,5 +267,9 @@ class NeighboursRepositoryTest : NeighboursService {
     override suspend fun updateUserProfile(profile: People) {
         myProfile = profile
         userProfileRemote.postValue(myProfile)
+    }
+
+    override fun getSignedInUid(): String {
+        return uid
     }
 }
