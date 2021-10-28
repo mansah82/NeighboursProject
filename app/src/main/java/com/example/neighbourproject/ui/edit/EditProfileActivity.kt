@@ -184,10 +184,6 @@ open class EditProfileActivity : AppCompatActivity() {
         Log.d(TAG, "Profile.image: ${profile.image}")
     }
 
-    /*
-    https://firebasestorage.googleapis.com/v0/b/neighbourproject.appspot.com/o/Images%2F07a3cd50-8e70-4195-9c49-140568f2b556?alt=media&token=8c5a3349-8bcb-4aa4-8085-bc4e55567932
-    */
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
