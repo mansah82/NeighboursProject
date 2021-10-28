@@ -39,8 +39,8 @@ class EditViewModel : ViewModel(), KoinComponent {
         return locationService.getLastPosition()
     }
 
-    fun loadImage(context: Context, url: String, view: ImageView) {
-        storageService.loadImage(context, url, view)
+    fun loadMyProfileImage(context: Context, url: String, view: ImageView) {
+        storageService.loadSmallImage(context, url, view)
     }
 
     fun writeImage(bitmap: Bitmap): String {
