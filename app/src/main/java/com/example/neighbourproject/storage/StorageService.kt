@@ -8,7 +8,5 @@ import android.widget.ImageView
 interface StorageService {
     fun writeImageStorage(filename: String, bitmap: Bitmap): String
 
-    fun writeImageStorage(filename: String, uri: Uri): String
-
     fun loadImage(context: Context, url: String, view: ImageView)
 }

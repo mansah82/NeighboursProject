@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +18,8 @@ import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
 import com.example.neighbourproject.ui.search.SearchActivity
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
@@ -70,9 +73,6 @@ open class EditProfileActivity : AppCompatActivity() {
 
             profile.email = binding.emailEditText.text.toString()
 
-            // TODO remove this to make stuff be stored
-            profile.image = ""
-
             model.editUserProfile(profile)
 
             //TODO decide when to push image to firestore
@@ -119,9 +119,8 @@ open class EditProfileActivity : AppCompatActivity() {
         if(result.resultCode == Activity.RESULT_OK){
             result.data?.let { intent ->
                 Log.d(TAG, "Camera: $intent")
-                val bitMap = intent.extras?.get("data") as Bitmap
-                binding.circularPhoto.setImageBitmap(bitMap)
-                profile.image = model.writeImage(bitMap)
+                val bitmap = intent.extras?.get("data") as Bitmap
+                handleImage(bitmap)
             }
         }
     }
@@ -138,8 +137,9 @@ open class EditProfileActivity : AppCompatActivity() {
                 val uri = intent.data
 
                 if(uri != null) {
-                    binding.circularPhoto.setImageURI(uri)
-                    profile.image = model.writeImage(uri)
+                    //TODO fix deprecated
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    handleImage(bitmap)
                 }
             }
         }
@@ -149,6 +149,29 @@ open class EditProfileActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         galleryResultLauncher.launch(intent)
+    }
+
+    private fun handleImage(bitmap: Bitmap){
+        val maxImageSize = 124.0
+        val ratio: Float = min(
+            maxImageSize.toFloat() / bitmap.width,
+            maxImageSize.toFloat() / bitmap.height
+        )
+        val width = (ratio * bitmap.width).roundToInt()
+        val height = (ratio * bitmap.height).roundToInt()
+
+        val newBitmap = Bitmap.createScaledBitmap(
+            bitmap, width,
+            height, false
+        )
+
+        binding.circularPhoto.setImageBitmap(newBitmap)
+        Log.d(TAG, "Bitmap: ${bitmap.byteCount} bytes, ${bitmap.height}x${bitmap.width} height x width")
+        Log.d(TAG, "newBitmap: ${newBitmap.byteCount} bytes, ${newBitmap.height}x${newBitmap.width} height x width")
+
+        profile.image = model.writeImage(bitmap)
+
+        Log.d(TAG, "Profile.image: ${profile.image}")
     }
 
     /*

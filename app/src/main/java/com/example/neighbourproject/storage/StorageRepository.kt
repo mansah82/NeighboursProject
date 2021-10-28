@@ -17,7 +17,7 @@ class StorageRepository : StorageService {
     override fun writeImageStorage(filename: String, bitmap: Bitmap): String {
         return if (filename.isNotEmpty()) {
             val outputStream = ByteArrayOutputStream()
-            //TODO fix compress
+
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
             val fileData = outputStream.toByteArray()
             val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
@@ -25,8 +25,8 @@ class StorageRepository : StorageService {
             ref.putBytes(fileData)
                 .addOnSuccessListener {
                     Log.d(TAG, "upLoad Bitmap: successfully: ${it.metadata?.path}")
-                    ref.downloadUrl.addOnSuccessListener { uri ->
-                        Log.d(TAG, "File Location: $uri")
+                    ref.downloadUrl.addOnSuccessListener { url ->
+                        Log.d(TAG, "File Location: $url")
                     }
                 }
             "/Images/$filename"
@@ -34,21 +34,6 @@ class StorageRepository : StorageService {
             ""
     }
 
-    override fun writeImageStorage(filename: String, uri: Uri): String {
-        return if (filename.isNotEmpty()) {
-            //TODO fix compress
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-            ref.putFile(uri)
-                .addOnSuccessListener {
-                    Log.d(TAG, "upLoad Image: successfully: ${it.metadata?.path}")
-                    ref.downloadUrl.addOnSuccessListener { uri ->
-                        Log.d(TAG, "File Location: $uri")
-                    }
-                }
-            "/Images/$filename"
-        }else
-            ""
-    }
 
     override fun loadImage(context: Context, url: String, view: ImageView) {
         /*
