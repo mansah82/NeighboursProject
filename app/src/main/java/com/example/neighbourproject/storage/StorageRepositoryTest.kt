@@ -15,16 +15,18 @@ class StorageRepositoryTest : StorageService {
         return "local_small_picture.jpeg"
     }
 
-    override fun loadImage(context: Context, url: String, view: ImageView) {
-        when ((0..3).random()) {
-            0 -> view.setImageResource(R.drawable.checkbox)
-            1 -> view.setImageResource(R.drawable.duck)
-            2 -> view.setImageResource(R.drawable.grannar)
-            3 -> {
-                if(mBitmap != null){
-                    view.setImageBitmap(mBitmap)
-                }else{
-                    view.setImageResource(R.drawable.duck)
+    override fun loadSmallImage(context: Context, url: String, view: ImageView) {
+        if(url != "") {
+            when ((0..3).random()) {
+                0 -> view.setImageResource(R.drawable.checkbox)
+                1 -> view.setImageResource(R.drawable.duck)
+                2 -> view.setImageResource(R.drawable.grannar)
+                3 -> {
+                    if (mBitmap != null) {
+                        view.setImageBitmap(mBitmap)
+                    } else {
+                        view.setImageResource(R.drawable.duck)
+                    }
                 }
             }
         }

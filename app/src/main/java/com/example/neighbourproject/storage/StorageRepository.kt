@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 
 class StorageRepository : StorageService {
@@ -19,7 +21,7 @@ class StorageRepository : StorageService {
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
             val fileData = outputStream.toByteArray()
-            val fullFileName = "/Images/$filename/small_profile.jpeg"
+            val fullFileName = "images/$filename/small_profile.jpeg"
             val ref = FirebaseStorage.getInstance().getReference(fullFileName)
             Log.d(TAG, "About to write ${fileData.size} bytes")
             ref.putBytes(fileData)
@@ -34,26 +36,21 @@ class StorageRepository : StorageService {
             ""
     }
 
-
-    override fun loadImage(context: Context, url: String, view: ImageView) {
+    override fun loadSmallImage(context: Context, url: String, view: ImageView) {
         Log.d(TAG, "loadImage: $url")
-        /*
+
         // Reference to an image file in Cloud Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-        // ImageView in your Activity
-        ImageView imageView = findViewById(R.id.imageView);
-
-        // Download directly from StorageReference using Glide
-        // (See MyAppGlideModule for Loader registration)
-        Glide.with(this /* context */)
-                .load(storageReference)
-                .into(imageView);
-    */
-        /*if (url != "") {
-            Glide.with(context)
-                .load(url)
-                .into(view)
-        }*/
+        //val storageReference = FirebaseStorage.getInstance().getReference(url);
+        val storageRef = Firebase.storage.reference.child(url)
+        storageRef.downloadUrl.addOnSuccessListener{
+            Log.d(TAG, "Got uri: ${it}")
+            // Download directly from StorageReference using Glide
+            // (See MyAppGlideModule for Loader registration)
+            it?.let {
+                Glide.with(context)
+                    .load(it)
+                    .into(view);
+            }
+        }
     }
 }

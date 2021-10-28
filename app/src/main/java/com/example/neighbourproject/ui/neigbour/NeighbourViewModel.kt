@@ -62,6 +62,8 @@ class NeighbourViewModel : ViewModel(), KoinComponent {
     }
 
     fun loadImage(context: Context, url: String, view: ImageView){
-        storageService.loadImage(context, url, view)
+        if(url != "") {
+            storageService.loadSmallImage(context, url, view)
+        }
     }
 }

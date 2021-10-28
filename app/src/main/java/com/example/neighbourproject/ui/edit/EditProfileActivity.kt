@@ -44,7 +44,7 @@ open class EditProfileActivity : AppCompatActivity() {
         profile = model.getUserProfile() ?: People()
 
         if (profile.image != "") {
-            model.loadImage(this, profile.image, binding.circularPhoto)
+            model.loadMyProfileImage(this, profile.image, binding.circularPhoto)
         }
 
         binding.genderSpinner.adapter =

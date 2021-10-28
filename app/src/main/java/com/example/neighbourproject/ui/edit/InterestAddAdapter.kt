@@ -11,7 +11,6 @@ import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Area
 import com.example.neighbourproject.neighbour.data.Interest
 import com.example.neighbourproject.neighbour.data.People
-import com.example.neighbourproject.neighbour.data.Position
 
 class InterestAddAdapter(private val profile: People,  private val model: EditViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -36,14 +35,14 @@ class InterestAddAdapter(private val profile: People,  private val model: EditVi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == VIEW_TYPE_CELL) {
+        return if (viewType == VIEW_TYPE_CELL) {
             val inflater = LayoutInflater.from(parent.context)
             val v = inflater.inflate(R.layout.item_interest_profile, parent, false)
-            return InterestViewHolder(v)
+            InterestViewHolder(v)
         } else {
             val inflater = LayoutInflater.from(parent.context)
             val v = inflater.inflate(R.layout.item_interest_profile_add, parent, false)
-            return InterestAddViewHolder(v)
+            InterestAddViewHolder(v)
         }
     }
 
