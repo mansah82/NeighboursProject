@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -26,6 +25,7 @@ open class EditProfileActivity : AppCompatActivity() {
         private const val TAG = "EditProfileActivity"
         private const val REQUEST_GALLERY = 1001
         private const val REQUEST_CAMERA = 2002
+        private const val MAX_IMAGE_SIZE = 124.0
     }
 
     private val model: EditViewModel by viewModels()
@@ -75,7 +75,6 @@ open class EditProfileActivity : AppCompatActivity() {
 
             model.editUserProfile(profile)
 
-            //TODO decide when to push image to firestore
             startActivity(Intent(this, SearchActivity::class.java))
             finish()
         }
@@ -99,7 +98,7 @@ open class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.circularPhoto.setOnClickListener {
-           if (ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 )
@@ -115,35 +114,37 @@ open class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            result.data?.let { intent ->
-                Log.d(TAG, "Camera: $intent")
-                val bitmap = intent.extras?.get("data") as Bitmap
-                handleImage(bitmap)
+    private val cameraResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let { intent ->
+                    Log.d(TAG, "Camera: $intent")
+                    val bitmap = intent.extras?.get("data") as Bitmap
+                    handleImage(bitmap)
+                }
             }
         }
-    }
 
     private fun capturePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraResultLauncher.launch(intent)
     }
 
-    private val galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            result.data?.let { intent ->
-                Log.d(TAG, "Gallery: $intent")
-                val uri = intent.data
+    private val galleryResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let { intent ->
+                    Log.d(TAG, "Gallery: $intent")
+                    val uri = intent.data
 
-                if(uri != null) {
-                    //TODO fix deprecated
-                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                    handleImage(bitmap)
+                    if (uri != null) {
+                        //TODO fix deprecated
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        handleImage(bitmap)
+                    }
                 }
             }
         }
-    }
 
     private fun chooseImageGallery() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -151,11 +152,10 @@ open class EditProfileActivity : AppCompatActivity() {
         galleryResultLauncher.launch(intent)
     }
 
-    private fun handleImage(bitmap: Bitmap){
-        val maxImageSize = 124.0
+    private fun handleImage(bitmap: Bitmap) {
         val ratio: Float = min(
-            maxImageSize.toFloat() / bitmap.width,
-            maxImageSize.toFloat() / bitmap.height
+            MAX_IMAGE_SIZE.toFloat() / bitmap.width,
+            MAX_IMAGE_SIZE.toFloat() / bitmap.height
         )
         val width = (ratio * bitmap.width).roundToInt()
         val height = (ratio * bitmap.height).roundToInt()
@@ -166,10 +166,20 @@ open class EditProfileActivity : AppCompatActivity() {
         )
 
         binding.circularPhoto.setImageBitmap(newBitmap)
-        Log.d(TAG, "Bitmap: ${bitmap.byteCount} bytes, ${bitmap.height}x${bitmap.width} height x width")
-        Log.d(TAG, "newBitmap: ${newBitmap.byteCount} bytes, ${newBitmap.height}x${newBitmap.width} height x width")
+        Log.d(
+            TAG,
+            "Bitmap: ${bitmap.byteCount} bytes, ${bitmap.height}x${bitmap.width} height x width"
+        )
+        Log.d(
+            TAG,
+            "newBitmap: ${newBitmap.byteCount} bytes, ${newBitmap.height}x${newBitmap.width} height x width"
+        )
 
         profile.image = model.writeImage(bitmap)
+
+        if(profile.image != ""){
+            model.editUserProfile(profile)
+        }
 
         Log.d(TAG, "Profile.image: ${profile.image}")
     }

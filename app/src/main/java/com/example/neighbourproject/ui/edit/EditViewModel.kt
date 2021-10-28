@@ -49,8 +49,4 @@ class EditViewModel : ViewModel(), KoinComponent {
     fun writeImage(bitmap: Bitmap): String {
         return storageService.writeImageStorage(neighbourService.getSignedInUid().plus(".jpeg"), bitmap)
     }
-
-    fun writeImage(uri: Uri): String {
-        return storageService.writeImageStorage(neighbourService.getSignedInUid().plus(".jpeg"), uri)
-    }
 }
