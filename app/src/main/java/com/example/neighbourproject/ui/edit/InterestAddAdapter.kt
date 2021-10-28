@@ -35,17 +35,14 @@ class InterestAddAdapter(private val profile: People,  private val model: EditVi
         val addButton: ImageView = view.findViewById(R.id.addInterestImage)
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_TYPE_CELL) {
             val inflater = LayoutInflater.from(parent.context)
             val v = inflater.inflate(R.layout.item_interest_profile, parent, false)
-            Log.d(TAG, "onCreateViewHolder: CELL")
             return InterestViewHolder(v)
         } else {
             val inflater = LayoutInflater.from(parent.context)
             val v = inflater.inflate(R.layout.item_interest_profile_add, parent, false)
-            Log.d(TAG, "onCreateViewHolder: FOOTER")
             return InterestAddViewHolder(v)
         }
     }
@@ -75,8 +72,6 @@ class InterestAddAdapter(private val profile: People,  private val model: EditVi
                     holder.longitude.text = it.longitude.toString()
                 }
             }
-
-            Log.d(TAG, "onBindViewHolder")
 
             holder.removeButton.setOnClickListener {
                 profile.interests.removeAt(position)
