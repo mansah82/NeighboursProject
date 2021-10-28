@@ -14,13 +14,14 @@ class StorageRepository : StorageService {
         private const val TAG = "StorageRepository"
     }
 
-    override fun writeImageStorage(filename: String, bitmap: Bitmap): String {
+    override fun writeSmallImageStorage(filename: String, bitmap: Bitmap): String {
         return if (filename.isNotEmpty()) {
             val outputStream = ByteArrayOutputStream()
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
             val fileData = outputStream.toByteArray()
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
+            val fullFileName = "/Images/$filename/small_profile.jpeg"
+            val ref = FirebaseStorage.getInstance().getReference(fullFileName)
             Log.d(TAG, "About to write ${fileData.size} bytes")
             ref.putBytes(fileData)
                 .addOnSuccessListener {
@@ -29,7 +30,7 @@ class StorageRepository : StorageService {
                         Log.d(TAG, "File Location: $url")
                     }
                 }
-            "/Images/$filename"
+            fullFileName
         }else
             ""
     }

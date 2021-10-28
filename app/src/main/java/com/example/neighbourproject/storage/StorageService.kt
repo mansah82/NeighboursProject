@@ -6,7 +6,7 @@ import android.net.Uri
 import android.widget.ImageView
 
 interface StorageService {
-    fun writeImageStorage(filename: String, bitmap: Bitmap): String
+    fun writeSmallImageStorage(filename: String, bitmap: Bitmap): String
 
     fun loadImage(context: Context, url: String, view: ImageView)
 }

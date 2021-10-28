@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.example.neighbourproject.R
 
 class StorageRepositoryTest : StorageService {
-    override fun writeImageStorage(filename: String, bitmap: Bitmap): String {
+    override fun writeSmallImageStorage(filename: String, bitmap: Bitmap): String {
         // Do nothing
         return "Did nothing"
     }

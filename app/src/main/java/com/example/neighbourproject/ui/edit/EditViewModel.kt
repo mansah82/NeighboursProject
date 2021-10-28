@@ -2,7 +2,6 @@ package com.example.neighbourproject.ui.edit
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.ViewModel
@@ -11,12 +10,10 @@ import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.data.*
 import com.example.neighbourproject.storage.StorageService
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.ByteArrayOutputStream
 
 class EditViewModel : ViewModel(), KoinComponent {
     companion object {
@@ -47,6 +44,13 @@ class EditViewModel : ViewModel(), KoinComponent {
     }
 
     fun writeImage(bitmap: Bitmap): String {
-        return storageService.writeImageStorage(neighbourService.getSignedInUid().plus(".jpeg"), bitmap)
+        return if(neighbourService.getSignedInUid() != "") {
+            storageService.writeSmallImageStorage(
+                neighbourService.getSignedInUid(),
+                bitmap
+            )
+        } else {
+            ""
+        }
     }
 }
