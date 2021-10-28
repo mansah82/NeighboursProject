@@ -36,6 +36,7 @@ class StorageRepository : StorageService {
 
 
     override fun loadImage(context: Context, url: String, view: ImageView) {
+        Log.d(TAG, "loadImage: $url")
         /*
         // Reference to an image file in Cloud Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -49,10 +50,10 @@ class StorageRepository : StorageService {
                 .load(storageReference)
                 .into(imageView);
     */
-        if (url != "") {
+        /*if (url != "") {
             Glide.with(context)
                 .load(url)
                 .into(view)
-        }
+        }*/
     }
 }

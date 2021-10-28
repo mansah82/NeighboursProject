@@ -39,6 +39,8 @@ open class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d(TAG, "onCreate")
+
         profile = model.getUserProfile() ?: People()
 
         if (profile.image != "") {
@@ -175,7 +177,10 @@ open class EditProfileActivity : AppCompatActivity() {
             "newBitmap: ${newBitmap.byteCount} bytes, ${newBitmap.height}x${newBitmap.width} height x width"
         )
 
-        profile.image = model.writeImage(bitmap)
+        //Let garbage take care of the old image
+        bitmap.recycle()
+
+        profile.image = model.writeImage(newBitmap)
 
         if(profile.image != ""){
             model.editUserProfile(profile)
