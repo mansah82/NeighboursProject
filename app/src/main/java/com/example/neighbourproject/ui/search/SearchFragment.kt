@@ -29,6 +29,7 @@ class SearchFragment : Fragment(), ClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
         model.setContext(requireContext())
