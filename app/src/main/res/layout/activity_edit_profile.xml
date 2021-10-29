@@ -10,14 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#EACECE">
 
         <Button
             android:id="@+id/takePhotoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_profile_camera_button_text"
             android:backgroundTint="#DF9696"
+            android:text="@string/edit_profile_camera_button_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,14 +30,14 @@
             android:backgroundTint="#DF9696"
             android:text="@string/edit_profile_save_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circularPhoto"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:civ_border_width="4dp"
             android:background="@drawable/ic_baseline_add_photo_alternate_24"
+            app:civ_border_width="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="#EACECE"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/circularPhoto">
 
@@ -55,11 +57,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:autofillHints="name"
+                android:background="@drawable/shape_rounded_white"
                 android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="@string/edit_profile_first_name_hint"
                 android:inputType="text"
                 android:minHeight="48dp" />
+
 
             <EditText
                 android:id="@+id/lastnameEditText"
@@ -67,8 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:autofillHints="name"
+                android:background="@drawable/shape_rounded_white"
                 android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="@string/edit_profile_last_name_hint"
                 android:inputType="text"
                 android:minHeight="48dp" />
@@ -78,6 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_rounded_white"
+                android:gravity="center"
                 android:hint="@string/edit_profile_age_hint"
                 android:inputType="number"
                 android:minWidth="48dp"
@@ -105,7 +114,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:autofillHints="emailAddress"
+                android:background="@drawable/shape_rounded_white"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="@string/edit_profile_email_hint"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp" />
@@ -116,6 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="#C8FFA657"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:layout_editor_absoluteX="1dp"
