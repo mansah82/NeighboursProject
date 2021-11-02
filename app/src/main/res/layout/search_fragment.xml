@@ -19,6 +19,33 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/menuToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ed9f9f"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        app:title="" />
+
+    <ImageView
+        android:id="@+id/button_edit_profile"
+        android:layout_width="50dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:foregroundGravity="center"
+        android:src="@drawable/icons8_neighbor_64"
+        app:backgroundTint="#f5f0f0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
+
     <EditText
         android:id="@+id/free_search_text"
         android:layout_width="0dp"
@@ -29,18 +56,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_edit_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:src="@drawable/icons8_neighbor_64"
-        app:backgroundTint="#DF9696"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -141,4 +156,37 @@
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ImageView
+        android:id="@+id/chattButton"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_baseline_message_25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
+
+    <TextView
+        android:id="@+id/chatText"
+        android:layout_width="35dp"
+        android:layout_height="20dp"
+        android:text="Chat"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="@+id/menuToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/chattButton" />
+
+    <TextView
+        android:id="@+id/homeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Profile"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/menuToolbar"
+        app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
