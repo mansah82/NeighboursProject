@@ -8,7 +8,7 @@ data class SearchParameters(
     val maxAge: Int = DEFAULT_MAX_AGE,
     val genders: List<Gender> = listOf(),
     val relationshipStatuses: List<RelationshipStatus> = listOf(),
-    val text : String = ""
+    val text: String = ""
 ) {
     companion object {
         const val DEFAULT_MIN_AGE = 0

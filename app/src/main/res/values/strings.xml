@@ -14,5 +14,19 @@
     <string name="login_button">Sign in</string>
     <string name="login_register_button">SIGN UP</string>
     <string name="sign_up_text_view">Hello there stranger!</string>
+    <string name="wrong_username_format">Please enter a valid email</string>
+    <string name="wrong_password_format">Password must contain 6 letters, at least one lowercase and one uppercase</string>
+    <string name="signup_enter_password">Enter password</string>
+    <string name="signup_sign_up">Sign Up</string>
+    <string name="signup_enter_email">Enter email</string>
 
+    <string name="neighbour_email_intent_subject">Please be my friend!</string>
+    <string name="neighbour_email_intent_text">Hi Stranger! Would you like to be my friend</string>
+    <string name="neighbour_email_intent_message">Choose an Email client :</string>
+    <string name="edit_profile_save_button">Save</string>
+    <string name="edit_profile_last_name_hint">Last name</string>
+    <string name="edit_profile_first_name_hint">First name</string>
+    <string name="edit_profile_email_hint">Email</string>
+    <string name="edit_profile_age_hint">Age</string>
+    <string name="edit_profile_camera_button_text">Camera</string>
 </resources>

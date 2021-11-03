@@ -1,17 +1,12 @@
 package com.example.neighbourproject.ui.neigbour
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
 import com.example.neighbourproject.neighbour.data.Interest
-import com.example.neighbourproject.neighbour.data.People
 
 class InterestRecyclerAdapter(
     private val interestList: List<Interest>,
@@ -34,7 +29,7 @@ class InterestRecyclerAdapter(
 
             itemView.setOnClickListener {
                 interest.location?.let {
-                    listener.onClick(it)
+                    listener.onClickInterest(it)
                 }
             }
         }

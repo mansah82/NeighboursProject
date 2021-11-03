@@ -19,7 +19,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.chat.LatestMessageActivity" />
         </activity>
-
         <activity android:name=".ui.chat.NewMessageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -40,5 +39,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

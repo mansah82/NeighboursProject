@@ -17,12 +17,13 @@ import com.example.neighbourproject.ui.neigbour.ExtrasKey
 import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 
 class SearchFragment : Fragment(), ClickListener {
-    companion object{
+    companion object {
         private const val TAG = "SearchFragment"
     }
+
     private lateinit var binding: SearchFragmentBinding
 
-    private val model : SearchViewModel by activityViewModels()
+    private val model: SearchViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +31,14 @@ class SearchFragment : Fragment(), ClickListener {
     ): View {
         binding = SearchFragmentBinding.inflate(layoutInflater)
 
-        val searchAdapter = SearchRecyclerAdapter(model.getSearchObserver(),
+        model.setContext(requireContext())
+
+        val searchAdapter = SearchRecyclerAdapter(
+            model.getSearchObserver(),
             viewLifecycleOwner,
-            this as ClickListener)
+            this as ClickListener,
+            model
+        )
 
         binding.searchResultList.adapter = searchAdapter
 
@@ -64,7 +70,7 @@ class SearchFragment : Fragment(), ClickListener {
         binding.minAge.doAfterTextChanged {
             minAge = try {
                 binding.minAge.text.toString().toInt()
-            }catch (e : NumberFormatException){
+            } catch (e: NumberFormatException) {
                 SearchParameters.DEFAULT_MIN_AGE
             }
             doSearch()
@@ -73,7 +79,7 @@ class SearchFragment : Fragment(), ClickListener {
         binding.maxAge.doAfterTextChanged {
             maxAge = try {
                 binding.maxAge.text.toString().toInt()
-            }catch (e : NumberFormatException){
+            } catch (e: NumberFormatException) {
                 SearchParameters.DEFAULT_MAX_AGE
             }
             doSearch()
@@ -90,22 +96,26 @@ class SearchFragment : Fragment(), ClickListener {
         doSearch()
     }
 
-    private fun selectedGenders(): List<Gender>{
+    override fun onResume() {
+        super.onResume()
+        doSearch()
+    }
+
+    private fun selectedGenders(): List<Gender> {
         val result = mutableListOf<Gender>()
-        if(binding.chipFemale.isChecked)
+        if (binding.chipFemale.isChecked)
             result.add(Gender.FEMALE)
-        if(binding.chipMale.isChecked)
+        if (binding.chipMale.isChecked)
             result.add(Gender.MALE)
-        if(binding.chipEnby.isChecked)
+        if (binding.chipEnby.isChecked)
             result.add(Gender.ENBY)
-        if(binding.chipNone.isChecked)
+        if (binding.chipNone.isChecked)
             result.add(Gender.NONE)
 
         return result
     }
 
-    private fun selectedRelationship(): List<RelationshipStatus>{
-        //TODO Today we search for all statuses
+    private fun selectedRelationship(): List<RelationshipStatus> {
         val result = mutableListOf<RelationshipStatus>()
         result.add(RelationshipStatus.SINGLE)
         result.add(RelationshipStatus.NONE)
@@ -114,22 +124,23 @@ class SearchFragment : Fragment(), ClickListener {
         return result
     }
 
-    private fun doSearch(){
+    private fun doSearch() {
         val params = SearchParameters(
             minAge,
             maxAge,
             selectedGenders(),
             selectedRelationship(),
-            binding.freeSearchText.text.toString())
+            binding.freeSearchText.text.toString()
+        )
         model.setSearch(params)
     }
 
     override fun onClick(id: String) {
         val neighbour = model.searchId(id)
-        neighbour?.let{
+        neighbour?.let {
 
             val intent = Intent(requireContext(), NeighbourActivity::class.java).also {
-               it.putExtra(ExtrasKey.KEY_USER_ID, neighbour.id)
+                it.putExtra(ExtrasKey.KEY_USER_ID, neighbour.id)
             }
             startActivity(intent)
         }

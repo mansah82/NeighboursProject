@@ -1,165 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ConstraineLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EACECE"
+    android:orientation="vertical"
     tools:context=".ui.edit.EditProfileActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/galleryButton"
-        android:layout_width="72dp"
-        android:layout_height="78dp"
-        app:layout_constraintBottom_toBottomOf="@+id/circularPhoto"
-        app:layout_constraintEnd_toEndOf="@+id/circularPhoto"
-        app:layout_constraintStart_toStartOf="@+id/circularPhoto"
-        app:layout_constraintTop_toTopOf="@+id/circularPhoto"
-        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+        <Button
+            android:id="@+id/takePhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_profile_camera_button_text"
+            android:backgroundTint="#DF9696"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circularPhoto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="24dp"
-        app:civ_border_width="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/nameEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="#DF9696"
+            android:text="@string/edit_profile_save_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
-        android:ems="10"
-        android:hint="First name"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/lastnameEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/circularPhoto" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circularPhoto"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:civ_border_width="4dp"
+            android:background="@drawable/ic_baseline_add_photo_alternate_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/interestsEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:ems="10"
-        android:hint="Interests"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relationshipSpinner" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/circularPhoto">
 
-    <EditText
-        android:id="@+id/ageEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Age"
-        android:inputType="number"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/genderSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:autofillHints="name"
+                android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+                android:ems="10"
+                android:hint="@string/edit_profile_first_name_hint"
+                android:inputType="text"
+                android:minHeight="48dp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="241dp"
-        android:layout_height="57dp"
-        android:backgroundTint="#DF9696"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/lastnameEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:autofillHints="name"
+                android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+                android:ems="10"
+                android:hint="@string/edit_profile_last_name_hint"
+                android:inputType="text"
+                android:minHeight="48dp" />
 
-    <Spinner
-        android:id="@+id/genderSpinner"
-        android:layout_width="215dp"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/relationshipSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/ageEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/edit_profile_age_hint"
+                android:inputType="number"
+                android:minWidth="48dp"
+                android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/lastnameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
-        android:ems="10"
-        android:hint="Last name"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/ageEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <Spinner
+                android:id="@+id/genderSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-    <Spinner
-        android:id="@+id/relationshipSpinner"
-        android:layout_width="215dp"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/interestsEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent" />
+            <Spinner
+                android:id="@+id/relationshipSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="48dp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/takePhotoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Camera"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/circularPhoto"
-        app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:autofillHints="emailAddress"
+                android:ems="10"
+                android:hint="@string/edit_profile_email_hint"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/emailEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/interestsEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/addInterestRecycler"
-        android:layout_width="392dp"
-        android:layout_height="207dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/interestsEditText"
-        tools:listitem="@layout/fragment_interest_profile" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addInterestFloatingBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        app:backgroundTint="#DF9696"
-        app:layout_constraintBottom_toBottomOf="@+id/addInterestRecycler"
-        app:layout_constraintEnd_toEndOf="@+id/addInterestRecycler"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/addInterestRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:layout_editor_absoluteX="1dp"
+            tools:listitem="@layout/item_interest_profile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
