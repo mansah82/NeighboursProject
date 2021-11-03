@@ -83,9 +83,12 @@ class NeighboursRepository : NeighboursService {
         }
     }
 
-    private var myProfileId = ""
+    override fun getSignedInUid(): String {
+        return signedInUserUid
+    }
 
-   // private fun updateFriendsList(){}
+
+    private var myProfileId = ""
 
     override suspend fun signeIn(id: String) {
         val docRef = db.collection(PERSON_COLLECTION).document(id)

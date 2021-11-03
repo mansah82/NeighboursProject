@@ -1,7 +1,6 @@
 package com.example.neighbourproject.ui.edit
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,18 +12,20 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-import com.bumptech.glide.Glide
 import com.example.neighbourproject.databinding.ActivityEditProfileBinding
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
 import com.example.neighbourproject.ui.search.SearchActivity
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 open class EditProfileActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "EditProfileActivity"
         private const val REQUEST_GALLERY = 1001
         private const val REQUEST_CAMERA = 2002
+        private const val MAX_IMAGE_SIZE = 124.0
     }
 
     private val model: EditViewModel by viewModels()
@@ -38,10 +39,12 @@ open class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d(TAG, "onCreate")
+
         profile = model.getUserProfile() ?: People()
 
         if (profile.image != "") {
-            model.loadImage(this, profile.image, binding.circularPhoto)
+            model.loadMyProfileImage(this, profile.image, binding.circularPhoto)
         }
 
         binding.genderSpinner.adapter =
@@ -74,7 +77,6 @@ open class EditProfileActivity : AppCompatActivity() {
 
             model.editUserProfile(profile)
 
-            //TODO decide when to push image to firestore
             startActivity(Intent(this, SearchActivity::class.java))
             finish()
         }
@@ -98,7 +100,7 @@ open class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.circularPhoto.setOnClickListener {
-           if (ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 )
@@ -114,35 +116,37 @@ open class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            result.data?.let { intent ->
-                Log.d(TAG, "Camera: $intent")
-                val bitMap = intent.extras?.get("data") as Bitmap
-                Log.d(TAG, "Camera: - bitmap $bitMap")
-                binding.circularPhoto.setImageBitmap(bitMap)
-                //TODO Write stuff to firestore
+    private val cameraResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let { intent ->
+                    Log.d(TAG, "Camera: $intent")
+                    val bitmap = intent.extras?.get("data") as Bitmap
+                    handleImage(bitmap)
+                }
             }
         }
-    }
 
     private fun capturePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        //TODO save picture to internal storage
         cameraResultLauncher.launch(intent)
     }
 
-    private val galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            result.data?.let { intent ->
-                Log.d(TAG, "Gallery: $intent")
-                val url = intent.data
-                Log.d(TAG, "Gallery - url: $url")
-                binding.circularPhoto.setImageURI(url)
-                //TODO Write stuff to firestore
+    private val galleryResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let { intent ->
+                    Log.d(TAG, "Gallery: $intent")
+                    val uri = intent.data
+
+                    if (uri != null) {
+                        //TODO fix deprecated
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        handleImage(bitmap)
+                    }
+                }
             }
         }
-    }
 
     private fun chooseImageGallery() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -150,68 +154,41 @@ open class EditProfileActivity : AppCompatActivity() {
         galleryResultLauncher.launch(intent)
     }
 
-    /*
-    https://firebasestorage.googleapis.com/v0/b/neighbourproject.appspot.com/o/Images%2F07a3cd50-8e70-4195-9c49-140568f2b556?alt=media&token=8c5a3349-8bcb-4aa4-8085-bc4e55567932
+    private fun handleImage(bitmap: Bitmap) {
+        val ratio: Float = min(
+            MAX_IMAGE_SIZE.toFloat() / bitmap.width,
+            MAX_IMAGE_SIZE.toFloat() / bitmap.height
+        )
+        val width = (ratio * bitmap.width).roundToInt()
+        val height = (ratio * bitmap.height).roundToInt()
 
-     */
+        val newBitmap = Bitmap.createScaledBitmap(
+            bitmap, width,
+            height, false
+        )
 
-   /* private fun upLoadImageToFirebaseStorage() {
-        if (imageUri != null) {
-            val filename = UUID.randomUUID().toString()
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-            Log.d(TAG, "upLoadImageToFirebaseStorage ${ref.toString()}")
-            ref.putFile(imageUri!!)
-                .addOnSuccessListener {
-                    Log.d(
-                        TAG,
-                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
-                    )
+        binding.circularPhoto.setImageBitmap(newBitmap)
+        Log.d(
+            TAG,
+            "Bitmap: ${bitmap.byteCount} bytes, ${bitmap.height}x${bitmap.width} height x width"
+        )
+        Log.d(
+            TAG,
+            "newBitmap: ${newBitmap.byteCount} bytes, ${newBitmap.height}x${newBitmap.width} height x width"
+        )
 
-                    ref.downloadUrl.addOnSuccessListener { uri ->
-                        Log.d(TAG, "File Location: $uri")
-                        profile.image = uri.toString()
-                    }
-                }
+        //Let garbage take care of the old image
+        bitmap.recycle()
+
+        profile.image = model.writeImage(newBitmap)
+
+        if(profile.image != ""){
+            model.editUserProfile(profile)
         }
+
+        Log.d(TAG, "Profile.image: ${profile.image}")
     }
 
-    private var imageUri: Uri? = null
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA && data != null) {
-            val bitMap = data.extras?.get("data") as Bitmap
-            binding.circularPhoto.setImageBitmap(bitMap)
-
-            val filename = UUID.randomUUID().toString()
-            val ref = FirebaseStorage.getInstance().getReference("/Images/$filename")
-            val baos = ByteArrayOutputStream()
-            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val fileData = baos.toByteArray()
-
-            ref.putBytes(fileData)
-                .addOnSuccessListener {
-                    Log.d(
-                        TAG,
-                        "upLoadImageToFirebaseStorage: successfully uploaded image: ${it.metadata?.path}"
-                    )
-
-                    ref.downloadUrl.addOnSuccessListener {
-                        Log.d(TAG, "File Location: $it")
-                        profile.image = it.toString()
-                        profile.let {
-                            model.editUserProfile(it)
-                        }
-                    }
-                }
-        }
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CHOOSE && data != null) {
-            imageUri = data.data
-            binding.circularPhoto.setImageURI(imageUri)
-
-            upLoadImageToFirebaseStorage()
-        }
-    }
-*/
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

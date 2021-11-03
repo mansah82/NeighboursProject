@@ -1,6 +1,7 @@
 package com.example.neighbourproject.ui.edit
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.ViewModel
@@ -14,15 +15,16 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class EditViewModel: ViewModel(), KoinComponent {
-    companion object{
+class EditViewModel : ViewModel(), KoinComponent {
+    companion object {
         private const val TAG = "EditViewModel"
     }
+
     private val neighbourService: NeighboursService by inject()
     private val locationService: LocationService by inject()
     private val storageService: StorageService by inject()
 
-    fun getUserProfile(): People?{
+    fun getUserProfile(): People? {
         return neighbourService.userProfileUpdate.value
     }
 
@@ -33,11 +35,22 @@ class EditViewModel: ViewModel(), KoinComponent {
         }
     }
 
-    fun getCurrentPosition(): Position?{
+    fun getCurrentPosition(): Position? {
         return locationService.getLastPosition()
     }
 
-    fun loadImage(context: Context, url: String, view: ImageView){
-        storageService.loadImage(context, url, view)
+    fun loadMyProfileImage(context: Context, url: String, view: ImageView) {
+        storageService.loadSmallImage(context, url, view)
+    }
+
+    fun writeImage(bitmap: Bitmap): String {
+        return if(neighbourService.getSignedInUid() != "") {
+            storageService.writeSmallImageStorage(
+                neighbourService.getSignedInUid(),
+                bitmap
+            )
+        } else {
+            ""
+        }
     }
 }

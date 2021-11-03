@@ -26,7 +26,9 @@ class SearchViewModel : ViewModel(), KoinComponent {
     }
     fun loadImage(url: String, view: ImageView){
         context?.let {
-            storageService.loadImage(it, url, view)
+            if(url != "") {
+                storageService.loadSmallImage(it, url, view)
+            }
         }
     }
 

@@ -148,7 +148,8 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Cars")
                 ),
                 id = "Adam",
-                email = "adam.adamsson@gmail.com"
+                email = "adam.adamsson@gmail.com",
+                image = "has image"
             )
         )
         neighbours.add(
@@ -161,9 +162,10 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Food", Area("Stockholm", Position(59.0, 12.0))),
                     Interest("Movies", Area("Stockholm", null))
                 ),
-                "", RelationshipStatus.SINGLE,
+                relationshipStatus = RelationshipStatus.SINGLE,
                 id = "Beata",
-                email = "beata.beatasson@gmail.com"
+                email = "beata.beatasson@gmail.com",
+                image = "has image"
             )
         )
         neighbours.add(
@@ -178,7 +180,8 @@ class NeighboursRepositoryTest : NeighboursService {
                 ),
                 friends = mutableListOf("Yroll", "Daniel"),
                 id = "Cea",
-                email = "cea.ceasson@gmail.com"
+                email = "cea.ceasson@gmail.com",
+                image = "has image"
             )
         )
         neighbours.add(
@@ -273,7 +276,10 @@ class NeighboursRepositoryTest : NeighboursService {
         id = "Yroll",
         friends = mutableListOf("Beata", "Daniel", "Gunhild"))
 
+    private var uid = ""
+
     override suspend fun signeIn(id: String) {
+        uid = id
         userProfileRemote.postValue(myProfile)
         //userProfileRemote.postValue(null)
     }
@@ -281,5 +287,9 @@ class NeighboursRepositoryTest : NeighboursService {
     override suspend fun updateUserProfile(profile: People) {
         myProfile = profile
         userProfileRemote.postValue(myProfile)
+    }
+
+    override fun getSignedInUid(): String {
+        return uid
     }
 }
