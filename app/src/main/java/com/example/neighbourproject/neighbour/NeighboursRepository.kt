@@ -87,7 +87,9 @@ class NeighboursRepository : NeighboursService {
         return signedInUserUid
     }
 
+
     private var myProfileId = ""
+
     override suspend fun signeIn(id: String) {
         val docRef = db.collection(PERSON_COLLECTION).document(id)
         docRef.get()
@@ -128,6 +130,10 @@ class NeighboursRepository : NeighboursService {
         this.searchParameters = searchParameters
 
         doSearch()
+    }
+
+    override fun getFriends(): List<People> {
+        TODO("Not yet implemented")
     }
 
     private fun updateFriendsMap() {

@@ -14,9 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NeighbourProject">
+        <activity android:name=".ui.chat.ChatLogActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.chat.LatestMessageActivity" />
+        </activity>
         <activity android:name=".ui.chat.NewMessageActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.chat.LatestMessageActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.chat.LatestMessageActivity" />
         </activity>
         <activity android:name=".ui.chat.LatestMessageActivity" />
         <activity android:name=".ui.neigbour.NeighbourActivity" />

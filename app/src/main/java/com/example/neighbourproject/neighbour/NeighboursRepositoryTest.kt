@@ -46,6 +46,22 @@ class NeighboursRepositoryTest : NeighboursService {
         doSearch()
     }
 
+    override fun getFriends(): List<People> {
+        val friendsList = mutableListOf<People>()
+        for (neighbour in neighbours) {
+            var requested: Boolean = false
+            var askedFor: Boolean = false
+            if (neighbour.friends.contains(myProfile.id))
+                requested = true
+            if (myProfile.friends.contains(neighbour.id))
+                askedFor = true
+            if (requested && askedFor) {
+                friendsList.add(neighbour)
+            }
+        }
+        return friendsList
+    }
+
     private fun updateFriendsMap() {
         for (neighbour in neighbours) {
             var requested = false
@@ -210,10 +226,12 @@ class NeighboursRepositoryTest : NeighboursService {
                     Interest("Go-cart", Area("Ludvika")),
                     Interest("Ninjas", Area("Ludvika"))
                 ),
-                id = "Frans",
-                email = "frans.fransson@gmail.com"
+
+                    friends = mutableListOf("Yroll"),
+                    id = "Frans",
+                    email = "frans.fransson@gmail.com"
             )
-        )
+            )
         neighbours.add(
             People(
                 "Gunhild",
@@ -256,8 +274,7 @@ class NeighboursRepositoryTest : NeighboursService {
         ),
         relationshipStatus = RelationshipStatus.SINGLE,
         id = "Yroll",
-        friends = mutableListOf("Beata", "Daniel", "Gunhild"),
-    )
+        friends = mutableListOf("Beata", "Daniel", "Gunhild"))
 
     private var uid = ""
 

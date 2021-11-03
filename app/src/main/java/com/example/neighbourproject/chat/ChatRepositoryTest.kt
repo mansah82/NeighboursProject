@@ -8,7 +8,7 @@ class ChatRepositoryTest: ChatService {
         private var counter = 0;
     }
 
-    private val messageList: MutableList<ChatMessage> = mutableListOf()
+    private val messageList: MutableList<ChatMessage> = mutableListOf(ChatMessage("Tony","Hello"))
 
     override fun writeMessage(message: ChatMessage) {
         messageList.add(message)
@@ -20,4 +20,6 @@ class ChatRepositoryTest: ChatService {
     override fun getMessages(): List<ChatMessage> {
         return messageList
     }
+
+    //override fun updateMessage(){}
 }
