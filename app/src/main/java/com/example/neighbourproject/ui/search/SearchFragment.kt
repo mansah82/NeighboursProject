@@ -13,6 +13,7 @@ import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.SearchParameters
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
+import com.example.neighbourproject.ui.chat.LatestMessageActivity
 import com.example.neighbourproject.ui.neigbour.ExtrasKey
 import com.example.neighbourproject.ui.neigbour.NeighbourActivity
 
@@ -95,6 +96,11 @@ class SearchFragment : Fragment(), ClickListener {
         }
 
         doSearch()
+
+        binding.chattButton.setOnClickListener {
+            startActivity(Intent(requireContext(), LatestMessageActivity::class.java))
+        }
+
     }
 
     override fun onResume() {
