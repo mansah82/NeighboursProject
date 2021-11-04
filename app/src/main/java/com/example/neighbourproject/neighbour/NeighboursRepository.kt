@@ -61,10 +61,11 @@ class NeighboursRepository : NeighboursService {
 
     private fun startListeningForNeighbours() {
         val itemsRef = db.collection(PERSON_COLLECTION)
+        //1
         itemsRef.addSnapshotListener { snapshot, _ ->
             if (snapshot != null) {
                 neighbours.clear()
-
+                //2
                 for (document in snapshot.documents) {
                     val item = document.toObject(People::class.java)
                     if (item != null) {
@@ -79,8 +80,10 @@ class NeighboursRepository : NeighboursService {
                 }
                 updateFriendsMap()
                 doSearch()
+                //3
             }
         }
+        //4
     }
 
     override fun getSignedInUid(): String {
@@ -133,8 +136,23 @@ class NeighboursRepository : NeighboursService {
     }
 
     override fun getFriends(): List<People> {
-        TODO("Not yet implemented")
+        val friendsList = mutableListOf<People>()
+        userProfileRemote.value?.let { user ->
+            Log.d(TAG, "getFriends: ${user.firstName}")
+
+
+            for(neigbour in neighbours){
+              if (user.friends.contains(neigbour.id) ) {
+                friendsList.add(neigbour)
+              }
+            }
+        }
+        return friendsList
     }
+
+
+
+
 
     private fun updateFriendsMap() {
         userProfileRemote.value?.let {

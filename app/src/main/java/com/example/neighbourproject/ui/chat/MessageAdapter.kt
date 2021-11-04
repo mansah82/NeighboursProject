@@ -2,7 +2,7 @@ package com.example.neighbourproject.ui.chat
 
 import android.content.Context
 import android.content.Intent
-
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.Image
 import android.util.Log
@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
+import androidx.activity.viewModels
 import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
@@ -23,6 +23,7 @@ class MessageAdapter(val context : Context, val people: List<People>) :
     RecyclerView.Adapter<MessageAdapter.ViewHolder>(){
     val TAG = "MessageAdapter"
     val layoutInflater = LayoutInflater.from(context)
+
 
 
     override fun getItemCount(): Int {
