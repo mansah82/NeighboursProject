@@ -1,23 +1,14 @@
 package com.example.neighbourproject.ui.chat
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
-import android.text.Layout
-import android.util.LayoutDirection
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Slide
 import com.example.neighbourproject.R
-import com.example.neighbourproject.chat.Chat
 import com.example.neighbourproject.chat.data.ChatMessage
 
 class ChatLogAdapter(val context: Context, val chat : List<ChatMessage>) :

@@ -132,9 +132,7 @@ class NeighboursRepository : NeighboursService {
         doSearch()
     }
 
-    override fun getFriends(): List<People> {
-        TODO("Not yet implemented")
-    }
+
 
     private fun updateFriendsMap() {
         userProfileRemote.value?.let {

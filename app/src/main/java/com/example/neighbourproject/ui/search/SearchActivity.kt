@@ -2,13 +2,10 @@ package com.example.neighbourproject.ui.search
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -17,7 +14,6 @@ import androidx.core.content.ContextCompat
 import com.example.neighbourproject.R
 import com.example.neighbourproject.databinding.ActivitySearchBinding
 import com.example.neighbourproject.neighbour.data.Position
-import com.example.neighbourproject.ui.chat.LatestMessageActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
