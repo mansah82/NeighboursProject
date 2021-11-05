@@ -25,7 +25,7 @@ open class EditProfileActivity : AppCompatActivity() {
         private const val TAG = "EditProfileActivity"
         private const val REQUEST_GALLERY = 1001
         private const val REQUEST_CAMERA = 2002
-        private const val MAX_IMAGE_SIZE = 124.0
+        private const val MAX_IMAGE_SIZE = 256.0
     }
 
     private val model: EditViewModel by viewModels()

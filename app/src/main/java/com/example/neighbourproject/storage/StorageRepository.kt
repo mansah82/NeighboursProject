@@ -19,7 +19,7 @@ class StorageRepository : StorageService {
         return if (filename.isNotEmpty()) {
             val outputStream = ByteArrayOutputStream()
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
             val fileData = outputStream.toByteArray()
             val fullFileName = "images/$filename/small_profile.jpeg"
             val ref = FirebaseStorage.getInstance().getReference(fullFileName)
