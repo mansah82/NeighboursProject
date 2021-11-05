@@ -9,11 +9,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ChatViewModel: ViewModel(), KoinComponent {
-    private val neighbourService: NeighboursService by inject()
     private val chatService: ChatService by inject()
-    fun getFriends(): List<People>{
-        return neighbourService.getFriends()
-    }
+
     fun writeMessage(message: ChatMessage){
         chatService.writeMessage(message)
     }

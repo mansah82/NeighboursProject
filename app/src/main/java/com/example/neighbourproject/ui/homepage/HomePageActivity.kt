@@ -11,7 +11,6 @@ import com.example.neighbourproject.R
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.ActivityHomePageBinding
 import com.example.neighbourproject.neighbour.data.People
-import com.example.neighbourproject.ui.chat.LatestMessageActivity
 import com.example.neighbourproject.ui.signup.SignUpActivity
 import com.example.neighbourproject.ui.search.SearchActivity
 import com.example.neighbourproject.user.EvaluationHelper

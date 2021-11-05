@@ -19,8 +19,6 @@ interface NeighboursService {
 
     fun setSearch(searchParameters: SearchParameters)
 
-    fun getFriends(): List<People>
-
     fun getFriendsStatus(): Map<String, FriendStatus>
 
     suspend fun addFriend(friendId: String)
