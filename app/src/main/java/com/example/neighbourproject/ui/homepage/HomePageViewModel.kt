@@ -51,9 +51,4 @@ class HomePageViewModel : ViewModel(), KoinComponent {
             userService.logoutUser()
         }
     }
-
-    override fun onCleared() {
-        signOut()
-        super.onCleared()
-    }
 }
