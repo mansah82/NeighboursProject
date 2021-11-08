@@ -1,6 +1,5 @@
 package com.example.neighbourproject.chat
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.neighbourproject.chat.data.ChatMessage
@@ -29,18 +28,14 @@ class ChatRepository: ChatService {
     var query: ListenerRegistration? = null
 
     private fun startListeningOnChat() {
-        //TODO fix so we only reads the last messages by timestamp
-        val itemsRef = db.collection(CHAT_COLLECTION).orderBy("createdAt").limitToLast(50)
+        val itemsRef = db.collection(CHAT_COLLECTION).orderBy("createdAt").limitToLast(10)
         query = itemsRef.addSnapshotListener { snapshot, _ ->
             if (snapshot != null) {
                 messageList.clear()
-
-                Log.d(TAG, "TEST: reading stuff from db")
                 for (document in snapshot.documents) {
                     val item = document.toObject(ChatMessage::class.java)
                     if (item != null) {
                         messageList.add(item)
-                        Log.d(TAG, "Message: $item")
                     }
                 }
                 update(messageList)
