@@ -1,8 +1,5 @@
 package com.example.neighbourproject.ui.chat
 
-import android.R.attr
-import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -14,25 +11,22 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
 import com.example.neighbourproject.chat.data.ChatMessage
-import android.R.attr.button
-
 import android.widget.LinearLayout
 
-
 class ChatLogAdapter(
-    private val context: Context,
     private val model: ChatViewModel,
     lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<ChatLogAdapter.ViewHolder>() {
-    val TAG = "ChatLogAdapter"
-    val layoutInflater = LayoutInflater.from(context)
+    companion object {
+        private const val TAG = "ChatLogAdapter"
+    }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     private val chatObserver = Observer<List<ChatMessage>> {
         it?.let {
-            notifyDataSetChanged()
+            if (itemCount > 0) {
+                notifyItemInserted(itemCount - 1)
+            }
         }
     }
 
@@ -41,13 +35,12 @@ class ChatLogAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.d(TAG, "getItemCount: ${model.getLiveMessages().value?.size}")
         return model.getLiveMessages().value?.size ?: 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatLogAdapter.ViewHolder {
-        val itemViewUser = layoutInflater.inflate(R.layout.chat_bubble_list_chat_log, parent, false)
-        Log.d(TAG, "OncreateViewHolder: ")
+        val itemViewUser = LayoutInflater.from(parent.context)
+            .inflate(R.layout.chat_bubble_list_chat_log, parent, false)
         return ViewHolder(itemViewUser)
     }
 
@@ -76,7 +69,7 @@ class ChatLogAdapter(
     }
 
     inner class ViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val chatBubbleUser = itemView.findViewById<TextView>(R.id.chatBubble)
+        val chatBubbleUser: TextView = itemView.findViewById(R.id.chatBubble)
     }
 }
 
