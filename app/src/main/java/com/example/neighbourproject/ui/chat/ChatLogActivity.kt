@@ -21,11 +21,15 @@ class ChatLogActivity : AppCompatActivity() {
             if(binding.enterMessageChatLog.text.toString().isNotEmpty()) {
                 model.writeMessage(binding.enterMessageChatLog.text.toString())
                 binding.enterMessageChatLog.setText("")
-                model.getLiveMessages().value?.let {
-                    if (it.isNotEmpty()) {
-                        binding.recyclerViewChatLog.scrollToPosition(it.size - 1)
-                    }
-                }
+                scrollLast()
+            }
+        }
+    }
+
+    private fun scrollLast(){
+        model.getLiveMessages().value?.let {
+            if (it.isNotEmpty()) {
+                binding.recyclerViewChatLog.scrollToPosition(it.size - 1)
             }
         }
     }
@@ -33,6 +37,7 @@ class ChatLogActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         model.startChat()
+        scrollLast()
     }
 
     override fun onPause() {
