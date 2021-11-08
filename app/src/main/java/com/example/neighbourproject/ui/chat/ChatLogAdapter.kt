@@ -46,7 +46,7 @@ class ChatLogAdapter(
 
     override fun onBindViewHolder(holder: ChatLogAdapter.ViewHolder, position: Int) {
         model.getLiveMessages().value?.let {
-            holder.chatBubbleUser.text = it[position].message
+            var data = ""
             Log.d(TAG, "onBindViewHolder: ")
             if (it[position].id == model.getId()) {
                 holder.chatBubbleUser.setBackgroundResource(R.drawable.rounded_edittext_signin)
@@ -56,7 +56,6 @@ class ChatLogAdapter(
                 )
                 params.gravity = Gravity.END
                 holder.chatBubbleUser.layoutParams = params
-
             } else {
                 holder.chatBubbleUser.setBackgroundResource(R.drawable.rounded_corners_darker_colors)
                 val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
@@ -64,7 +63,9 @@ class ChatLogAdapter(
                 )
                 params.gravity = Gravity.START
                 holder.chatBubbleUser.layoutParams = params
+                data = it[position].name.plus(": ")
             }
+            holder.chatBubbleUser.text = data.plus(it[position].message)
         }
     }
 
