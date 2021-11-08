@@ -18,10 +18,13 @@ class ChatLogActivity : AppCompatActivity() {
         binding.recyclerViewChatLog.adapter = ChatLogAdapter(model, this)
 
         binding.sendButtonChatLog.setOnClickListener {
-            model.writeMessage(binding.enterMessageChatLog.text.toString())
-            model.getLiveMessages().value?.let {
-                if (it.isNotEmpty()) {
-                    binding.recyclerViewChatLog.scrollToPosition(it.size - 1)
+            if(binding.enterMessageChatLog.text.toString().isNotEmpty()) {
+                model.writeMessage(binding.enterMessageChatLog.text.toString())
+                binding.enterMessageChatLog.setText("")
+                model.getLiveMessages().value?.let {
+                    if (it.isNotEmpty()) {
+                        binding.recyclerViewChatLog.scrollToPosition(it.size - 1)
+                    }
                 }
             }
         }
