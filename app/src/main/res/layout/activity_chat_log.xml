@@ -15,7 +15,7 @@
         android:background="@drawable/rounded_edittext_signin"
         android:hint="Enter message"
         android:paddingLeft="10dp"
-        android:inputType="textPersonName"
+        android:inputType="textAutoComplete"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
