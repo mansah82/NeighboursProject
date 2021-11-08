@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EACECE"
+    android:background="@drawable/register_background"
     tools:context=".ui.signup.SignUpActivity">
 
 
@@ -12,7 +12,7 @@
         android:id="@+id/editTextEmailAddress"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/rounded_edittext_signin"
         android:ems="10"
         android:hint="@string/signup_enter_email"
@@ -23,9 +23,9 @@
         android:textColorHighlight="#6E3F3F"
         android:textColorHint="#958989"
         android:textColorLink="#A37979"
-        android:textSize="14dp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -44,7 +44,7 @@
         android:textColorHighlight="#6E3F3F"
         android:textColorHint="#958989"
         android:textColorLink="#A37979"
-        android:textSize="14dp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="241dp"
+        android:layout_width="170dp"
         android:layout_height="57dp"
         android:backgroundTint="#DF9696"
         android:text="@string/signup_sign_up"
@@ -60,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.339" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -85,18 +85,82 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_neighbor_64" />
+        app:srcCompat="@drawable/grannar_svart" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="204dp"
         android:layout_height="33dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
-        android:text="Howdy! Register below"
-        android:textSize="18dp"
+        android:text="HEY"
+        android:textColor="#050505"
+        android:textSize="25dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FUTURE FRIEND!"
+        android:textColor="#050505"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REGISTER TO MEET YOUR NEW FRIENDS"
+        android:textStyle="italic"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:text="ALREADY A NEIGHBOUR?"
+        android:textColor="#050505"
+        android:textSize="20dp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="LOG IN TO MEET YOUR FRIENDS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/login_button2"
+        android:layout_width="170dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFA657"
+        android:text="LOG IN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

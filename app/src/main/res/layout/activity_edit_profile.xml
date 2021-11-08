@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EACECE"
+    android:background="@drawable/recyclerview_background"
     tools:context=".ui.edit.EditProfileActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EACECE">
+        android:background="@drawable/recyclerview_background">
 
         <Button
             android:id="@+id/takePhotoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#DF9696"
+            android:backgroundTint="#FFFFA657"
             android:text="@string/edit_profile_camera_button_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="#DF9696"
+            android:backgroundTint="#FFFFA657"
             android:text="@string/edit_profile_save_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,8 +37,9 @@
             android:id="@+id/circularPhoto"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/ic_baseline_add_photo_alternate_24"
-            app:civ_border_width="4dp"
+            android:background="@drawable/ic_baseline_person_24"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#EACECE"
+            android:background="@drawable/recyclerview_background"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/circularPhoto">
 
@@ -128,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="#C8FFA657"
+            android:background="@drawable/recyclerview_background"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:layout_editor_absoluteX="1dp"
