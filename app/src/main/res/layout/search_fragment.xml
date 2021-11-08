@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/recyclerview_background"
     tools:context=".ui.search.SearchFragment">
 
 
@@ -11,8 +12,9 @@
         android:id="@+id/search_result_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/white"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/menuToolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/free_search_text">
@@ -23,7 +25,7 @@
         android:id="@+id/menuToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ed9f9f"
+        android:background="@drawable/recyclerview_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -39,7 +41,7 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:foregroundGravity="center"
-        android:src="@drawable/icons8_neighbor_64"
+        android:src="@drawable/grannar_svart"
         app:backgroundTint="#f5f0f0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +53,7 @@
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:text="Chat"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
         app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar"
@@ -62,11 +64,11 @@
         android:layout_width="50dp"
         android:layout_height="30dp"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/ic_baseline_message_25"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
         app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
+        app:layout_constraintStart_toStartOf="@+id/menuToolbar"
+        app:srcCompat="@drawable/message_black" />
 
     <TextView
         android:id="@+id/homeText"
@@ -74,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="Profile"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/menuToolbar"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
@@ -100,7 +102,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="#DF9696"
+            android:background="@drawable/recyclerview_background"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -108,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                app:contentScrim="#ed9f9f"
+                android:background="@drawable/recyclerview_background"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:title="Filter">
 
@@ -116,6 +118,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/recyclerview_background"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
                     app:title="" />
 
@@ -136,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:checked="true" />
+                        android:checked="true"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip.male"

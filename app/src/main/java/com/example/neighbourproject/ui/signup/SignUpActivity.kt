@@ -76,5 +76,9 @@ class SignUpActivity : AppCompatActivity() {
                         ?: ""
                 )
         }
+        binding.loginButton2.setOnClickListener {
+            val intent = Intent(this, HomePageActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
