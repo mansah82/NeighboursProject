@@ -26,4 +26,7 @@ class ChatRepositoryTest: ChatService {
     override fun getLiveMessages(): LiveData<List<ChatMessage>>{
         return messages
     }
+
+    override suspend fun startChat() {}
+    override suspend fun stopChat() {}
 }

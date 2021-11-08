@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.neighbourproject.R
 import com.example.neighbourproject.chat.data.ChatMessage
-import com.example.neighbourproject.neighbour.data.People
 
 class ChatLogAdapter(private val context: Context, private val model: ChatViewModel, lifecycleOwner: LifecycleOwner) :
         RecyclerView.Adapter<ChatLogAdapter.ViewHolder>() {
