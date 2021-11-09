@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp">
+    android:layout_margin="2dp"
+    android:background="#EBF6DAC2">
 
     <TextView
         android:id="@+id/neighbour_name"
@@ -13,7 +14,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="name"
-        android:textSize="20sp"
+        android:textColor="#020202"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,36 +27,67 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="Age"
+        android:textColor="#020202"
+        android:textSize="18dp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
+
     <TextView
         android:id="@+id/neighbour_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:text="Age"
-        app:layout_constraintStart_toEndOf="@+id/neighbour_age"
+        android:textColor="#020202"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
 
     <TextView
         android:id="@+id/neighbour_info"
+        android:layout_width="225dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="2dp"
+        android:text="Info"
+        android:textColor="#202020"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_neighbor_64" />
+
+    <TextView
+        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:text="Info"
+        android:text="Interests:"
+        android:textColor="#040303"
+        android:textSize="18dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_age" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="80dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="4dp"
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_neighbor_64" />
+        android:text="Years"
+        android:textColor="#020202"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/neighbour_age"
+        app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
