@@ -23,11 +23,7 @@ class ChatLogAdapter(
     }
 
     private val chatObserver = Observer<List<ChatMessage>> {
-        it?.let {
-            if (itemCount > 0) {
-                notifyItemInserted(itemCount - 1)
-            }
-        }
+        notifyDataSetChanged()
     }
 
     init {
@@ -56,6 +52,8 @@ class ChatLogAdapter(
                 )
                 params.gravity = Gravity.END
                 holder.chatBubbleUser.layoutParams = params
+                holder.usernameOverBubble.gravity = Gravity.RIGHT
+                holder.usernameOverBubble.text = "Me"
             } else {
                 holder.chatBubbleUser.setBackgroundResource(R.drawable.rounded_corners_darker_colors)
                 val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
@@ -63,14 +61,17 @@ class ChatLogAdapter(
                 )
                 params.gravity = Gravity.START
                 holder.chatBubbleUser.layoutParams = params
-                data = it[position].name.plus(": ")
+                holder.usernameOverBubble.gravity = Gravity.LEFT
+                holder.usernameOverBubble.text = it[position].name
+
             }
-            holder.chatBubbleUser.text = data.plus(it[position].message)
+            holder.chatBubbleUser.text = it[position].message
         }
     }
 
     inner class ViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
         val chatBubbleUser: TextView = itemView.findViewById(R.id.chatBubble)
+        val usernameOverBubble: TextView = itemView.findViewById(R.id.username)
     }
 }
 
