@@ -39,6 +39,7 @@ class StorageRepository : StorageService {
     override fun loadSmallImage(context: Context, url: String, view: ImageView) {
         Log.d(TAG, "loadImage: $url")
 
+
         // Reference to an image file in Cloud Storage
         //val storageReference = FirebaseStorage.getInstance().getReference(url);
         val storageRef = Firebase.storage.reference.child(url)

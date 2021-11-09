@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.neighbourproject.R
 import com.example.neighbourproject.location.LocationService
 import com.example.neighbourproject.neighbour.NeighboursService
 import com.example.neighbourproject.neighbour.SearchParameters
@@ -24,10 +25,13 @@ class SearchViewModel : ViewModel(), KoinComponent {
     fun setContext(cont: Context) {
         context = cont
     }
-    fun loadImage(url: String, view: ImageView){
+
+    fun loadImage(url: String, view: ImageView) {
         context?.let {
-            if(url != "") {
+            if (url != "") {
                 storageService.loadSmallImage(it, url, view)
+            } else {
+                view.setImageDrawable(it.getDrawable(R.drawable.darker_profile))
             }
         }
     }

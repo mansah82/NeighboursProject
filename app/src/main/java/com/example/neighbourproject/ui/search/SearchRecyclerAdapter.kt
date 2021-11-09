@@ -1,6 +1,7 @@
 package com.example.neighbourproject.ui.search
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +18,11 @@ class SearchRecyclerAdapter(
     private val neighboursSearch: LiveData<List<People>>,
     lifecycleOwner: LifecycleOwner,
     private val clickListener: ClickListener,
-    private val model: SearchViewModel) :
+    private val model: SearchViewModel
+) :
     RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder>() {
 
-    companion object{
+    companion object {
         private const val TAG = "SearchRecyclerAdapter"
     }
 
@@ -34,15 +36,17 @@ class SearchRecyclerAdapter(
     init {
         neighboursSearch.observe(lifecycleOwner, searchResultObserver)
     }
-    class ViewHolder(view: View, private val listener: ClickListener) : RecyclerView.ViewHolder(view) {
+
+    class ViewHolder(view: View, private val listener: ClickListener) :
+        RecyclerView.ViewHolder(view) {
         val neighbourNameTextView: TextView = view.findViewById(R.id.neighbour_name)
         val neighbourAgeTextView: TextView = view.findViewById(R.id.neighbour_age)
         val neighbourGenderTextView: TextView = view.findViewById(R.id.neighbour_gender)
         val neighbourInfoTextView: TextView = view.findViewById(R.id.neighbour_info)
-        val neighbourImage : ImageView = view.findViewById(R.id.imageView)
+        val neighbourImage: ImageView = view.findViewById(R.id.imageView)
         private lateinit var people: People
 
-        fun bind(newPeople: People){
+        fun bind(newPeople: People) {
             people = newPeople
 
             itemView.setOnClickListener {
@@ -59,22 +63,25 @@ class SearchRecyclerAdapter(
 
     private fun infoString(people: People): String {
         var doing = ""
-        for(interest in people.interests){
+        for (interest in people.interests) {
             doing += interest.name.plus(" in ")
-                .plus(interest.location?.area?:"-").plus("\n")
+                .plus(interest.location?.area ?: "-").plus("\n")
         }
         return doing
     }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         neighboursSearch.value?.let {
-            viewHolder.neighbourNameTextView.text = it[position].firstName.plus(" ").plus(it[position].lastName)
+            viewHolder.neighbourNameTextView.text =
+                it[position].firstName.plus(" ").plus(it[position].lastName)
             viewHolder.neighbourAgeTextView.text = it[position].age.toString()
             viewHolder.neighbourGenderTextView.text = it[position].gender.text
             viewHolder.neighbourInfoTextView.text = infoString(it[position])
-            model.loadImage(it[position].image, viewHolder.neighbourImage)
 
+            model.loadImage(it[position].image, viewHolder.neighbourImage)
             viewHolder.bind(it[position])
         }
     }
-    override fun getItemCount() = neighboursSearch.value?.let { it.size }?: 0
+
+    override fun getItemCount() = neighboursSearch.value?.let { it.size } ?: 0
 }

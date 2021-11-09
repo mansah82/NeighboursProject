@@ -45,7 +45,10 @@ open class EditProfileActivity : AppCompatActivity() {
 
         if (profile.image != "") {
             model.loadMyProfileImage(this, profile.image, binding.circularPhoto)
+
         }
+
+
 
         binding.genderSpinner.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values())
