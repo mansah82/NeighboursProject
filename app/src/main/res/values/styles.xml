@@ -8,5 +8,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="CustomToolbar">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/cardview_compat_inset_shadow</item>
+        <item name="android:text">FILTER YOUR NEIGHBOURS</item>
+
+    </style>
 
 </resources>

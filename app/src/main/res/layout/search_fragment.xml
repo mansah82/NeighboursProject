@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/recyclerview_background"
+    android:background="@drawable/background_dd9597"
     tools:context=".ui.search.SearchFragment">
 
 
@@ -25,7 +25,7 @@
         android:id="@+id/menuToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/recyclerview_background"
+        android:background="@drawable/background_dd9597"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -41,7 +41,7 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:foregroundGravity="center"
-        android:src="@drawable/grannar_svart"
+        android:src="@drawable/grannar_vit"
         app:backgroundTint="#f5f0f0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
         android:layout_width="35dp"
         android:layout_height="20dp"
         android:text="Chat"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
         app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar"
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
         app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar"
-        app:srcCompat="@drawable/message_black" />
+        app:srcCompat="@drawable/ic_baseline_message_25" />
 
     <TextView
         android:id="@+id/homeText"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="Profile"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/menuToolbar"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
@@ -85,8 +85,11 @@
         android:id="@+id/free_search_text"
         android:layout_width="0dp"
         android:layout_height="42dp"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/ic_baseline_search_24"
         android:enabled="true"
-        android:hint="@string/free_search_hint"
+        android:hint="@string/FREE_SEARCH"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,92 +105,111 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/recyclerview_background"
+            android:background="@drawable/background_dd9597"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolBar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="@drawable/recyclerview_background"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-                app:title="Filter">
+                android:layout_height="wrap_content">
 
-
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@drawable/recyclerview_background"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-                    app:title="" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
+                <TextView
+                    android:id="@+id/textView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="170dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
+                    android:text="FILTER YOUR NEIGHBOURS"
+                    android:textColor="#FBF9F9"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/coordinatorLayout">
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_female"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:checked="true"/>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@drawable/background_dd9597"
+                android:gravity="center_horizontal"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip.male"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:checked="true" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/coordinatorLayout">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_enby"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:checked="true" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_none"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:checked="true" />
-                </com.google.android.material.chip.ChipGroup>
-
-                <EditText
-                    android:id="@+id/maxAge"
-                    android:layout_width="80dp"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_female"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:hint="@string/max_age_hint"
-                    android:inputType="numberSigned"
-                    android:minHeight="48dp" />
+                    android:checkable="true"
+                    android:checked="true" />
 
-                <EditText
-                    android:id="@+id/minAge"
-                    android:layout_width="80dp"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip.male"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="80dp"
-                    android:ems="10"
-                    android:hint="@string/min_age_hint"
-                    android:inputType="numberSigned"
-                    android:minHeight="48dp" />
+                    android:background="@color/white"
+                    android:checkable="true"
+                    android:checked="true" />
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_enby"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_none"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <EditText
+                android:id="@+id/minAge"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="220dp"
+                android:layout_marginTop="-5dp"
+                android:background="@drawable/rounded_edittext_signin"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/min_age_hint"
+                android:inputType="numberSigned"
+                android:minHeight="35dp"
+                android:textColor="#020202"
+                android:textColorHint="#020101"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/maxAge"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="-35dp"
+                android:background="@drawable/rounded_edittext_signin"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/max_age_hint"
+                android:inputType="numberSigned"
+                android:minHeight="40dp"
+                android:textColor="#020202"
+                android:textColorHint="#020202"
+                android:textSize="14sp" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
 

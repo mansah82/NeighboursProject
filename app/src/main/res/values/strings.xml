@@ -29,4 +29,5 @@
     <string name="edit_profile_email_hint">Email</string>
     <string name="edit_profile_age_hint">Age</string>
     <string name="edit_profile_camera_button_text">Camera</string>
+    <string name="FREE_SEARCH">FREE SEARCH</string>
 </resources>
