@@ -28,7 +28,7 @@ class ChatRepository: ChatService {
     var query: ListenerRegistration? = null
 
     private fun startListeningOnChat() {
-        val itemsRef = db.collection(CHAT_COLLECTION).orderBy("createdAt").limitToLast(10)
+        val itemsRef = db.collection(CHAT_COLLECTION).orderBy("createdAt").limitToLast(40)
         query = itemsRef.addSnapshotListener { snapshot, _ ->
             if (snapshot != null) {
                 messageList.clear()
