@@ -25,13 +25,18 @@
                 android:value=".ui.chat.LatestMessageActivity" />
         </activity>
         <activity android:name=".ui.chat.LatestMessageActivity" />
-        <activity android:name=".ui.neigbour.NeighbourActivity" />
-        <activity android:name=".ui.search.SearchActivity" />
-        <activity android:name=".ui.edit.EditProfileActivity" />
-        <activity android:name=".ui.signup.SignUpActivity" />
+        <activity android:name=".ui.neigbour.NeighbourActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.search.SearchActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.edit.EditProfileActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.signup.SignUpActivity"
+                  android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.homepage.HomePageActivity"
-            android:exported="true">
+                  android:name=".ui.homepage.HomePageActivity"
+                  android:screenOrientation="portrait"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
