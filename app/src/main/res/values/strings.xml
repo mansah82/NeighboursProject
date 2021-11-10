@@ -3,6 +3,9 @@
     <string name="min_age_hint">Min Age</string>
     <string name="max_age_hint">Max Age</string>
     <string name="free_search_hint">Free search:</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="non_binary">Non-bin:</string>
 
     <string name="location_dialog_ok">Ok</string>
     <string name="location_dialog_negative">No Way!</string>

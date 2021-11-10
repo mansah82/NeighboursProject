@@ -2,12 +2,14 @@ package com.example.neighbourproject.ui.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import com.example.neighbourproject.R
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.SearchParameters
@@ -44,10 +46,10 @@ class SearchFragment : Fragment(), ClickListener {
 
         binding.searchResultList.adapter = searchAdapter
 
-        binding.chipFemale.text = Gender.FEMALE.text
-        binding.chipMale.text = Gender.MALE.text
-        binding.chipEnby.text = Gender.ENBY.text
-        binding.chipNone.text = Gender.NONE.text
+        //binding.femaleButton.text = Gender.FEMALE.text
+        //binding.maleButton.text = Gender.MALE.text
+        //binding.chipEnby.text = Gender.ENBY.text
+        //binding.chipNone.text = Gender.NONE.text
 
         return binding.root
     }
@@ -56,18 +58,20 @@ class SearchFragment : Fragment(), ClickListener {
     private var maxAge = SearchParameters.DEFAULT_MAX_AGE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.chipFemale.setOnClickListener {
+        binding.femaleButton.setOnClickListener {
             doSearch()
         }
-        binding.chipMale.setOnClickListener {
+        binding.maleButton.setOnClickListener {
             doSearch()
         }
-        binding.chipEnby.setOnClickListener {
+        binding.nonBinButton.setOnClickListener {
             doSearch()
         }
-        binding.chipNone.setOnClickListener {
+        /*binding.chipNone.setOnClickListener {
             doSearch()
         }
+
+         */
 
         binding.minAge.doAfterTextChanged {
             minAge = try {
@@ -101,6 +105,11 @@ class SearchFragment : Fragment(), ClickListener {
             startActivity(Intent(requireContext(), ChatLogActivity::class.java))
         }
 
+        binding.backArrow.setOnClickListener {
+            activity?.onBackPressed()
+
+        }
+
     }
 
     override fun onResume() {
@@ -110,14 +119,15 @@ class SearchFragment : Fragment(), ClickListener {
 
     private fun selectedGenders(): List<Gender> {
         val result = mutableListOf<Gender>()
-        if (binding.chipFemale.isChecked)
+        if (binding.femaleButton.isChecked) {
             result.add(Gender.FEMALE)
-        if (binding.chipMale.isChecked)
+        }
+        if (binding.maleButton.isChecked)
             result.add(Gender.MALE)
-        if (binding.chipEnby.isChecked)
+        if (binding.nonBinButton.isChecked)
             result.add(Gender.ENBY)
-        if (binding.chipNone.isChecked)
-            result.add(Gender.NONE)
+        //if (binding.chipNone.isChecked)
+            //result.add(Gender.NONE)
 
         return result
     }
