@@ -149,7 +149,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_status"
-        app:srcCompat="@drawable/ic_baseline_email_24" />
+        app:srcCompat="@drawable/email_black" />
 
     <TextView
         android:id="@+id/textView9"
