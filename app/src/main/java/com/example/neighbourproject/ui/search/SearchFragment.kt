@@ -45,12 +45,6 @@ class SearchFragment : Fragment(), ClickListener {
         )
 
         binding.searchResultList.adapter = searchAdapter
-
-        //binding.femaleButton.text = Gender.FEMALE.text
-        //binding.maleButton.text = Gender.MALE.text
-        //binding.chipEnby.text = Gender.ENBY.text
-        //binding.chipNone.text = Gender.NONE.text
-
         return binding.root
     }
 
@@ -67,11 +61,6 @@ class SearchFragment : Fragment(), ClickListener {
         binding.nonBinButton.setOnClickListener {
             doSearch()
         }
-        /*binding.chipNone.setOnClickListener {
-            doSearch()
-        }
-
-         */
 
         binding.minAge.doAfterTextChanged {
             minAge = try {
@@ -126,9 +115,6 @@ class SearchFragment : Fragment(), ClickListener {
             result.add(Gender.MALE)
         if (binding.nonBinButton.isChecked)
             result.add(Gender.ENBY)
-        //if (binding.chipNone.isChecked)
-            //result.add(Gender.NONE)
-
         return result
     }
 
