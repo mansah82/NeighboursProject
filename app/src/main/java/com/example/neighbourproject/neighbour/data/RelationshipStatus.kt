@@ -4,5 +4,6 @@ enum class RelationshipStatus(val text: String) {
     SINGLE("Single"),
     MARRIED("Married"),
     DIVORCE("Divorce"),
-    NONE("None")
+    NONE("None"),
+    RELATIONSHIP("Relationship")
 }
