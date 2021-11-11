@@ -9,11 +9,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:background="#f7d3bc"
         android:orientation="vertical"
-        android:background="#787272"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/neighbour_info"></LinearLayout>
 
     <TextView
         android:id="@+id/neighbour_name"
@@ -57,7 +59,7 @@
     <TextView
         android:id="@+id/neighbour_info"
         android:layout_width="225dp"
-        android:layout_height="46dp"
+        android:layout_height="33dp"
         android:layout_marginStart="2dp"
         android:text="Info"
         android:textColor="#202020"
