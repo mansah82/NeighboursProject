@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/recyclerview_background"
+    android:background="@color/white"
     tools:context=".ui.edit.EditProfileActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/recyclerview_background">
+        android:background="@color/white">
 
         <Button
             android:id="@+id/takePhotoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFA657"
+            android:backgroundTint="#f7d3bc"
             android:text="@string/edit_profile_camera_button_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="#FFFFA657"
+            android:backgroundTint="#f7d3bc"
             android:text="@string/edit_profile_save_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,45 +49,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/recyclerview_background"
+            android:background="@color/white"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/circularPhoto">
 
+
             <EditText
                 android:id="@+id/nameEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|left"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
                 android:autofillHints="name"
-                android:background="@drawable/shape_rounded_white"
                 android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM .,"
+                android:drawableLeft="@drawable/person_pink"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="@string/edit_profile_first_name_hint"
                 android:inputType="text"
-                android:minHeight="48dp" />
-
+                android:minHeight="48dp"
+                android:paddingLeft="8dp" />
 
             <EditText
                 android:id="@+id/lastnameEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|left"
                 android:autofillHints="name"
-                android:background="@drawable/shape_rounded_white"
                 android:digits="qwertyuiopåasdfghjklöäzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM .,"
+                android:drawableLeft="@drawable/person_pink"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="@string/edit_profile_last_name_hint"
                 android:inputType="text"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:paddingLeft="8dp" />
 
             <EditText
                 android:id="@+id/ageEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/shape_rounded_white"
+                android:layout_gravity="center_horizontal|left"
                 android:gravity="center"
                 android:hint="@string/edit_profile_age_hint"
                 android:inputType="number"
@@ -95,33 +96,34 @@
                 android:minHeight="48dp" />
 
             <Spinner
-                android:id="@+id/genderSpinner"
+                android:id="@+id/relationshipSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|left"
                 android:minHeight="48dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <Spinner
-                android:id="@+id/relationshipSpinner"
+                android:id="@+id/genderSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|left"
                 android:minHeight="48dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="262dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|left"
                 android:autofillHints="emailAddress"
-                android:background="@drawable/shape_rounded_white"
+                android:drawableLeft="@drawable/email_icon"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="@string/edit_profile_email_hint"
                 android:inputType="textEmailAddress"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:paddingLeft="8dp" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -129,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/recyclerview_background"
+            android:background="@color/white"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:layout_editor_absoluteX="1dp"

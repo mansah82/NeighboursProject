@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_dd9597"
+    android:background="@drawable/group_1387"
     tools:context=".ui.search.SearchFragment">
 
 
@@ -82,7 +82,7 @@
         android:hint="@string/max_age_hint"
         android:inputType="numberSigned"
         android:minHeight="40dp"
-        android:textColor="#DD9597"
+        android:textColor="#ffaa69"
         android:textColorHint="#80707070"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/femaleButton"
@@ -100,7 +100,7 @@
         android:hint="@string/min_age_hint"
         android:inputType="numberSigned"
         android:minHeight="35dp"
-        android:textColor="#DD9597"
+        android:textColor="#ffaa69"
         android:textColorHint="#80707070"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="@+id/nonBinButton"
@@ -120,11 +120,20 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#f7d3bc"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/search_result_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/menuToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/background_dd9597"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -137,10 +146,11 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="6dp"
+        android:layout_marginBottom="7dp"
         android:clickable="true"
         android:foregroundGravity="center"
-        android:src="@drawable/grannar_vit"
-        app:backgroundTint="#f5f0f0"
+        android:src="@drawable/grannar_orange"
+        app:backgroundTint="#ffaa69"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
@@ -148,13 +158,14 @@
 
     <ImageView
         android:id="@+id/chattButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/menuToolbar"
         app:layout_constraintHorizontal_bias="0.673"
         app:layout_constraintStart_toEndOf="@+id/button_edit_profile"
-        app:srcCompat="@drawable/search_chat" />
+        app:srcCompat="@drawable/chat_lightorange" />
 
     <EditText
         android:id="@+id/free_search_text"
@@ -162,11 +173,11 @@
         android:layout_height="42dp"
         android:layout_marginTop="5dp"
         android:background="@color/white"
-        android:drawableLeft="@drawable/free_search_icon"
+        android:drawableLeft="@drawable/search_lightorange"
         android:enabled="true"
         android:hint="@string/FREE_SEARCH"
-        android:textColorHint="#8D5153"
-        android:textColor="#8D5153"
+        android:textColor="#f7d3bc"
+        android:textColorHint="#f7d3bc"
         android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,12 +187,15 @@
 
     <ImageView
         android:id="@+id/backArrow"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/back_arrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="13dp"
+        android:src="@drawable/backarrow_lightorange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_edit_profile"
         app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="@+id/menuToolbar" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

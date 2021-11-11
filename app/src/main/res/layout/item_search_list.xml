@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    android:background="#EBF6DAC2">
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        android:background="#787272"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></LinearLayout>
 
     <TextView
         android:id="@+id/neighbour_name"
@@ -13,9 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-light"
         android:text="name"
         android:textColor="#020202"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +37,7 @@
         android:layout_marginTop="4dp"
         android:text="Age"
         android:textColor="#020202"
-        android:textSize="18dp"
+        android:textSize="13dp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
 
@@ -36,11 +45,12 @@
         android:id="@+id/neighbour_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="Age"
         android:textColor="#020202"
-        android:textSize="18dp"
+        android:textSize="13dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
 
@@ -51,14 +61,14 @@
         android:layout_marginStart="2dp"
         android:text="Info"
         android:textColor="#202020"
-        android:textSize="18dp"
+        android:textSize="13dp"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +80,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="-4dp"
         android:text="Interests:"
         android:textColor="#040303"
-        android:textSize="18dp"
+        android:textSize="13dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_age" />
@@ -86,7 +96,7 @@
         android:layout_marginTop="4dp"
         android:text="Years"
         android:textColor="#020202"
-        android:textSize="18dp"
+        android:textSize="13dp"
         app:layout_constraintStart_toEndOf="@+id/neighbour_age"
         app:layout_constraintTop_toBottomOf="@+id/neighbour_name" />
 

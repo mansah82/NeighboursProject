@@ -55,10 +55,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="25dp"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+            app:srcCompat="@drawable/add_black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
