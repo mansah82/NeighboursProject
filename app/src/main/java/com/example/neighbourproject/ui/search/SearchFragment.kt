@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.example.neighbourproject.R
@@ -115,6 +116,7 @@ class SearchFragment : Fragment(), ClickListener {
             result.add(Gender.MALE)
         if (binding.nonBinButton.isChecked)
             result.add(Gender.ENBY)
+            result.add(Gender.NONE)
         return result
     }
 
@@ -124,6 +126,7 @@ class SearchFragment : Fragment(), ClickListener {
         result.add(RelationshipStatus.NONE)
         result.add(RelationshipStatus.DIVORCE)
         result.add(RelationshipStatus.MARRIED)
+        result.add(RelationshipStatus.RELATIONSHIP)
         return result
     }
 

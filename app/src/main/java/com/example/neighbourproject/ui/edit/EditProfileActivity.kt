@@ -84,6 +84,11 @@ open class EditProfileActivity : AppCompatActivity() {
             finish()
         }
 
+        if(binding.ageEditText.text.toString().toInt() > 140){
+            binding.ageEditText.setText("140")
+        }else if(binding.ageEditText.text.toString().toInt() < 0){
+            binding.ageEditText.setText("0")
+        }
         //TODO perhaps a selector to select image
         binding.takePhotoButton.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
@@ -185,7 +190,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         profile.image = model.writeImage(newBitmap)
 
-        if(profile.image != ""){
+        if (profile.image != "") {
             model.editUserProfile(profile)
         }
 
