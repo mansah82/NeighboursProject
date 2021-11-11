@@ -69,6 +69,7 @@ class NeighboursRepository : NeighboursService {
                     val item = document.toObject(People::class.java)
                     if (item != null) {
                         neighbours.add(item)
+                        Log.d(TAG, "startListeningForNeighbours: ${item.firstName}")
                         //Remove my profile from this list
                         if (myProfileId != "") {
                             if (item.id == myProfileId) {
@@ -77,6 +78,7 @@ class NeighboursRepository : NeighboursService {
                         }
                     }
                 }
+                Log.d(TAG, "startListeningForNeighbours: ${neighbours.size}")
                 updateFriendsMap()
                 doSearch()
             }
