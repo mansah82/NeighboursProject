@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import com.example.neighbourproject.databinding.ActivityEditProfileBinding
+import com.example.neighbourproject.neighbour.SearchParameters
 import com.example.neighbourproject.neighbour.data.Gender
 import com.example.neighbourproject.neighbour.data.People
 import com.example.neighbourproject.neighbour.data.RelationshipStatus
@@ -48,8 +49,6 @@ open class EditProfileActivity : AppCompatActivity() {
 
         }
 
-
-
         binding.genderSpinner.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, Gender.values())
 
@@ -69,6 +68,17 @@ open class EditProfileActivity : AppCompatActivity() {
         binding.addInterestRecycler.adapter = InterestAddAdapter(profile, model)
 
         binding.saveButton.setOnClickListener {
+
+            if (binding.ageEditText.text.toString()
+                    .toInt() > SearchParameters.DEFAULT_MAX_AGE
+            ) {
+                binding.ageEditText.setText(SearchParameters.DEFAULT_MAX_AGE.toString())
+            } else if (binding.ageEditText.text.toString()
+                    .toInt() <= SearchParameters.DEFAULT_MIN_AGE
+            ) {
+                binding.ageEditText.setText(SearchParameters.DEFAULT_MIN_AGE.toString())
+            }
+
             profile.firstName = binding.nameEditText.text.toString()
             profile.lastName = binding.lastnameEditText.text.toString()
             profile.age = binding.ageEditText.text.toString().toInt()
@@ -84,11 +94,6 @@ open class EditProfileActivity : AppCompatActivity() {
             finish()
         }
 
-        if(binding.ageEditText.text.toString().toInt() > 140){
-            binding.ageEditText.setText("140")
-        }else if(binding.ageEditText.text.toString().toInt() < 0){
-            binding.ageEditText.setText("0")
-        }
         //TODO perhaps a selector to select image
         binding.takePhotoButton.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
