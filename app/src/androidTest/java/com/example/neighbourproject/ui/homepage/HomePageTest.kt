@@ -50,7 +50,7 @@ class HomePageTest {
 
         onView(withId(R.id.loginButton)).perform(click())
 
-        onView(withText("SIGN IN")).check(matches(isDisplayed()))
+        onView(withText("LOG IN")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -63,7 +63,7 @@ class HomePageTest {
 
         onView(withId(R.id.loginButton)).perform(click())
 
-        onView(withText("SIGN IN")).check(matches(isDisplayed()))
+        onView(withText("LOG IN")).check(matches(isDisplayed()))
     }
 
     @Test

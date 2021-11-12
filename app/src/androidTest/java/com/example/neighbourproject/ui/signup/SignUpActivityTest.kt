@@ -75,6 +75,6 @@ class SignUpActivityTest {
 
         onView(withId(R.id.signUpButton)).perform(click())
 
-        onView(withText("SIGN IN")).check(matches(isDisplayed()))
+        onView(withText("LOG IN")).check(matches(isDisplayed()))
     }
 }
