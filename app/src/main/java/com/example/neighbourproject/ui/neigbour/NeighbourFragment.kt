@@ -114,7 +114,7 @@ class NeighbourFragment : Fragment(), InterestClickListener {
         binding.neighbourEmail.setOnClickListener {
             model.getNeighbour()?.let {
                 val email = Intent(Intent.ACTION_SEND)
-                email.putExtra(Intent.EXTRA_EMAIL, it.email)
+                email.putExtra(Intent.EXTRA_EMAIL, arrayOf(it.email))
                 email.putExtra(
                     Intent.EXTRA_SUBJECT,
                     getString(R.string.neighbour_email_intent_subject)
