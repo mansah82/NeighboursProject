@@ -2,15 +2,12 @@ package com.example.neighbourproject.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
-import com.example.neighbourproject.R
 import com.example.neighbourproject.ui.edit.EditProfileActivity
 import com.example.neighbourproject.databinding.SearchFragmentBinding
 import com.example.neighbourproject.neighbour.SearchParameters
@@ -109,14 +106,14 @@ class SearchFragment : Fragment(), ClickListener {
 
     private fun selectedGenders(): List<Gender> {
         val result = mutableListOf<Gender>()
-        if (binding.femaleButton.isChecked) {
+        if (binding.femaleButton.isChecked)
             result.add(Gender.FEMALE)
-        }
         if (binding.maleButton.isChecked)
             result.add(Gender.MALE)
-        if (binding.nonBinButton.isChecked)
+        if (binding.nonBinButton.isChecked) {
             result.add(Gender.ENBY)
             result.add(Gender.NONE)
+        }
         return result
     }
 
